@@ -1,0 +1,2414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSSRam — Shanmukha Donepudi</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Press+Start+2P&family=Noto+Sans+Telugu:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   RESET & BASE
+============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: #FFFAF2;
+  color: #1a1a1a;
+  font-family: 'Space Mono', monospace;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ============================================================
+   RGB PIXEL CURSOR
+============================================================ */
+/* ============================================================
+   PIXEL CURSOR
+============================================================ */
+*, *::before, *::after { cursor: none; }
+
+#px-cursor {
+  position: fixed;
+  pointer-events: none;
+  z-index: 99999;
+  width: 12px; height: 12px;
+  background: #FF6B1A;
+  border: 2px solid #0a0a0a;
+  box-shadow: 2px 2px 0 #0a0a0a;
+  image-rendering: pixelated;
+  top: 0; left: 0;
+  transition: width .12s, height .12s, border-radius .12s, background .12s;
+}
+#px-cursor.hover {
+  width: 20px; height: 20px;
+  background: #0a0a0a;
+  border-color: #FF6B1A;
+  box-shadow: 3px 3px 0 #FF6B1A;
+  border-radius: 2px;
+}
+
+/* Pixel dot trail */
+#px-trail {
+  position: fixed;
+  pointer-events: none;
+  z-index: 99998;
+  width: 6px; height: 6px;
+  background: rgba(255,107,26,0.35);
+  border: 1px solid rgba(255,107,26,0.5);
+  image-rendering: pixelated;
+  top: 0; left: 0;
+  transition: left .12s linear, top .12s linear;
+}
+
+/* Pixel grid background overlay (subtle) */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,107,26,.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,107,26,.03) 1px, transparent 1px);
+  background-size: 16px 16px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ============================================================
+   NAV
+============================================================ */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  padding: 1rem 2rem;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(255,250,242,0.88);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255,107,26,.12);
+}
+.nav-logo {
+  font-family: 'Press Start 2P', monospace;
+  font-size: .85rem; color: #FF6B1A;
+  text-shadow: 2px 2px 0 rgba(255,107,26,.25);
+  letter-spacing: .05em;
+}
+.nav-links {
+  display: flex; gap: 1.5rem; align-items: center;
+}
+.nav-links a {
+  font-family: 'Space Mono', monospace; font-size: .62rem;
+  color: #0a0a0a; text-decoration: none;
+  letter-spacing: .1em; text-transform: uppercase;
+  position: relative; padding-bottom: 2px;
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: 0; left: 0;
+  width: 0; height: 2px; background: #FF6B1A; transition: width .3s;
+}
+.nav-links a:hover::after { width: 100%; }
+.nav-hamburger { display: none; flex-direction: column; gap: 4px; background: none; border: none; padding: 4px; }
+.nav-hamburger span { display: block; width: 22px; height: 2px; background: #FF6B1A; border-radius: 2px; }
+
+/* ============================================================
+   HERO
+============================================================ */
+#hero {
+  position: relative; min-height: 100vh;
+  display: flex; align-items: center;
+  overflow: hidden; padding: 7rem 5% 4rem;
+  background: #FFFAF2;
+  gap: 4rem;
+}
+.hero-bg-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 106, 26, 0.186) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 106, 26, 0.086) 1px, transparent 1px);
+  background-size: 44px 44px;
+  transform: perspective(600px) rotateX(18deg) scale(1.3);
+  transform-origin: center bottom;
+  transition: transform .1s;
+}
+
+/* — Name Block — */
+.hero-left { flex: 1; position: relative; z-index: 2; min-width: 0; }
+.hero-name-block { margin-bottom: 2rem; }
+.hero-name {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.6rem, 5.5vw, 5rem);
+  font-weight: 700; line-height: 1.05; color: #0a0a0a;
+  letter-spacing: -.02em;
+}
+.hero-name span { color: #FF6B1A; }
+.hero-alias {
+  display: block;
+  font-family: 'Noto Sans Telugu', sans-serif;
+  font-size: clamp(.9rem, 1.8vw, 1.3rem);
+  color: #888; margin-top: .4rem; letter-spacing: .05em;
+  font-weight: 400;
+}
+.hero-alias-sub {
+  display: block;
+  font-family: 'Space Mono', monospace;
+  font-size: .65rem; color: #aaa; margin-top: .2rem;
+  letter-spacing: .1em; text-transform: uppercase;
+}
+.terminal-box {
+  background: #0a0a0a; border-radius: 14px;
+  padding: 1.4rem; max-width: 460px;
+  box-shadow: 0 30px 80px rgba(0,0,0,.18), 0 0 0 1px rgba(255,107,26,.2);
+  position: relative; overflow: hidden;
+}
+.terminal-box::before {
+  content: ''; position: absolute; inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,.012) 2px, rgba(255,255,255,.012) 4px);
+  pointer-events: none;
+}
+.t-bar { display: flex; gap: .5rem; margin-bottom: 1rem; align-items: center; }
+.t-dot { width: 10px; height: 10px; border-radius: 50%; }
+.t-r { background: #FF5F57; } .t-y { background: #FFBD2E; } .t-g { background: #28C840; }
+.t-title { font-size: .58rem; color: #444; margin-left: auto; letter-spacing: .05em; font-family: 'Space Mono', monospace; }
+.t-line { font-family: 'Space Mono', monospace; font-size: .72rem; line-height: 1.9; color: #ccc; }
+.t-prompt { color: #FF6B1A; } .t-out { color: #FFB380; padding-left: 1rem; display: block; }
+.t-comment { color: #555; font-style: italic; display: block; }
+.t-cursor { display: inline-block; width: 8px; height: 13px; background: #FF6B1A; animation: blink .8s step-end infinite; vertical-align: middle; margin-left: 2px; }
+@keyframes blink { 50% { opacity: 0; } }
+.float-tag {
+  position: absolute; font-family: 'Caveat', cursive;
+  color: #FF6B1A; opacity: .7; pointer-events: none;
+  animation: wobble 3s ease-in-out infinite;
+}
+@keyframes wobble { 0%,100% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } }
+.ft-1 { top: 18%; right: 3%; font-size: 1.1rem; animation-delay: 0s; }
+.ft-2 { bottom: 25%; left: 2%; font-size: .95rem; animation-delay: 1.2s; }
+.ft-3 { top: 58%; right: 5%; font-size: .85rem; animation-delay: 2s; }
+
+/* — Photo with shapes — */
+.hero-right {
+  flex: 0 0 min(360px, 42vw);
+  position: relative; z-index: 2;
+  display: flex; justify-content: center; align-items: center;
+}
+.photo-universe {
+  position: relative;
+  width: min(300px, 82vw); height: min(340px, 90vw);
+}
+/* Floating shapes */
+.fshape {
+  position: absolute; border-radius: 4px;
+  animation: floatShape 4s ease-in-out infinite;
+  z-index: 0;
+}
+@keyframes floatShape {
+  0%,100% { transform: translateY(0) rotate(var(--r)); }
+  50% { transform: translateY(-10px) rotate(calc(var(--r) + 4deg)); }
+}
+.fs-1 { width: 80px; height: 80px; background: #FF6B1A; top: -25px; right: -20px; --r: 18deg; border-radius: 6px; animation-delay: 0s; }
+.fs-2 { width: 50px; height: 50px; background: #0a0a0a; bottom: -15px; left: -15px; --r: -12deg; animation-delay: .8s; }
+.fs-3 { width: 40px; height: 40px; background: #FFD580; top: 30px; left: -25px; --r: 25deg; border-radius: 50%; animation-delay: 1.5s; }
+.fs-4 { width: 70px; height: 70px; border: 3px solid #FF6B1A; bottom: 20px; right: -20px; --r: -18deg; background: transparent; border-radius: 6px; animation-delay: .4s; }
+.fs-5 { width: 20px; height: 20px; background: #FF6B9D; top: 50%; left: -30px; --r: 10deg; border-radius: 50%; animation-delay: 2s; }
+.fs-6 { width: 15px; height: 15px; background: #6B9DFF; top: 15%; right: -30px; --r: -20deg; animation-delay: 2.5s; }
+/* actual photo */
+.photo-wrap {
+  position: relative; z-index: 2;
+  width: 100%; height: 100%;
+  border-radius: 14px; overflow: hidden;
+  box-shadow: 0 30px 70px rgba(0,0,0,.22), 0 0 0 2px rgba(255,107,26,.25);
+}
+.photo-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.photo-corner { position: absolute; width: 18px; height: 18px; border-color: #FF6B1A; border-style: solid; z-index: 3; }
+.pc-tl { top: 8px; left: 8px; border-width: 2px 0 0 2px; }
+.pc-tr { top: 8px; right: 8px; border-width: 2px 2px 0 0; }
+.pc-bl { bottom: 8px; left: 8px; border-width: 0 0 2px 2px; }
+.pc-br { bottom: 8px; right: 8px; border-width: 0 2px 2px 0; }
+
+/* ============================================================
+   MARQUEE
+============================================================ */
+.marquee-section {
+  background: #0a0a0a; padding: .8rem 0; overflow: hidden;
+  border-top: 2px solid #FF6B1A; border-bottom: 2px solid #FF6B1A;
+}
+.marquee-track { display: flex; white-space: nowrap; animation: marquee 24s linear infinite; }
+.marquee-item { font-family: 'Caveat', cursive; font-size: 1.3rem; color: #FF6B1A; padding: 0 1.8rem; opacity: .85; }
+.marquee-sep { color: #333; }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ============================================================
+   SECTION COMMONS
+============================================================ */
+.section-tag {
+  font-family: 'Space Mono', monospace; font-size: .6rem;
+  color: #FF6B1A; letter-spacing: .2em; text-transform: uppercase;
+  margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem;
+}
+.section-tag::after { content: ''; flex: 1; height: 1px; background: #FF6B1A; opacity: .3; }
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3.8rem);
+  line-height: 1.1; margin-bottom: 2.5rem; font-weight: 700;
+}
+.section-title em { font-style: italic; color: #FF6B1A; }
+.reveal {
+  opacity: 0; transform: translateY(36px) rotateX(8deg);
+  transition: opacity .8s cubic-bezier(.23,1,.32,1), transform .8s cubic-bezier(.23,1,.32,1);
+  transform-origin: center bottom;
+}
+.reveal.visible { opacity: 1; transform: none; }
+.reveal-l {
+  opacity: 0; transform: translateX(-44px);
+  transition: opacity .7s cubic-bezier(.23,1,.32,1), transform .7s cubic-bezier(.23,1,.32,1);
+}
+.reveal-l.visible { opacity: 1; transform: none; }
+
+/* ============================================================
+   ABOUT / INTERESTS  (centered)
+============================================================ */
+#about {
+  padding: 7rem 5% 6rem;
+  background: #FFFAF2; position: relative;
+  text-align: center;
+}
+.interests-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.4rem; max-width: 900px; margin: 0 auto;
+  text-align: left;
+}
+.interest-card {
+  background: #fff; border-radius: 16px; padding: 1.8rem;
+  border: 1.5px solid rgba(255,107,26,.15);
+  position: relative; overflow: hidden;
+  transition: transform .3s, box-shadow .3s;
+}
+.interest-card:hover { transform: translateY(-8px) rotate(.8deg); box-shadow: 8px 16px 40px rgba(255,107,26,.13); }
+.ic-emoji { font-size: 2rem; margin-bottom: .8rem; display: block; }
+.ic-title { font-family: 'Caveat', cursive; font-size: 1.4rem; font-weight: 700; margin-bottom: .4rem; }
+.ic-desc { font-family: 'Space Mono', monospace; font-size: .67rem; color: #888; line-height: 1.75; }
+.ic-tag { display: inline-block; margin-top: .8rem; padding: .25rem .7rem; background: rgba(255,107,26,.1); color: #FF6B1A; border-radius: 99px; font-size: .58rem; font-family: 'Space Mono', monospace; }
+.badge { display: inline-flex; align-items: center; gap: .3rem; padding: .35rem .8rem; background: #0a0a0a; color: #FF6B1A; border-radius: 4px; font-family: 'Space Mono', monospace; font-size: .62rem; margin: .25rem; border: 1px solid rgba(255,107,26,.3); }
+
+/* ============================================================
+   HUMOR CARDS
+============================================================ */
+#humor { padding: 5rem 5%; background: #0a0a0a; text-align: center; }
+.humor-title { font-family: 'Caveat', cursive; font-size: clamp(1.8rem, 4vw, 3.2rem); color: #FFFAF2; margin-bottom: 2rem; }
+.humor-title span { color: #FF6B1A; }
+.humor-cards { display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap; }
+.humor-card {
+  background: #1a1a1a; border-radius: 14px; padding: 1.4rem;
+  width: clamp(200px, 28vw, 240px); text-align: left;
+  border: 1px solid rgba(255,107,26,.15);
+  transition: transform .3s, border-color .3s;
+}
+.humor-card:hover { transform: translateY(-7px); border-color: #FF6B1A; }
+.humor-emoji { font-size: 1.8rem; margin-bottom: .8rem; display: block; }
+.humor-q { font-family: 'Space Mono', monospace; font-size: .62rem; color: #555; margin-bottom: .6rem; }
+.humor-a { font-family: 'Caveat', cursive; font-size: 1rem; color: #FFFAF2; line-height: 1.5; }
+
+/* ============================================================
+   WINDOWS EXPLORER — DESIGN (FLOATING)
+============================================================ */
+#design { padding: 7rem 5%; background: linear-gradient(180deg,#FFFAF2,#FFF3E8); }
+.win-float-wrap {
+  perspective: 1200px; margin-top: 2rem;
+}
+.win-explorer {
+  border-radius: 12px; overflow: hidden;
+  box-shadow: 0 50px 120px rgba(0,0,0,.14), 0 20px 40px rgba(255,107,26,.08), 0 0 0 1px rgba(0,0,0,.07);
+  background: #fff;
+  transform: rotateX(3deg) rotateY(-1deg) scale(1);
+  transition: transform .5s cubic-bezier(.23,1,.32,1), box-shadow .5s;
+  will-change: transform;
+}
+.win-explorer:hover {
+  transform: rotateX(0deg) rotateY(0deg) scale(1.01);
+  box-shadow: 0 70px 150px rgba(0,0,0,.18), 0 30px 60px rgba(255,107,26,.1);
+}
+.win-titlebar { background: linear-gradient(90deg,#FF6B1A,#E55C10); padding: .4rem 1rem; display: flex; align-items: center; gap: .6rem; }
+.win-titlebar-icon { font-size: .85rem; }
+.win-titlebar-title { font-family: 'Space Mono', monospace; font-size: .6rem; color: #fff; flex: 1; }
+.win-title-btns { display: flex; gap: .35rem; }
+.win-tb-x { width: 14px; height: 14px; border-radius: 2px; background: rgba(255,255,255,.2); display: flex; align-items: center; justify-content: center; font-size: .5rem; color: #fff; }
+.win-tb-cls { background: #c0392b; }
+.win-menubar { background: #f5f5f5; border-bottom: 1px solid #ddd; padding: .28rem .8rem; display: flex; gap: 1.2rem; flex-wrap: wrap; }
+.win-mi { font-family: 'Space Mono', monospace; font-size: .58rem; color: #444; padding: .18rem .4rem; border-radius: 2px; transition: background .15s; }
+.win-mi:hover { background: #FF6B1A; color: #fff; }
+.win-toolbar { background: #f0f0f0; border-bottom: 1px solid #ddd; padding: .45rem 1rem; display: flex; align-items: center; gap: .7rem; flex-wrap: wrap; }
+.win-btn { display: flex; align-items: center; gap: .3rem; padding: .3rem .65rem; background: #fff; border: 1px solid #ccc; border-radius: 3px; font-family: 'Space Mono', monospace; font-size: .56rem; color: #333; transition: background .15s; }
+.win-btn:hover { background: #FF6B1A; color: #fff; border-color: #FF6B1A; }
+.win-sep { width: 1px; height: 18px; background: #ccc; }
+.win-addr { background: #f8f8f8; border-bottom: 1px solid #ddd; padding: .38rem 1rem; display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+.win-addr-label { font-family: 'Space Mono', monospace; font-size: .56rem; color: #888; white-space: nowrap; }
+.win-addr-input { flex: 1; background: #fff; border: 1px solid #aaa; border-radius: 2px; padding: .22rem .55rem; font-family: 'Space Mono', monospace; font-size: .6rem; color: #333; min-width: 0; }
+.win-body { display: flex; min-height: 360px; }
+.win-sidebar { width: 160px; flex-shrink: 0; background: #f7f5f2; border-right: 1px solid #ddd; padding: .7rem 0; }
+.win-sb-head { padding: .35rem 1rem .15rem; font-family: 'Space Mono', monospace; font-size: .5rem; color: #888; text-transform: uppercase; letter-spacing: .1em; }
+.win-sb-item { display: flex; align-items: center; gap: .45rem; padding: .35rem 1.1rem; font-family: 'Space Mono', monospace; font-size: .58rem; color: #333; transition: background .15s; white-space: nowrap; }
+.win-sb-item:hover, .win-sb-item.active { background: rgba(255,107,26,.12); color: #FF6B1A; }
+.win-content { flex: 1; padding: 1rem; background: #fff; min-width: 0; }
+.win-vtabs { display: flex; gap: .3rem; margin-bottom: .8rem; padding-bottom: .5rem; border-bottom: 1px solid #eee; flex-wrap: wrap; }
+.win-vtab { padding: .22rem .55rem; border-radius: 3px; font-family: 'Space Mono', monospace; font-size: .52rem; color: #888; transition: background .15s; }
+.win-vtab:hover, .win-vtab.active { background: #FF6B1A; color: #fff; }
+.win-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: .9rem; }
+.win-file { display: flex; flex-direction: column; align-items: center; gap: .35rem; padding: .65rem .4rem; border-radius: 4px; transition: background .15s; }
+.win-file:hover { background: rgba(255,107,26,.1); }
+.win-file.selected { background: rgba(255,107,26,.18); outline: 1px solid #FF6B1A; }
+.win-file-name { font-family: 'Space Mono', monospace; font-size: .5rem; color: #333; text-align: center; line-height: 1.4; max-width: 90px; word-break: break-word; }
+.win-statusbar { background: #f0f0f0; border-top: 1px solid #ddd; padding: .28rem 1rem; display: flex; align-items: center; gap: .8rem; flex-wrap: wrap; }
+.win-status-text { font-family: 'Space Mono', monospace; font-size: .52rem; color: #666; }
+.win-progbar { width: 80px; height: 5px; background: #ddd; border-radius: 3px; overflow: hidden; }
+.win-progbar-fill { height: 100%; background: #FF6B1A; animation: winprog 3s ease-in-out infinite; }
+@keyframes winprog { 0%{width:55%} 50%{width:82%} 100%{width:55%} }
+
+/* ============================================================
+   BOOKS
+============================================================ */
+#books { padding: 7rem 5%; background: #0a0a0a; position: relative; }
+#books .section-tag { color: #FFD580; }
+#books .section-tag::after { background: #FFD580; }
+#books .section-title { color: #FFFAF2; }
+#books .section-title em { color: #FFD580; }
+.books-layout { display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: start; }
+.books-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1.2rem; }
+.book-card {
+  background: #111; border-radius: 8px; overflow: hidden;
+  border: 1px solid rgba(255,213,128,.1);
+  transition: transform .3s, box-shadow .3s;
+}
+.book-card:hover { transform: translateY(-10px) rotateY(-4deg); box-shadow: 18px 18px 50px rgba(0,0,0,.4); }
+.book-cover {
+  height: 150px; display: flex; align-items: flex-end; padding: .8rem;
+  position: relative; overflow: hidden;
+}
+.book-cover-text { position: relative; z-index: 2; }
+.book-title-text { font-family: 'Playfair Display', serif; font-size: .78rem; color: #fff; font-weight: 700; line-height: 1.3; text-shadow: 0 2px 8px rgba(0,0,0,.6); }
+.book-author { font-family: 'Space Mono', monospace; font-size: .48rem; color: rgba(255,255,255,.6); margin-top: .2rem; display: block; }
+.book-overlay-g { position: absolute; inset: 0; background: linear-gradient(180deg,transparent 20%,rgba(0,0,0,.7)); }
+.book-meta { padding: .6rem .8rem; display: flex; align-items: center; gap: .4rem; flex-wrap: wrap; }
+.book-stars { color: #FFD580; font-size: .65rem; letter-spacing: -1px; }
+.book-genre { background: rgba(255,213,128,.1); color: #FFD580; padding: .15rem .4rem; border-radius: 3px; font-size: .48rem; font-family: 'Space Mono', monospace; }
+
+/* Suggest panel */
+.suggest-panel {
+  background: #111; border-radius: 14px; padding: 1.5rem;
+  border: 1px solid rgba(255,213,128,.2);
+  width: 260px; flex-shrink: 0;
+  position: sticky; top: 7rem;
+}
+.suggest-panel h3 { font-family: 'Caveat', cursive; font-size: 1.3rem; color: #FFD580; margin-bottom: 1.2rem; }
+.suggest-tabs { display: flex; gap: .4rem; margin-bottom: 1rem; }
+.stab { padding: .25rem .6rem; border-radius: 4px; font-family: 'Space Mono', monospace; font-size: .55rem; color: #666; transition: background .15s; background: #1a1a1a; border: 1px solid #333; }
+.stab.active, .stab:hover { background: #FFD580; color: #0a0a0a; border-color: #FFD580; }
+.suggest-input {
+  width: 100%; background: #0a0a0a; border: 1px solid rgba(255,213,128,.25);
+  border-radius: 6px; padding: .6rem .8rem;
+  font-family: 'Space Mono', monospace; font-size: .62rem; color: #ccc; outline: none; margin-bottom: .6rem;
+}
+.suggest-input:focus { border-color: #FFD580; }
+.suggest-submit {
+  width: 100%; padding: .6rem; background: #FFD580; color: #0a0a0a;
+  border: none; border-radius: 6px; font-family: 'Space Mono', monospace; font-size: .6rem;
+  transition: opacity .2s; font-weight: 700;
+}
+.suggest-submit:hover { opacity: .85; }
+.suggestions-list { margin-top: 1rem; display: flex; flex-direction: column; gap: .5rem; max-height: 220px; overflow-y: auto; }
+.suggestion-item {
+  background: #0a0a0a; border-radius: 6px; padding: .5rem .7rem;
+  font-family: 'Space Mono', monospace; font-size: .58rem; color: #ccc;
+  border-left: 2px solid #FFD580;
+}
+.suggestion-meta { font-size: .48rem; color: #555; margin-top: .2rem; }
+
+/* ============================================================
+   PHOTOS
+============================================================ */
+#photos { padding: 7rem 5%; background: #FFFAF2; }
+.photos-masonry { columns: 3; gap: 1.2rem; margin-top: 2.5rem; }
+.photo-card { break-inside: avoid; margin-bottom: 1.2rem; border-radius: 12px; overflow: hidden; transition: transform .3s; position: relative; }
+.photo-card:hover { transform: scale(1.02); }
+/* REPLACE: swap out these placeholder divs with actual <img> tags */
+.photo-placeholder {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: .5rem; background: #f0e8de;
+  font-family: 'Caveat', cursive; color: #aaa; font-size: 1rem;
+  padding: 1rem;
+}
+.photo-placeholder .icon { font-size: 2rem; }
+.photo-replace-note {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  font-family: 'Space Mono', monospace; font-size: .45rem; color: rgba(0,0,0,.3);
+  text-align: center; pointer-events: none; line-height: 1.6;
+}
+
+/* ============================================================
+   DOODLE
+============================================================ */
+#doodle { padding: 7rem 5%; background: #FFFAF2; }
+.doodle-wrapper { margin-top: 2.5rem; border-radius: 20px; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,.1), 0 0 0 2px rgba(255,107,26,.2); }
+.doodle-toolbar { background: #fff; padding: .8rem 1.2rem; display: flex; gap: .6rem; align-items: center; border-bottom: 1px solid rgba(255,107,26,.12); flex-wrap: wrap; }
+.tool-btn { padding: .4rem .8rem; border-radius: 7px; border: 1.5px solid #e0d8d0; background: #fff; font-family: 'Space Mono', monospace; font-size: .6rem; color: #0a0a0a; display: flex; align-items: center; gap: .35rem; transition: all .2s; }
+.tool-btn:hover, .tool-btn.active { background: #FF6B1A; color: #fff; border-color: #FF6B1A; }
+.color-swatch { width: 24px; height: 24px; border-radius: 3px; border: 2px solid transparent; transition: transform .2s; flex-shrink: 0; }
+.color-swatch:hover, .color-swatch.active { transform: scale(1.2); border-color: #0a0a0a; }
+.brush-sz { -webkit-appearance: none; appearance: none; width: 70px; height: 4px; border-radius: 2px; background: linear-gradient(90deg,#FF6B1A,#FFB380); }
+.brush-sz::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 2px; background: #FF6B1A; }
+#doodle-canvas { display: block; width: 100%; height: clamp(320px, 45vw, 500px); background: #FFFAF2; background-image: radial-gradient(circle,rgba(255,107,26,.1) 1px,transparent 1px); background-size: 20px 20px; }
+.doodle-hint { position: absolute; bottom: 14px; right: 16px; font-family: 'Caveat', cursive; font-size: .95rem; color: rgba(255,107,26,.4); pointer-events: none; }
+
+/* ============================================================
+   FEEDBACK (doodle-note icon, notes inside panel)
+============================================================ */
+#feedback-btn {
+  position: fixed; bottom: 2rem; right: 2rem; z-index: 500;
+  background: #0a0a0a; color: #FF6B1A;
+  border: 2px solid #FF6B1A; width: 52px; height: 52px;
+  border-radius: 8px; font-size: 1.4rem;
+  box-shadow: 4px 4px 0 #FF6B1A;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform .15s, box-shadow .15s;
+}
+#feedback-btn:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 #FF6B1A; }
+#feedback-panel {
+  position: fixed; bottom: 5.5rem; right: 2rem; z-index: 499;
+  width: min(320px, 90vw); background: #0a0a0a;
+  border-radius: 14px; border: 2px solid #FF6B1A;
+  padding: 1.4rem; box-shadow: 6px 6px 0 #FF6B1A;
+  transform: scale(0) translateY(20px); transform-origin: bottom right;
+  transition: transform .3s cubic-bezier(.23,1,.32,1); pointer-events: none;
+  max-height: 80vh; overflow-y: auto;
+}
+#feedback-panel.open { transform: scale(1) translateY(0); pointer-events: all; }
+.fb-title { font-family: 'Caveat', cursive; font-size: 1.3rem; font-weight: 700; color: #FF6B1A; margin-bottom: 1rem; }
+.fb-input { width: 100%; border: 1.5px solid rgba(255,107,26,.4); border-radius: 8px; padding: .8rem; font-family: 'Caveat', cursive; font-size: 1rem; resize: none; min-height: 90px; background: #111; color: #FFD580; outline: none; }
+.fb-input:focus { border-color: #FF6B1A; }
+.fb-name { width: 100%; margin-top: .6rem; border: 1.5px solid rgba(255,107,26,.35); border-radius: 6px; padding: .6rem .8rem; font-family: 'Space Mono', monospace; font-size: .68rem; background: #0a0a0a; color: #ccc; outline: none; }
+.fb-name:focus { border-color: #FF6B1A; }
+.fb-submit { width: 100%; margin-top: .8rem; padding: .7rem; background: #FF6B1A; color: #0a0a0a; border: none; border-radius: 6px; font-family: 'Press Start 2P', monospace; font-size: .55rem; transition: all .15s; box-shadow: 3px 3px 0 #e55c10; }
+.fb-submit:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 #e55c10; }
+.fb-notes-head { font-family: 'Space Mono', monospace; font-size: .58rem; color: #555; margin: 1rem 0 .6rem; text-transform: uppercase; letter-spacing: .1em; }
+.fb-notes-list { display: flex; flex-direction: column; gap: .5rem; }
+.sticky-note { padding: .8rem 1rem; border-radius: 3px; font-family: 'Caveat', cursive; font-size: .95rem; box-shadow: 2px 3px 8px rgba(0,0,0,.15); }
+.sticky-note-from { font-size: .6rem; font-family: 'Space Mono', monospace; opacity: .55; margin-top: .4rem; display: block; }
+.sn-0{background:#FFE88A;color:#333;} .sn-1{background:#FFB3D1;color:#333;} .sn-2{background:#B3E8FF;color:#333;} .sn-3{background:#B8FFD4;color:#333;} .sn-4{background:#FFD4B8;color:#333;}
+
+/* ============================================================
+   FOOTER — CRAYON MOUNTAINS + DAY/SUNSET/NIGHT
+============================================================ */
+#footer {
+  position: relative; overflow: hidden;
+  /* Sky gradient: warm top → sunset → night */
+  background: linear-gradient(180deg,
+    #FFFAF2 0%,
+    #FFE0A0 18%,
+    #FF9B60 35%,
+    #CC4B2E 52%,
+    #5A2D70 68%,
+    #1a1060 80%,
+    #0a0820 100%
+  );
+  padding: 5rem 5% 0;
+}
+
+.wp-img {
+  width: 100%;
+  border-radius: 8px;
+  display: block;
+  margin-bottom: .6rem;
+  object-fit: cover;
+  max-height: 160px;
+  background: #f0e8de;
+  border: 1px solid #eee;
+}
+/* show placeholder bg even with empty src */
+.wp-img[src=""] {
+  display: block;
+  height: 100px;
+  background: repeating-linear-gradient(
+    45deg, #f5f0ea, #f5f0ea 6px, #eee8de 6px, #eee8de 12px
+  );
+}
+.ic-form { margin-top: 1rem; border-top: 1px solid rgba(255,107,26,.12); padding-top: .8rem; }
+.ic-form-toggle {
+  font-family: 'Space Mono', monospace; font-size: .6rem;
+  color: #FF6B1A; letter-spacing: .05em;
+  padding: .35rem 0; transition: opacity .2s;
+}
+.ic-form-toggle:hover { opacity: .7; }
+.ic-form-body { margin-top: .7rem; display: flex; flex-direction: column; gap: .5rem; }
+.ic-input {
+  width: 100%; background: #FFFAF2;
+  border: 1.5px solid rgba(255,107,26,.2);
+  border-radius: 8px; padding: .5rem .7rem;
+  font-family: 'Space Mono', monospace; font-size: .62rem;
+  color: #1a1a1a; outline: none; transition: border-color .2s;
+}
+.ic-input:focus { border-color: #FF6B1A; }
+.ic-btn {
+  padding: .45rem .9rem; background: #FF6B1A;
+  color: #fff; border: none; border-radius: 7px;
+  font-family: 'Space Mono', monospace; font-size: .6rem;
+  align-self: flex-start; transition: opacity .2s;
+  box-shadow: 2px 2px 0 #e55c10;
+}
+.ic-btn:hover { opacity: .88; }
+.ic-responses {
+  display: flex; flex-direction: column; gap: .4rem;
+  max-height: 120px; overflow-y: auto;
+}
+.ic-response-item {
+  background: rgba(255,107,26,.06);
+  border-left: 2px solid #FF6B1A;
+  padding: .4rem .6rem; border-radius: 0 6px 6px 0;
+  font-family: 'Caveat', cursive; font-size: .95rem; color: #333;
+  line-height: 1.4;
+}
+.ic-response-from { font-size: .55rem; font-family: 'Space Mono', monospace; color: #aaa; display: block; margin-top: .2rem; }
+
+
+
+.footer-content {
+  position: relative; z-index: 3;
+  display: flex; justify-content: space-between; align-items: flex-start;
+  flex-wrap: wrap; gap: 2rem; margin-bottom: 3rem;
+}
+.footer-big-text {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 6.5vw, 6rem);
+  line-height: .92; font-weight: 700; color: #0a0a0a;
+}
+.footer-big-text em { color: #FF6B1A; font-style: italic; }
+/* Contact Me — simple pixel button */
+.cta-scene {
+  display: inline-block;
+  margin-top: 1.5rem;
+}
+.footer-cta {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: .8rem 2rem;
+  border-radius: 4px; text-decoration: none;
+  font-family: 'Press Start 2P', monospace;
+  font-size: .58rem; border: 2px solid #e55c10;
+  background: #FF6B1A; color: #fff;
+  box-shadow: 5px 5px 0 #e55c10;
+  letter-spacing: .08em; text-transform: uppercase;
+  transition: transform .15s, box-shadow .15s;
+}
+.footer-cta:hover {
+  transform: translate(-2px,-2px);
+  box-shadow: 7px 7px 0 #e55c10;
+}
+/* remove unused state classes */
+.footer-cta.state-normal,
+.footer-cta.state-glow,
+.footer-cta.state-radium,
+.footer-cta.state-glitch,
+.footer-cta.flipping { all: unset; }
+.footer-links-col { display: flex; flex-direction: column; gap: .6rem; margin-top: .5rem; }
+.footer-link { font-family: 'Space Mono', monospace; font-size: .7rem; color: #0a0a0a; text-decoration: none; transition: color .2s; }
+.footer-link:hover { color: #FF6B1A; }
+
+/* Stars */
+#stars-layer { position: absolute; top: 0; left: 0; right: 0; height: 100%; pointer-events: none; z-index: 1; opacity: 0; transition: opacity 1s; }
+#stars-layer.visible { opacity: 1; }
+
+/* Clock */
+#footer-clock {
+  position: relative; z-index: 3;
+  display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
+  padding: 0 0 2rem;
+}
+.clock-block { background: rgba(10,10,10,.55); border-radius: 8px; padding: .5rem 1rem; border: 1px solid rgba(255,107,26,.3); display: flex; flex-direction: column; align-items: center; gap: .15rem; backdrop-filter: blur(8px); }
+.clock-lbl { font-family: 'Space Mono', monospace; font-size: .48rem; color: #aaa; letter-spacing: .15em; text-transform: uppercase; }
+.clock-val { font-family: 'Press Start 2P', monospace; font-size: .8rem; color: #FF6B1A; }
+.clock-dval { font-family: 'Press Start 2P', monospace; font-size: .58rem; color: #FFD580; }
+
+/* Social media */
+#socials {
+  position: relative; z-index: 3;
+  padding: 2rem 0 3rem;
+  display: flex; justify-content: center; gap: 1.5rem;
+  flex-wrap: wrap; border-top: 1px solid rgba(255,255,255,.08);
+}
+.social-link {
+  display: flex; flex-direction: column; align-items: center; gap: .4rem;
+  text-decoration: none; color: #ccc;
+  transition: transform .2s, color .2s;
+}
+.social-link:hover { transform: translateY(-5px); color: #FF6B1A; }
+.social-icon { font-size: 1.4rem; }
+.social-name { font-family: 'Space Mono', monospace; font-size: .5rem; letter-spacing: .08em; text-transform: uppercase; }
+.footer-copy { position: relative; z-index: 3; font-family: 'Space Mono', monospace; font-size: .58rem; color: #555; text-align: center; padding: 1.5rem 5% 2rem; border-top: 1px solid rgba(255,255,255,.06); }
+.mountains-svg { position: absolute; bottom: 0; left: 0; width: 100%; pointer-events: none; z-index: 2; }
+
+/* ============================================================
+   GREETING ROTATOR
+============================================================ */
+.greeting-wrap {
+  height: 2rem; overflow: hidden; margin-bottom: 1.2rem;
+  position: relative;
+}
+.greeting-word {
+  display: block;
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(.7rem, 1.4vw, 1rem);
+  color: #FF6B1A; letter-spacing: .08em;
+  opacity: 0;
+  transform: translateY(100%) rotateX(-90deg);
+  transition: opacity .5s, transform .5s cubic-bezier(.23,1,.32,1);
+  position: absolute; left: 0;
+}
+.greeting-word.active {
+  opacity: 1; transform: translateY(0) rotateX(0);
+}
+.greeting-lang {
+  font-family: 'Space Mono', monospace;
+  font-size: .5rem; color: #aaa;
+  letter-spacing: .12em; text-transform: uppercase;
+  margin-left: .4rem; vertical-align: middle;
+}
+
+/* ============================================================
+   HERO DRAG
+============================================================ */
+.hero-left {
+  user-select: none;
+}
+.drag-handle {
+  position: absolute; top: -1.5rem; left: 0;
+  font-family: 'Space Mono', monospace; font-size: .52rem;
+  color: rgba(255,107,26,.45); letter-spacing: .1em;
+  display: flex; align-items: center; gap: .4rem;
+}
+.drag-handle::before {
+  content: '⠿'; font-size: .8rem; color: rgba(255,107,26,.4);
+}
+
+/* ============================================================
+   BOOKS FLOATING QUOTES BG
+============================================================ */
+#books { position: relative; overflow: hidden; }
+.quotes-scene {
+  position: absolute; inset: 0;
+  pointer-events: none; z-index: 0;
+  overflow: hidden;
+  perspective: 1000px;
+  perspective-origin: 50% 50%;
+}
+.q-float {
+  position: absolute;
+  bottom: -3rem;
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(.5rem, .9vw, .78rem);
+  color: rgba(255,213,128,.13);
+  white-space: nowrap;
+  will-change: transform, opacity;
+  animation: qfly var(--dur, 20s) var(--delay, 0s) linear infinite;
+}
+@keyframes qfly {
+  0%   { transform: translateY(0) rotateY(0deg) rotateX(25deg) scale(.9); opacity: 0; }
+  6%   { opacity: 1; }
+  50%  { transform: translateY(-55vh) rotateY(8deg) rotateX(0deg) scale(1); opacity: .8; }
+  94%  { opacity: 1; }
+  100% { transform: translateY(-115vh) rotateY(-5deg) rotateX(-20deg) scale(1.05); opacity: 0; }
+}
+
+/* ============================================================
+   HUMOR MINI CARDS (fashion/auto/arch)
+============================================================ */
+.humor-mini-row {
+  display: flex; gap: .8rem; justify-content: center;
+  flex-wrap: wrap; margin-top: 1.2rem; opacity: .7;
+}
+.humor-mini {
+  background: #111; border: 1px solid rgba(255,107,26,.1);
+  border-radius: 10px; padding: .7rem 1rem;
+  font-family: 'Space Mono', monospace; font-size: .55rem;
+  color: #666; display: flex; align-items: center; gap: .5rem;
+  transition: color .2s, border-color .2s;
+  max-width: 200px;
+}
+.humor-mini:hover { color: #FF6B1A; border-color: rgba(255,107,26,.35); }
+.humor-mini-em { font-size: .95rem; }
+
+/* ============================================================
+   IMAGE LIGHTBOX (file explorer preview click)
+============================================================ */
+#img-lightbox {
+  position: fixed; inset: 0; z-index: 99995;
+  background: rgba(0,0,0,.92); backdrop-filter: blur(12px);
+  display: none; align-items: center; justify-content: center;
+  flex-direction: column; gap: 1.5rem;
+  perspective: 1200px;
+}
+#img-lightbox.open { display: flex; }
+.lb-card {
+  position: relative;
+  transform: scale(.4) rotateX(60deg) translateY(80px);
+  opacity: 0;
+  transition: transform .55s cubic-bezier(.23,1,.32,1), opacity .45s;
+  max-width: min(82vw, 700px);
+  filter: drop-shadow(0 40px 80px rgba(255,107,26,.25));
+}
+#img-lightbox.open .lb-card {
+  transform: scale(1) rotateX(0deg) translateY(0);
+  opacity: 1;
+}
+.lb-card img {
+  width: 100%; border-radius: 12px; display: block;
+  box-shadow: 0 0 0 2px rgba(255,107,26,.4);
+}
+.lb-card-label {
+  position: absolute; top: 12px; left: 12px;
+  font-family: 'Space Mono', monospace; font-size: .55rem;
+  color: #fff; background: rgba(0,0,0,.55);
+  padding: .25rem .55rem; border-radius: 4px;
+  backdrop-filter: blur(4px); letter-spacing: .08em;
+}
+.lb-close-btn {
+  position: absolute; top: 12px; right: 12px;
+  background: rgba(0,0,0,.5); border: 1.5px solid rgba(255,107,26,.5);
+  color: #FF6B1A; border-radius: 6px;
+  font-family: 'Space Mono', monospace; font-size: .7rem;
+  padding: .25rem .6rem; transition: background .2s;
+}
+.lb-close-btn:hover { background: #FF6B1A; color: #fff; }
+/* Rating bar */
+.lb-rating {
+  display: flex; flex-direction: column; align-items: center; gap: .6rem;
+}
+.lb-rating-label {
+  font-family: 'Caveat', cursive; font-size: 1.3rem;
+  color: #FFD580; letter-spacing: .04em;
+}
+.lb-stars {
+  display: flex; gap: .4rem;
+}
+.lb-star {
+  font-size: 2rem; color: #333; transition: color .15s, transform .15s;
+  line-height: 1;
+}
+.lb-star:hover { transform: scale(1.2); }
+.lb-star.lit { color: #FFD580; }
+.lb-star.hover-lit { color: #FFB830; }
+.lb-rating-thanks {
+  font-family: 'Space Mono', monospace; font-size: .65rem;
+  color: #6BFFB8; display: none; letter-spacing: .05em;
+}
+
+/* ============================================================
+   PHOTO DRAG
+============================================================ */
+.photo-universe {
+  cursor: grab;
+}
+.photo-universe.dragging {
+  cursor: grabbing;
+  filter: drop-shadow(0 20px 50px rgba(255,107,26,.4));
+}
+.photo-drag-hint {
+  position: absolute; bottom: -1.6rem; left: 50%; transform: translateX(-50%);
+  font-family: 'Space Mono', monospace; font-size: .48rem;
+  color: rgba(255,107,26,.45); white-space: nowrap; letter-spacing: .08em;
+  pointer-events: none;
+}
+
+/* ============================================================
+   3D DOOR (admin trigger in mountains)
+============================================================ */
+.door-3d-wrap {
+  position: fixed; bottom: 0; left: 10px; z-index: 9990;
+  width: 22px; height: 38px;
+  cursor: pointer;
+  opacity: 0.28;
+  transition: filter .25s, opacity .25s;
+}
+.door-3d-wrap:hover { filter: drop-shadow(0 0 6px rgba(255,107,26,.6)); opacity: 0.7; }
+.door-3d-wrap:hover .door-glow { opacity: 1; }
+.door-glow {
+  position: absolute; inset: -2px; border-radius: 1px;
+  box-shadow: 0 0 10px 2px rgba(255,107,26,.3);
+  opacity: 0; transition: opacity .25s; pointer-events: none;
+}
+
+/* ============================================================
+   ADMIN PANEL (hidden)
+============================================================ */
+#admin-trigger {
+  display: inline-block; font-size: .001rem; color: transparent;
+  user-select: none; cursor: default; padding: .5rem;
+}
+#admin-modal {
+  position: fixed; inset: 0; z-index: 99990;
+  background: rgba(0,0,0,.85); backdrop-filter: blur(8px);
+  display: none; align-items: center; justify-content: center;
+}
+#admin-modal.open { display: flex; }
+.admin-box {
+  background: #0a0a0a; border: 2px solid #FF6B1A;
+  border-radius: 14px; padding: 2rem; width: min(360px, 90vw);
+  box-shadow: 6px 6px 0 #FF6B1A;
+  position: relative;
+}
+.admin-title {
+  font-family: 'Press Start 2P', monospace; font-size: .75rem;
+  color: #FF6B1A; margin-bottom: 1.5rem; line-height: 1.6;
+}
+.admin-input {
+  width: 100%; background: #111; border: 1.5px solid rgba(255,107,26,.35);
+  border-radius: 6px; padding: .65rem .9rem; color: #ccc;
+  font-family: 'Space Mono', monospace; font-size: .7rem;
+  outline: none; margin-bottom: .75rem;
+}
+.admin-input:focus { border-color: #FF6B1A; }
+.admin-login-btn {
+  width: 100%; padding: .7rem; background: #FF6B1A; color: #0a0a0a;
+  border: none; border-radius: 6px; font-family: 'Press Start 2P', monospace;
+  font-size: .6rem; box-shadow: 3px 3px 0 #e55c10; transition: all .15s;
+}
+.admin-login-btn:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 #e55c10; }
+.admin-err { font-family: 'Space Mono', monospace; font-size: .62rem; color: #FF4444; margin-top: .5rem; display: none; }
+.admin-close {
+  position: absolute; top: .8rem; right: 1rem;
+  font-family: 'Space Mono', monospace; font-size: .7rem;
+  color: #555; background: none; border: none; padding: .3rem;
+}
+.admin-close:hover { color: #FF6B1A; }
+/* suggestions view inside admin */
+.admin-suggestions {
+  max-height: 55vh; overflow-y: auto; margin-top: 1rem;
+  display: flex; flex-direction: column; gap: .6rem;
+}
+.admin-sug-item {
+  background: #111; border-left: 3px solid #FF6B1A;
+  border-radius: 0 8px 8px 0; padding: .7rem 1rem;
+}
+.admin-sug-type { font-family: 'Space Mono', monospace; font-size: .5rem; color: #FF6B1A; text-transform: uppercase; letter-spacing: .1em; }
+.admin-sug-title { font-family: 'Caveat', cursive; font-size: 1.1rem; color: #FFD580; margin: .2rem 0; }
+.admin-sug-why { font-family: 'Space Mono', monospace; font-size: .58rem; color: #888; }
+.admin-sug-from { font-family: 'Space Mono', monospace; font-size: .5rem; color: #555; margin-top: .3rem; }
+.admin-sug-empty { font-family: 'Caveat', cursive; font-size: 1.1rem; color: #444; text-align: center; padding: 2rem; }
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media (max-width: 900px) {
+  #hero { flex-direction: column; align-items: flex-start; gap: 2.5rem; padding-top: 6rem; }
+  .hero-right { flex: none; width: 100%; display: flex; justify-content: center; }
+  .photo-universe { width: min(260px,70vw); height: min(300px,80vw); }
+  .interests-grid { grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); }
+  .books-layout { grid-template-columns: 1fr; }
+  .suggest-panel { width: 100%; position: static; }
+  .win-sidebar { display: none; }
+  .photos-masonry { columns: 2; }
+  nav { padding: .85rem 1.2rem; }
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+  .nav-links.open { display: flex; flex-direction: column; position: fixed; top: 50px; left: 0; right: 0; background: #FFFAF2; padding: 1rem 1.5rem; gap: 1rem; border-bottom: 1px solid rgba(255,107,26,.1); z-index: 999; }
+}
+@media (max-width: 580px) {
+  .humor-cards { flex-direction: column; align-items: center; }
+  .humor-card { width: 100%; max-width: 340px; }
+  .photos-masonry { columns: 1; }
+  .books-grid { grid-template-columns: repeat(auto-fill,minmax(120px,1fr)); }
+  .win-grid { grid-template-columns: repeat(3,1fr); }
+  .footer-big-text { font-size: clamp(2rem,8vw,3.5rem); }
+  #socials { gap: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- RGB PIXEL CURSOR -->
+<div id="px-cursor"></div>
+<div id="px-trail"></div>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <div class="nav-logo">DSSRam/</div>
+  <div class="nav-links" id="nav-links">
+    <a href="#about">About</a>
+    <a href="#design">Design</a>
+    <a href="#books">Books</a>
+    <a href="#photos">Photos</a>
+    <a href="#doodle">Doodle</a>
+    <a href="#footer">Contact</a>
+  </div>
+  <button class="nav-hamburger" id="hamburger" onclick="toggleNav()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-grid" id="hero-grid"></div>
+  <div class="float-tag ft-1">✦ creative</div>
+  <div class="float-tag ft-2">↗ lets build</div>
+  <div class="float-tag ft-3">⌘ maker</div>
+
+  <div class="hero-left">
+    <!-- NAME BLOCK (no image) -->
+    <div class="hero-name-block reveal-l">
+      <!-- MULTILANG GREETING -->
+      <div class="greeting-wrap" id="greeting-wrap">
+        <span class="greeting-word active" id="gw-0">Hello <span class="greeting-lang">EN</span></span>
+        <span class="greeting-word" id="gw-1">नमस्ते <span class="greeting-lang">HI</span></span>
+        <span class="greeting-word" id="gw-2">నమస్కారం <span class="greeting-lang">TE</span></span>
+        <span class="greeting-word" id="gw-3">こんにちは <span class="greeting-lang">JP</span></span>
+        <span class="greeting-word" id="gw-4">Hola <span class="greeting-lang">ES</span></span>
+        <span class="greeting-word" id="gw-5">Bonjour <span class="greeting-lang">FR</span></span>
+      </div>
+      <h1 class="hero-name">
+        Shanmukha<br><span>Donepudi</span>
+      </h1>
+      <span class="hero-alias">రామ్</span>
+      <span class="hero-alias-sub">alias DSSRam · B.Tech CSE/IT · Hyderabad</span>
+    </div>
+
+    <div class="terminal-box reveal-l" style="transition-delay:.2s">
+      <div class="t-bar">
+        <div class="t-dot t-r"></div><div class="t-dot t-y"></div><div class="t-dot t-g"></div>
+        <span class="t-title">dssram@portfolio ~</span>
+      </div>
+      <div class="t-line"><span class="t-prompt">$ </span>whoami</div>
+      <span class="t-out">Shanmukha Sai Ram Donepudi</span>
+      <span class="t-comment"># B.Tech CSE/IT · Hyderabad, India</span>
+      <br>
+      <div class="t-line"><span class="t-prompt">$ </span>ls interests/</div>
+      <span class="t-out">development/ &nbsp;design/ &nbsp;books/</span>
+      <span class="t-out">music/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fitness/ &nbsp;speaking/</span>
+      <br>
+      <div class="t-line"><span class="t-prompt">$ </span>cat vibe.txt</div>
+      <span class="t-out">Listens to FLAC because bad audio</span>
+      <span class="t-out">is personally offensive. 🎵</span>
+      <div class="t-line"><span class="t-prompt">$ </span><span class="t-cursor"></span></div>
+    </div>
+  </div>
+
+  <!-- PHOTO -->
+  <div class="hero-right">
+    <div class="photo-universe" id="photo-drag">
+      <div class="photo-drag-hint">drag me ✦ double-click to snap back</div>
+      <div class="fshape fs-1"></div>
+      <div class="fshape fs-2"></div>
+      <div class="fshape fs-3"></div>
+      <div class="fshape fs-4"></div>
+      <div class="fshape fs-5"></div>
+      <div class="fshape fs-6"></div>
+      <div class="photo-wrap reveal">
+        <!-- USER PHOTO (color, no filter) -->
+        <img src="data:image/png;base64,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" alt="Shanmukha Donepudi" style="width:100%;height:100%;object-fit:cover;display:block;">
+        <div class="photo-corner pc-tl"></div>
+        <div class="photo-corner pc-tr"></div>
+        <div class="photo-corner pc-bl"></div>
+        <div class="photo-corner pc-br"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <span class="marquee-item">Development</span><span class="marquee-sep"> ✦ </span>
+    <span class="marquee-item">Design</span><span class="marquee-sep"> ✦ </span>
+    <span class="marquee-item">UI/UX</span><span class="marquee-sep"> ✦ </span>
+    <span class="marquee-item">Books</span><span class="marquee-sep"> ✦ </span>
+    <span class="marquee-item">FLAC Audio</span><span class="marquee-sep"> ✦ </span>
+    <span class="marquee-item">Firebase</span><span class="marquee-sep"> ✦ </span>
+    <span class="marquee-item">React</span><span class="marquee-sep"> ✦ </span>
+    <span class="marquee-item">Public Speaking</span><span class="marquee-sep"> ✦ </span>
+    <span class="marquee-item">Development</span><span class="marquee-sep"> ✦ </span>
+    <span class="marquee-item">Design</span><span class="marquee-sep"> ✦ </span>
+    <span class="marquee-item">UI/UX</span><span class="marquee-sep"> ✦ </span>
+    <span class="marquee-item">Books</span><span class="marquee-sep"> ✦ </span>
+    <span class="marquee-item">FLAC Audio</span><span class="marquee-sep"> ✦ </span>
+    <span class="marquee-item">Firebase</span><span class="marquee-sep"> ✦ </span>
+    <span class="marquee-item">React</span><span class="marquee-sep"> ✦ </span>
+    <span class="marquee-item">Public Speaking</span><span class="marquee-sep"> ✦ </span>
+  </div>
+</div>
+
+<!-- ABOUT / INTERESTS (centered) -->
+<section id="about" style="padding:7rem 5% 6rem;background:#FFFAF2;text-align:center;">
+  <div class="section-tag reveal" style="justify-content:center;text-align:center;max-width:600px;margin:0 auto 1rem;">
+    001 — About Me
+  </div>
+  <h2 class="section-title reveal" style="text-align:center;">
+    I build things that <em>look good</em><br>and work better.
+  </h2>
+
+  <div class="reveal" style="display:flex;justify-content:center;gap:.4rem;flex-wrap:wrap;margin-bottom:3rem;">
+    <!-- Core Stack -->
+    <span class="badge">React ⚛️</span>
+    <span class="badge">Firebase 🔥</span>
+    <span class="badge">UI/UX 🎨</span>
+    <span class="badge">Figma ✏️</span>
+    <!-- Languages -->
+    <span class="badge" style="background:#111;border-color:rgba(107,157,255,.4);color:#6B9DFF;">Java ☕</span>
+    <span class="badge" style="background:#111;border-color:rgba(107,157,255,.4);color:#6B9DFF;">Python 🐍</span>
+    <span class="badge" style="background:#111;border-color:rgba(107,157,255,.4);color:#6B9DFF;">C 🔧</span>
+    <span class="badge" style="background:#111;border-color:rgba(107,157,255,.4);color:#6B9DFF;">HTML/CSS/JS 🌐</span>
+    <!-- DB & Tools -->
+    <span class="badge" style="background:#111;border-color:rgba(107,255,184,.3);color:#6BFFB8;">MySQL 🗄️</span>
+    <span class="badge" style="background:#111;border-color:rgba(107,255,184,.3);color:#6BFFB8;">Git 🌿</span>
+    <!-- CS Core -->
+    <span class="badge" style="background:#111;border-color:rgba(255,213,128,.3);color:#FFD580;">OOP 🧱</span>
+    <span class="badge" style="background:#111;border-color:rgba(255,213,128,.3);color:#FFD580;">DSA 🧠</span>
+    <span class="badge" style="background:#111;border-color:rgba(255,213,128,.3);color:#FFD580;">OS · Networks 💻</span>
+  </div>
+
+  <div class="interests-grid reveal">
+    <div class="interest-card">
+      <span class="ic-emoji">💻</span>
+      <div class="ic-title">Development</div>
+      <p class="ic-desc">Building apps that actually work after the 47th console.log. React, Firebase, and prayers to the CSS gods.</p>
+      <span class="ic-tag">./dev</span>
+    </div>
+    <div class="interest-card">
+      <span class="ic-emoji">🎨</span>
+      <div class="ic-title">Design</div>
+      <p class="ic-desc">Will spend 3 hours choosing a border-radius. Built a full color system for a music app nobody asked for. Worth it.</p>
+      <span class="ic-tag">./design</span>
+    </div>
+    <div class="interest-card">
+      <span class="ic-emoji">📚</span>
+      <div class="ic-title">Books</div>
+      <p class="ic-desc">Non-fiction only — because fiction is just lying on paper with good prose.</p>
+      <span class="ic-tag">./books</span>
+    </div>
+   <!-- MUSIC CARD -->
+<div class="interest-card" id="card-music">
+  <span class="ic-emoji">🎵</span>
+  <div class="ic-title">Music</div>
+  <p class="ic-desc">FLAC or nothing. Built a personal player because Spotify's audio quality is a personal insult.</p>
+  <span class="ic-tag">./music</span>
+  <div class="ic-form">
+    <div class="ic-form-toggle" onclick="toggleIcForm('music-form')">🎧 Drop me your playlist →</div>
+    <div class="ic-form-body" id="music-form" style="display:none;">
+      <input class="ic-input" id="music-val" placeholder="Playlist name or link...">
+      <input class="ic-input" id="music-who" placeholder="Your name (optional)">
+      <button class="ic-btn" onclick="submitIcForm('music')">Send it 🎶</button>
+      <div id="music-confirm" style="display:none;font-family:'Space Mono',monospace;font-size:.6rem;color:#6BFFB8;margin-top:.3rem;">✓ Sent! I'll check it out.</div>
+    </div>
+  </div>
+</div>
+
+<!-- FITNESS CARD -->
+<div class="interest-card" id="card-fitness">
+  <span class="ic-emoji">🏋️</span>
+  <div class="ic-title">Fitness</div>
+  <p class="ic-desc">The first rule of body recomposition is — you do not talk about Day 1. The second rule is — you <em>do not</em> talk about Day 1. (It's still Day 1.)</p>
+  <span class="ic-tag">./fitness</span>
+  <div class="ic-form">
+    <div class="ic-form-toggle" onclick="toggleIcForm('fitness-form')">💪 Tell me a routine →</div>
+    <div class="ic-form-body" id="fitness-form" style="display:none;">
+      <textarea class="ic-input" id="fitness-val" placeholder="Your go-to workout routine..." rows="2" style="resize:none;"></textarea>
+      <input class="ic-input" id="fitness-who" placeholder="Your name (optional)">
+      <button class="ic-btn" onclick="submitIcForm('fitness')">Send it 🔥</button>
+      <div id="fitness-confirm" style="display:none;font-family:'Space Mono',monospace;font-size:.6rem;color:#6BFFB8;margin-top:.3rem;">✓ Routine noted. Day 1 starts soon.</div>
+    </div>
+  </div>
+</div>
+
+<!-- MAKING CONNECTIONS / SPEAKING CARD -->
+<div class="interest-card" id="card-speaking">
+  <span class="ic-emoji">🎤</span>
+  <div class="ic-title">Making Connections</div>
+  <p class="ic-desc">Youth Parliament — argued Against the Emergency. Democracy survived. The opposing rebuttal, less so.</p>
+  <span class="ic-tag">./speaking</span>
+  <div class="ic-form">
+    <div class="ic-form-toggle" onclick="toggleIcForm('speaking-form')">💬 Quote me something →</div>
+    <div class="ic-form-body" id="speaking-form" style="display:none;">
+      <textarea class="ic-input" id="speaking-val" placeholder="Drop a quote that hits different..." rows="2" style="resize:none;"></textarea>
+      <input class="ic-input" id="speaking-who" placeholder="Your name (optional)">
+      <button class="ic-btn" onclick="submitIcForm('speaking')">Send it ✨</button>
+      <div id="speaking-confirm" style="display:none;font-family:'Space Mono',monospace;font-size:.6rem;color:#6BFFB8;margin-top:.3rem;">✓ Quoted. I'll carry it.</div>
+    </div>
+  </div>
+</div>
+  </div>
+</section>
+
+<!-- HUMOR -->
+<section id="humor">
+  <h2 class="humor-title reveal">Things I do that <span>look productive.</span></h2>
+  <div class="humor-cards">
+    <!-- Git card — clickable to show GitHub contributions -->
+    <div class="humor-card reveal" onclick="openGhModal()" style="cursor:pointer;border-color:rgba(255,107,26,.3);" title="Click to see GitHub contributions">
+      <span class="humor-emoji">🐛</span>
+      <p class="humor-q">$ git commit -m "fix"</p>
+      <p class="humor-a">"It was working yesterday. I swear on my GPA."</p>
+      <div style="margin-top:.8rem;font-family:'Space Mono',monospace;font-size:.5rem;color:#FF6B1A;letter-spacing:.08em;">📊 click → see my contributions</div>
+    </div>
+    <div class="humor-card reveal">
+      <span class="humor-emoji">🎵</span>
+      <p class="humor-q">$ sudo apt install flac</p>
+      <p class="humor-a">Life is too short for 128kbps feelings.</p>
+    </div>
+    <div class="humor-card reveal">
+      <span class="humor-emoji">💪</span>
+      <p class="humor-q">$ ./gym --mode=recomp</p>
+      <p class="humor-a">The first rule of body recomp: you don't talk about Day 1. The second rule: you DO NOT talk about Day 1. Third rule: someone yells stop, taps out — Day 1 is over. Day 1 never ends.</p>
+    </div>
+    <div class="humor-card reveal">
+      <span class="humor-emoji">📐</span>
+      <p class="humor-q">$ open figma</p>
+      <p class="humor-a">45 mins choosing a font. Ship it. Call it intentional.</p>
+    </div>
+    <!-- DSA card -->
+    <div class="humor-card reveal">
+      <span class="humor-emoji">🧠</span>
+      <p class="humor-q">$ solve --algo=optimal</p>
+      <p class="humor-a">Spent 3 hours on a binary search problem. It was just arr[mid]. It's always arr[mid].</p>
+    </div>
+    <!-- Canva card -->
+    <div class="humor-card reveal">
+      <span class="humor-emoji">🎨</span>
+      <p class="humor-q">$ open canva</p>
+      <p class="humor-a">Started with a blank canvas. Added 47 elements. Deleted 45. The two remaining elements? Chef's kiss.</p>
+    </div>
+  </div>
+  <!-- Minimal interest cards: fashion, auto, architecture -->
+  <div class="humor-mini-row reveal">
+    <div class="humor-mini">
+      <span class="humor-mini-em">👔</span>
+      <span>Silently judging fits. Fashion is architecture for bodies.</span>
+    </div>
+    <div class="humor-mini">
+      <span class="humor-mini-em">🚗</span>
+      <span>Obsessed with curves. Automobile design is sculpture you sit in.</span>
+    </div>
+    <div class="humor-mini">
+      <span class="humor-mini-em">🏠</span>
+      <span>Draws house plans for fun. Nobody asked. Floor-to-ceiling windows, always.</span>
+    </div>
+  </div>
+</section>
+
+<!-- DESIGN — WINDOWS EXPLORER FLOATING -->
+<section id="design">
+  <div class="section-tag reveal">002 — Design Works</div>
+  <h2 class="section-title reveal">The stuff I make <em>at 2am.</em></h2>
+  <div class="win-float-wrap reveal">
+    <div class="win-explorer">
+      <div class="win-titlebar">
+        <span class="win-titlebar-icon">🗂️</span>
+        <span class="win-titlebar-title">DSSRam's Portfolio — File Explorer</span>
+        <div class="win-title-btns">
+          <div class="win-tb-x">─</div>
+          <div class="win-tb-x">□</div>
+          <div class="win-tb-x win-tb-cls">✕</div>
+        </div>
+      </div>
+      <div class="win-menubar">
+        <div class="win-mi">File</div><div class="win-mi">Edit</div>
+        <div class="win-mi">View</div><div class="win-mi">Tools</div><div class="win-mi">Help</div>
+      </div>
+      <div class="win-toolbar">
+        <div class="win-btn">← Back</div>
+        <div class="win-btn">→ Fwd</div>
+        <div class="win-btn">↑ Up</div>
+        <div class="win-sep"></div>
+        <div class="win-btn">🔍 Search</div>
+        <div class="win-btn">📁 Folders</div>
+        <div class="win-sep"></div>
+        <div class="win-btn">⊞ View</div>
+      </div>
+      <div class="win-addr">
+        <span class="win-addr-label">Address:</span>
+        <div class="win-addr-input">C:\DSSRam\Portfolio\Design\</div>
+      </div>
+      <div class="win-body">
+  <div class="win-sidebar">
+    <div class="win-sb-head">Favourites</div>
+    <div class="win-sb-item"><span>🖥️</span> Desktop</div>
+    <div class="win-sb-item active"><span>🎨</span> Design</div>
+    <div class="win-sb-item"><span>📸</span> Photos</div>
+    <div class="win-sb-head" style="margin-top:.5rem">Drives</div>
+    <div class="win-sb-item"><span>💾</span> Local (C:)</div>
+    <div class="win-sb-item"><span>☁️</span> Firebase</div>
+  </div>
+
+  <div class="win-content" style="display:flex;gap:0;min-width:0;padding:0;">
+    <!-- FILE GRID SIDE -->
+    <div style="flex:1;min-width:0;padding:1rem;border-right:1px solid #eee;">
+      <div class="win-vtabs">
+        <div class="win-vtab active">⊞ Icons</div>
+        <div class="win-vtab">≡ List</div>
+        <div class="win-vtab">⊟ Details</div>
+      </div>
+      <div class="win-grid" id="win-grid">
+        <div class="win-file selected" onclick="winSel(this,'designs')">
+          <svg width="52" height="44" viewBox="0 0 52 44" fill="none">
+            <rect x="0" y="10" width="52" height="34" rx="3" fill="#FF6B1A" opacity=".9"/>
+            <rect x="0" y="10" width="22" height="8" rx="2" fill="#FFD580"/>
+          </svg>
+          <div class="win-file-name">Designs</div>
+        </div>
+        <div class="win-file" onclick="winSel(this,'ui')">
+          <svg width="52" height="44" viewBox="0 0 52 44" fill="none">
+            <rect x="0" y="10" width="52" height="34" rx="3" fill="#6B9DFF" opacity=".85"/>
+            <rect x="0" y="10" width="20" height="8" rx="2" fill="#B3D0FF"/>
+            <rect x="8" y="20" width="36" height="20" rx="2" fill="rgba(255,255,255,.22)"/>
+            <rect x="12" y="24" width="10" height="8" rx="1" fill="rgba(255,255,255,.5)"/>
+            <rect x="26" y="24" width="14" height="4" rx="1" fill="rgba(255,255,255,.3)"/>
+          </svg>
+          <div class="win-file-name">UI Exploration</div>
+        </div>
+        <div class="win-file" onclick="winSel(this,'content')">
+          <svg width="48" height="44" viewBox="0 0 48 44" fill="none">
+            <rect x="4" y="0" width="36" height="44" rx="3" fill="#fff" stroke="#ddd" stroke-width="1.2"/>
+            <rect x="10" y="8" width="22" height="2.5" rx="1" fill="#FF6B1A"/>
+            <rect x="10" y="14" width="18" height="2" rx="1" fill="#ddd"/>
+            <rect x="10" y="19" width="20" height="2" rx="1" fill="#ddd"/>
+            <circle cx="36" cy="36" r="8" fill="#FF6B1A"/>
+            <text x="36" y="40" text-anchor="middle" fill="#fff" font-size="10">✏</text>
+          </svg>
+          <div class="win-file-name">Content Creation</div>
+        </div>
+        <div class="win-file" onclick="winSel(this,'app')">
+          <svg width="52" height="44" viewBox="0 0 52 44" fill="none">
+            <rect x="0" y="10" width="52" height="34" rx="3" fill="#6BFFB8" opacity=".82"/>
+            <rect x="0" y="10" width="20" height="8" rx="2" fill="#B8FFD4"/>
+            <rect x="15" y="18" width="22" height="22" rx="3" fill="rgba(0,0,0,.15)"/>
+            <rect x="17" y="20" width="18" height="18" rx="2" fill="rgba(255,255,255,.35)"/>
+            <rect x="19" y="22" width="14" height="4" rx="1" fill="rgba(0,0,0,.25)"/>
+          </svg>
+          <div class="win-file-name">App Design</div>
+        </div>
+        <div class="win-file" style="opacity:.45" onclick="winSel(this,'motion')">
+          <div style="font-size:2.2rem">🎬</div>
+          <div class="win-file-name" style="color:#aaa">Motion.ae</div>
+        </div>
+        <div class="win-file" style="opacity:.45" onclick="winSel(this,'brand')">
+          <div style="font-size:2.2rem">📦</div>
+          <div class="win-file-name" style="color:#aaa">Brand Kit</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PREVIEW PANE -->
+    <div id="win-preview" style="width:280px;flex-shrink:0;padding:1rem;background:#fafafa;display:flex;flex-direction:column;gap:.7rem;">
+      <div style="font-family:'Space Mono',monospace;font-size:.5rem;color:#aaa;text-transform:uppercase;letter-spacing:.15em;">Preview</div>
+      <div id="wp-name" style="font-family:'Space Mono',monospace;font-size:.68rem;font-weight:700;color:#333;">Designs</div>
+      <div id="wp-desc" style="font-family:'Space Mono',monospace;font-size:.58rem;color:#888;line-height:1.75;"></div>
+
+      <!-- =====================================================
+           WORK IMAGES — ADD YOUR IMAGE SRC HERE
+           Each folder key has its own image slots below.
+           Uncomment/fill in the src="" for each one.
+      ====================================================== -->
+
+      <!-- DESIGNS folder preview -->
+     
+
+      <!-- UI EXPLORATION folder preview -->
+      <div id="wp-ui" class="wp-section" style="display:none;">
+        <!-- ADD: src="path/to/ui1.jpg" -->
+        <img src="" alt="UI Work 1" class="wp-img" onerror="this.style.display='none'">
+        <img src="" alt="UI Work 2" class="wp-img" onerror="this.style.display='none'">
+      </div>
+
+      <!-- CONTENT CREATION folder preview -->
+      <div id="wp-content" class="wp-section" style="display:none;">
+        <!-- ADD: src="path/to/content1.jpg" -->
+        <img src="" alt="Content 1" class="wp-img" onerror="this.style.display='none'">
+        <img src="" alt="Content 2" class="wp-img" onerror="this.style.display='none'">
+      </div>
+
+      <!-- APP DESIGN folder preview -->
+      <div id="wp-app" class="wp-section" style="display:none;">
+        <!-- ADD: src="path/to/app1.jpg" -->
+        <img src="" alt="App Design 1" class="wp-img" onerror="this.style.display='none'">
+        <img src="" alt="App Design 2" class="wp-img" onerror="this.style.display='none'">
+      </div>
+
+      <!-- MOTION placeholder -->
+      <div id="wp-motion" class="wp-section" style="display:none;">
+        <div style="font-family:'Caveat',cursive;font-size:1.1rem;color:#aaa;padding:1rem;text-align:center;border:1px dashed #ddd;border-radius:8px;">Coming soon 🎬</div>
+      </div>
+
+      <!-- BRAND KIT placeholder -->
+      <div id="wp-brand" class="wp-section" style="display:none;">
+        <div style="font-family:'Caveat',cursive;font-size:1.1rem;color:#aaa;padding:1rem;text-align:center;border:1px dashed #ddd;border-radius:8px;">Coming soon 📦</div>
+      </div>
+
+      <div style="margin-top:auto;font-family:'Space Mono',monospace;font-size:.5rem;color:#ccc;line-height:1.8;" id="wp-meta"></div>
+    </div>
+  </div>
+</div>
+      <div class="win-statusbar">
+        <span class="win-status-text" id="win-status">6 items · Select a folder</span>
+        <div class="win-sep"></div>
+        <div class="win-progbar"><div class="win-progbar-fill"></div></div>
+        <div class="win-sep"></div>
+        <span class="win-status-text">🎨 Creative Mode: ON</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKS + SUGGEST -->
+<section id="books">
+  <!-- 3D floating author quotes background -->
+  <div class="quotes-scene" aria-hidden="true" id="quotes-scene"></div>
+  <div class="section-tag reveal" style="position:relative;z-index:2;">003 — Books &amp; Films</div>
+  <h2 class="section-title reveal" style="position:relative;z-index:2;">What I read &amp; watch <em>this year.</em></h2>
+  <div class="books-layout reveal" style="position:relative;z-index:2;">
+   <div class="books-grid">
+
+  <!-- BOOK 1 -->
+  <div class="book-card">
+    <div class="book-cover" style="background:linear-gradient(135deg,#1a0a2e,#3d1a5e);position:relative;overflow:hidden;">
+      <!-- ADD YOUR COVER: src="surrounded-by-idiots.jpg" -->
+      <img src="" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none'">
+      <div class="book-overlay-g"></div>
+      <div class="book-cover-text" style="position:relative;z-index:2;">
+        <div class="book-title-text">Surrounded by Idiots</div>
+        <span class="book-author">Thomas Erikson</span>
+      </div>
+    </div>
+    <div class="book-meta"><span class="book-stars">★★★★☆</span><span class="book-genre">Psychology</span></div>
+  </div>
+
+  <!-- BOOK 2 -->
+  <div class="book-card">
+    <div class="book-cover" style="background:linear-gradient(135deg,#1a1200,#4a3300);position:relative;overflow:hidden;">
+      <!-- ADD YOUR COVER: src="anne-frank.jpg" -->
+      <img src="" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none'">
+      <div class="book-overlay-g"></div>
+      <div class="book-cover-text" style="position:relative;z-index:2;">
+        <div class="book-title-text">Diary of a Young Girl</div>
+        <span class="book-author">Anne Frank</span>
+      </div>
+    </div>
+    <div class="book-meta"><span class="book-stars">★★★★★</span><span class="book-genre">History</span></div>
+  </div>
+
+  <!-- BOOK 3 -->
+  <div class="book-card">
+    <div class="book-cover" style="background:linear-gradient(135deg,#001a08,#004d1a);position:relative;overflow:hidden;">
+      <!-- ADD YOUR COVER: src="eat-that-frog.jpg" -->
+      <img src="" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none'">
+      <div class="book-overlay-g"></div>
+      <div class="book-cover-text" style="position:relative;z-index:2;">
+        <div class="book-title-text">Eat That Frog!</div>
+        <span class="book-author">Brian Tracy</span>
+      </div>
+    </div>
+    <div class="book-meta"><span class="book-stars">★★★★☆</span><span class="book-genre">Productivity</span></div>
+  </div>
+
+  <!-- BOOK 4 -->
+  <div class="book-card">
+    <div class="book-cover" style="background:linear-gradient(135deg,#001520,#003d5c);position:relative;overflow:hidden;">
+      <!-- ADD YOUR COVER: src="stock-market.jpg" -->
+      <img src="" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none'">
+      <div class="book-overlay-g"></div>
+      <div class="book-cover-text" style="position:relative;z-index:2;">
+        <div class="book-title-text">Beginner's Guide to Stock Market</div>
+        <span class="book-author">Matthew R. Kratter</span>
+      </div>
+    </div>
+    <div class="book-meta"><span class="book-stars">★★★★☆</span><span class="book-genre">Finance</span></div>
+  </div>
+
+  <!-- Currently Reading slot -->
+  <div class="book-card" style="border:2px dashed rgba(255,213,128,.2);background:transparent;min-height:190px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.4rem;color:#444;font-family:'Caveat',cursive;font-size:1.1rem;padding:1rem;">
+    <span>Currently reading...</span>
+    <span style="font-size:.65rem;font-family:'Space Mono',monospace;color:#555;">ask me what 📖</span>
+  </div>
+
+</div>
+    </div>
+    <!-- Suggest Panel -->
+    <div class="suggest-panel">
+      <h3>✦ Suggest me something</h3>
+      <div class="suggest-tabs">
+        <div class="stab active" onclick="switchTab('book',this)">📖 Book</div>
+        <div class="stab" onclick="switchTab('movie',this)">🎬 Movie</div>
+      </div>
+      <input class="suggest-input" id="sug-title" placeholder="Title...">
+      <input class="suggest-input" id="sug-why" placeholder="Why I'd love it...">
+      <input class="suggest-input" id="sug-name" placeholder="Your name (optional)">
+      <button class="suggest-submit" onclick="addSuggestion()">SUGGEST IT →</button>
+      <!-- confirmation only — list hidden from public, visible to admin only -->
+      <div class="fb-notes-head" id="sug-count" style="color:#6BFFB8;display:none;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- PHOTOS -->
+<section id="photos">
+  <div class="section-tag reveal">004 — Photography</div>
+  <h2 class="section-title reveal">Through the <em>lens.</em></h2>
+  <p style="font-family:'Space Mono',monospace;font-size:.68rem;color:#aaa;margin-top:-2rem;margin-bottom:2rem;">
+    <!-- DEVELOPER NOTE: Replace each .photo-placeholder div below with <img src="YOUR_PHOTO.jpg"> -->
+    // replace placeholders with your actual photos below
+  </p>
+  <div class="photos-masonry reveal">
+    <!-- PHOTO SLOT 1 — replace with: <img src="photo1.jpg" style="width:100%;display:block;border-radius:12px;"> -->
+    <div class="photo-card"><img src="c:\Users\dssra\OneDrive\Desktop\MyWebsite\hyd1.jpeg"></div>
+    <!-- PHOTO SLOT 2 -->
+    <div class="photo-card"><img src="c:\Users\dssra\OneDrive\Desktop\WhatsApp Image 2026-05-05 at 09.59.03.jpeg" style="width:100%;display:block;border-radius:12px;"></div>
+    <!-- PHOTO SLOT 3 -->
+    <div class="photo-card"><img src="c:\Users\dssra\OneDrive\Desktop\WhatsApp Image 2026-05-05 at 09.59.02 (2).jpeg" style="width:100%;display:block;border-radius:12px;"></div>
+    <!-- PHOTO SLOT 4 -->
+    <div class="photo-card"><img src="c:\Users\dssra\OneDrive\Desktop\WhatsApp Image 2026-05-05 at 09.59.01.jpeg" style="width:100%;display:block;border-radius:12px;"></div>
+    <!-- PHOTO SLOT 5 -->
+    <div class="photo-card"><img src="c:\Users\dssra\OneDrive\Desktop\WhatsApp Image 2026-05-05 at 09.59.02 (3).jpeg" style="width:100%;display:block;border-radius:12px;"></div>
+    <!-- PHOTO SLOT 6 -->
+    <div class="photo-card"><img src="c:\Users\dssra\OneDrive\Desktop\WhatsApp Image 2026-05-05 at 10.01.37.jpeg" style="width:100%;display:block;border-radius:12px;"></div>
+  </div>
+</section>
+
+<!-- DOODLE -->
+<section id="doodle">
+  <div class="section-tag reveal">005 — Doodle Space</div>
+  <h2 class="section-title reveal">Leave your <em>mark.</em></h2>
+  <p class="reveal" style="font-family:'Space Mono',monospace;font-size:.68rem;color:#888;margin-top:-2rem;margin-bottom:.5rem;">// permission granted to go completely unhinged here</p>
+  <div class="doodle-wrapper reveal" style="position:relative;">
+    <div class="doodle-toolbar">
+      <button class="tool-btn active" id="btn-draw" onclick="setTool('draw')">✏️ Draw</button>
+      <button class="tool-btn" id="btn-erase" onclick="setTool('erase')">⬜ Erase</button>
+      <button class="tool-btn" onclick="clearC()">🗑️ Clear</button>
+      <button class="tool-btn" onclick="dlDoodle()">💾 Save</button>
+      <div style="width:1px;height:20px;background:#e0d8d0;flex-shrink:0;"></div>
+      <div id="swatches" style="display:flex;gap:.35rem;align-items:center;flex-wrap:wrap;"></div>
+      <div style="width:1px;height:20px;background:#e0d8d0;flex-shrink:0;"></div>
+      <label style="font-family:'Space Mono',monospace;font-size:.6rem;color:#888;display:flex;align-items:center;gap:.4rem;white-space:nowrap;">
+        Size <input type="range" class="brush-sz" id="brush-sz" min="2" max="40" value="6">
+      </label>
+    </div>
+    <canvas id="doodle-canvas"></canvas>
+    <div class="doodle-hint">draw something cursed ✦</div>
+  </div>
+</section>
+
+<!-- FEEDBACK BUTTON -->
+<button id="feedback-btn" onclick="toggleFb()" aria-label="Leave feedback">
+  <svg viewBox="0 0 26 26" width="26" height="26" fill="none">
+    <rect x="2" y="2" width="16" height="20" rx="2" stroke="#FF6B1A" stroke-width="1.8"/>
+    <line x1="6" y1="8" x2="14" y2="8" stroke="#FF6B1A" stroke-width="1.5" stroke-linecap="square"/>
+    <line x1="6" y1="12" x2="14" y2="12" stroke="#FF6B1A" stroke-width="1.5" stroke-linecap="square"/>
+    <line x1="6" y1="16" x2="10" y2="16" stroke="#FF6B1A" stroke-width="1.5" stroke-linecap="square"/>
+    <g transform="rotate(-45,18,15)">
+      <rect x="15" y="10" width="5" height="10" rx="1" fill="#FFD580" stroke="#FF6B1A" stroke-width="1.2"/>
+      <polygon points="15,20 17.5,23 20,20" fill="#FF6B1A"/>
+    </g>
+  </svg>
+</button>
+<div id="feedback-panel">
+  <div class="fb-title">✦ Leave a Note</div>
+  <textarea class="fb-input" id="fb-text" placeholder="Say something nice... or not. I'm a portfolio, not a therapist 🙃" rows="4"></textarea>
+  <input class="fb-name" id="fb-name" placeholder="Your name (or 'anonymous weirdo')">
+  <button class="fb-submit" onclick="addNote()">PIN IT</button>
+  <div class="fb-notes-head" id="fb-notes-head" style="display:none;">Visitor Notes</div>
+  <div class="fb-notes-list" id="fb-notes-list"></div>
+</div>
+
+<!-- FOOTER — CRAYON MOUNTAINS + DAY/SUNSET/NIGHT SKY -->
+<footer id="footer">
+  <!-- Stars layer -->
+  <canvas id="stars-layer" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;"></canvas>
+
+<!-- FOOTER CONTENT — centered -->
+<div class="footer-content" style="flex-direction:column;align-items:center;text-align:center;gap:1.5rem;">
+  <div class="reveal-l">
+    <div class="footer-big-text" style="text-align:center;">
+      Let's build<br><em>something.</em>
+    </div>
+    <div style="display:flex;justify-content:center;">
+      <div class="cta-scene">
+        <a class="footer-cta" id="cta-btn" href="mailto:shanmukha@example.com">CONTACT ME</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-links-col reveal" style="flex-direction:row;gap:2rem;justify-content:center;flex-wrap:wrap;">
+    <a class="footer-link" href="#">GitHub →</a>
+    <a class="footer-link" href="#">LinkedIn →</a>
+    <a class="footer-link" href="#">Instagram →</a>
+    <a class="footer-link" href="#">Dribbble →</a>
+  </div>
+</div>
+
+<!-- Clock — centered, location updated -->
+<div id="footer-clock" class="reveal" style="justify-content:center;">
+  <div class="clock-block">
+    <span class="clock-lbl">Time</span>
+    <span class="clock-val" id="clk-time">--:--:--</span>
+  </div>
+  <div class="clock-block">
+    <span class="clock-lbl">Date</span>
+    <span class="clock-dval" id="clk-date">---</span>
+  </div>
+  <div class="clock-block">
+    <span class="clock-lbl">Location</span>
+    <span class="clock-dval" style="font-size:.42rem;">VIJAYAWADA, IN</span>
+  </div>
+</div>
+
+  <!-- Social media (replace href="#" with your actual URLs) -->
+  <div id="socials">
+    <!-- REPLACE: change href to your actual profile links -->
+    <a class="social-link" href="#" target="_blank" rel="noopener">
+      <!-- GitHub -->
+      <svg class="social-icon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3C5.37.3 0 5.67 0 12.3c0 5.3 3.44 9.8 8.2 11.4.6.1.83-.26.83-.58v-2c-3.34.73-4.04-1.6-4.04-1.6-.55-1.4-1.34-1.77-1.34-1.77-1.08-.74.09-.72.09-.72 1.2.09 1.83 1.23 1.83 1.23 1.07 1.83 2.8 1.3 3.48 1 .1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.13 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18.77.84 1.23 1.9 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.21.7.83.58C20.57 22.1 24 17.6 24 12.3 24 5.67 18.63.3 12 .3z"/></svg>
+      <span class="social-name">GitHub</span>
+    </a>
+    <a class="social-link" href="#" target="_blank" rel="noopener">
+      <!-- LinkedIn -->
+      <svg class="social-icon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.28 2.37 4.28 5.45v6.3zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zm1.78 13.02H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>
+      <span class="social-name">LinkedIn</span>
+    </a>
+    <a class="social-link" href="#" target="_blank" rel="noopener">
+      <!-- Instagram -->
+      <svg class="social-icon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85 0 3.2-.01 3.58-.07 4.85-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.64.07-4.85.07-3.2 0-3.58-.01-4.85-.07-3.26-.15-4.77-1.7-4.92-4.92C2.17 15.58 2.16 15.2 2.16 12c0-3.2.01-3.58.07-4.85C2.38 3.86 3.9 2.31 7.15 2.23 8.42 2.17 8.8 2.16 12 2.16zM12 0C8.74 0 8.33.01 7.05.07 2.7.27.27 2.7.07 7.05.01 8.33 0 8.74 0 12c0 3.26.01 3.67.07 4.95.2 4.36 2.62 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24c3.26 0 3.67-.01 4.95-.07 4.35-.2 6.78-2.62 6.98-6.98.06-1.28.07-1.69.07-4.95 0-3.26-.01-3.67-.07-4.95C23.73 2.7 21.3.27 16.95.07 15.67.01 15.26 0 12 0zm0 5.84a6.16 6.16 0 1 0 0 12.32A6.16 6.16 0 0 0 12 5.84zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.4-11.85a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88z"/></svg>
+      <span class="social-name">Instagram</span>
+    </a>
+    <a class="social-link" href="#" target="_blank" rel="noopener">
+      <!-- Twitter/X -->
+      <svg class="social-icon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M18.24 2h3.1l-6.77 7.74L22.5 22h-6.24l-4.88-6.38L5.82 22H2.7l7.24-8.28L1.5 2h6.4l4.41 5.83L18.24 2zm-1.1 18h1.72L6.97 3.73H5.12L17.14 20z"/></svg>
+      <span class="social-name">X / Twitter</span>
+    </a>
+    <a class="social-link" href="#" target="_blank" rel="noopener">
+      <!-- Dribbble -->
+      <svg class="social-icon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm8 12c0 .34-.02.68-.05 1.01-1.17-.25-2.37-.37-3.56-.37-1.93 0-3.81.35-5.59 1.01a19.94 19.94 0 0 1-.96-2.6C12.16 10.33 14.18 9 16.38 9c1.3 0 2.56.3 3.68.83-.04.39-.06.78-.06 1.17zm-8-9.8c1.89 0 3.62.65 4.99 1.72A13.76 13.76 0 0 1 14 6.47c-1.12 1.68-2.48 3.14-4 4.33a17.97 17.97 0 0 0-1.3-3.22A9.96 9.96 0 0 1 12 2.2zM4.2 12c0-.12 0-.24.01-.36.77.11 1.56.17 2.36.17 1.65 0 3.27-.23 4.8-.65.42.95.77 1.94 1.03 2.94-2.18.76-4.17 2.03-5.77 3.67A9.96 9.96 0 0 1 4.2 12zm7.8 9.8a9.9 9.9 0 0 1-5.72-1.8c1.34-1.47 3.06-2.6 5-3.27.53 1.64.84 3.36.9 5.12-.7-.02-1.48-.05-2.18-.05zm4.2-.5c-.11-1.85-.47-3.65-1.06-5.36 1.62-.19 3.25-.1 4.82.27A9.9 9.9 0 0 1 16.2 21.3z"/></svg>
+      <span class="social-name">Dribbble</span>
+    </a>
+    <a class="social-link" href="#" target="_blank" rel="noopener">
+      <!-- Behance -->
+      <svg class="social-icon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M7.8 11.1c.5-.6.8-1.4.8-2.3C8.6 6.6 7.1 5 4.7 5H0v14h4.9c2.8 0 4.7-1.5 4.7-4.3 0-1.2-.5-2.4-1.8-3.6zM3 7.5h1.5c.9 0 1.5.5 1.5 1.4 0 .9-.6 1.4-1.5 1.4H3V7.5zm2 9H3v-3.5h2c1 0 1.7.7 1.7 1.7S6 16.5 5 16.5zm10.5-9.3h-5.7V5.8h5.7v1.4zM24 13.7c0-3.3-2-5.7-5.3-5.7-3.2 0-5.4 2.4-5.4 5.7 0 3.4 2.2 5.6 5.4 5.6 2.4 0 4.1-1.1 5-3.2h-2.8c-.4.7-1.1 1.1-2.1 1.1-1.4 0-2.4-.9-2.5-2.4H24c0-.4 0-.8 0-1.1zm-7.5-1.2c.2-1.3 1-2 2.2-2s2 .7 2.1 2h-4.3z"/></svg>
+      <span class="social-name">Behance</span>
+    </a>
+    <a class="social-link" href="#" target="_blank" rel="noopener">
+      <!-- YouTube -->
+      <svg class="social-icon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg>
+      <span class="social-name">YouTube</span>
+    </a>
+    <a class="social-link" href="#" target="_blank" rel="noopener">
+      <!-- Letterboxd — REPLACE href="#" with your Letterboxd profile URL -->
+      <svg class="social-icon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+        <!-- Letterboxd logo: three overlapping circles -->
+        <circle cx="7" cy="12" r="5.5" fill="#00C030" opacity=".9"/>
+        <circle cx="12" cy="12" r="5.5" fill="#FF8000" opacity=".85"/>
+        <circle cx="17" cy="12" r="5.5" fill="#40BCF4" opacity=".85"/>
+        <!-- Overlap blend effect (simplified) -->
+        <ellipse cx="9.5" cy="12" rx="2" ry="5.5" fill="#FFCC00" opacity=".7"/>
+        <ellipse cx="14.5" cy="12" rx="2" ry="5.5" fill="#CC44FF" opacity=".7"/>
+      </svg>
+      <span class="social-name">Letterboxd</span>
+    </a>
+  </div>
+
+  <!-- CRAYON MOUNTAINS (SVG — rough, hand-drawn feel) -->
+  <svg class="mountains-svg" viewBox="0 0 1440 340" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <!-- Far hazy mountains (light, sketchy) -->
+    <path d="M0,340 C30,310 55,295 80,280 C102,265 118,275 135,258
+             C155,240 170,250 192,232 C215,213 232,225 258,208
+             C280,192 300,205 325,188 C352,170 375,183 400,166
+             C422,150 445,163 470,148 C495,132 520,146 545,130
+             C570,115 595,128 620,112 C645,97 670,110 700,95
+             C730,80 755,93 785,80 C815,67 845,78 875,65
+             C905,52 935,63 965,52 C995,40 1020,50 1050,40
+             C1080,30 1110,40 1140,30 C1170,20 1200,30 1230,22
+             C1260,14 1295,22 1325,15 C1360,8 1400,14 1440,10
+             L1440,340 Z"
+      fill="rgba(255,180,100,0.15)" stroke="rgba(200,120,60,0.3)" stroke-width="2.5"
+      stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Mid crayon mountains (warm orange strokes) -->
+    <path d="M0,340 C10,325 28,308 52,290 C78,270 92,285 115,265
+             C140,243 155,258 180,238 C205,217 220,232 248,215
+             C272,200 288,214 310,196 C335,176 352,192 378,175
+             C400,160 418,174 442,158 C466,142 485,156 508,140
+             C530,125 550,138 574,123 C596,109 617,122 640,108
+             C665,93 685,106 710,92 C735,78 755,90 780,78
+             C805,65 828,76 855,63 C878,52 900,63 925,51
+             C950,38 975,50 1000,38 C1025,25 1050,38 1075,26
+             C1100,14 1125,25 1152,14 C1178,3 1205,14 1235,5
+             C1265,-4 1295,6 1325,0 C1360,-6 1400,2 1440,-2
+             L1440,340 Z"
+      fill="rgba(255,130,60,0.18)" stroke="rgba(220,90,30,0.45)" stroke-width="3"
+      stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Foreground crayon mountains (bold, dark) -->
+    <path d="M0,340 C8,332 22,318 42,302 C58,288 74,300 95,282
+             C115,264 130,278 152,261 C175,243 192,255 215,238
+             C240,219 258,232 282,215 C306,197 325,210 350,195
+             C375,178 395,192 420,177 C445,161 465,174 488,160
+             C510,146 530,158 554,144 C576,131 596,143 620,130
+             C644,116 664,128 688,116 C712,103 732,115 756,103
+             C782,90 802,102 828,90 C854,77 876,89 900,78
+             C924,66 945,78 970,67 C995,55 1018,67 1042,56
+             C1066,45 1090,56 1115,45 C1140,34 1162,45 1188,35
+             C1212,25 1236,35 1262,26 C1288,17 1312,26 1340,18
+             C1370,10 1405,16 1440,12
+             L1440,340 Z"
+      fill="rgba(80,30,10,0.22)" stroke="rgba(140,60,20,0.7)" stroke-width="3.5"
+      stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Crayon sun (wobbly, imperfect circle - hand drawn) -->
+    <circle cx="200" cy="80" r="42" fill="rgba(255,220,80,0.7)" stroke="rgba(255,160,30,0.8)" stroke-width="3" stroke-dasharray="6 3"/>
+    <!-- Sun rays (crayon style) -->
+    <g stroke="rgba(255,200,60,0.6)" stroke-width="2.5" stroke-linecap="round">
+      <line x1="200" y1="28" x2="200" y2="16"/>
+      <line x1="230" y1="38" x2="238" y2="28"/>
+      <line x1="244" y1="68" x2="255" y2="65"/>
+      <line x1="238" y1="100" x2="248" y2="106"/>
+      <line x1="210" y1="118" x2="215" y2="130"/>
+      <line x1="175" y1="118" x2="170" y2="130"/>
+      <line x1="155" y1="100" x2="144" y2="106"/>
+      <line x1="152" y1="68" x2="140" y2="63"/>
+      <line x1="165" y1="38" x2="156" y2="29"/>
+    </g>
+
+    <!-- Eagle silhouettes -->
+    <g fill="rgba(0,0,0,0.22)">
+      <!-- Eagle 1 -->
+      <path d="M380,65 C366,59 358,61 354,66 C360,64 368,61 380,68 C392,61 400,64 406,66 C402,61 394,59 380,65Z"/>
+      <line x1="380" y1="68" x2="380" y2="75" stroke="rgba(0,0,0,0.22)" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="376" y1="75" x2="384" y2="75" stroke="rgba(0,0,0,0.22)" stroke-width="1.5" stroke-linecap="round"/>
+      <!-- Eagle 2 -->
+      <path d="M750,45 C730,37 718,40 713,46 C720,43 730,40 750,48 C770,40 780,43 787,46 C782,40 770,37 750,45Z"/>
+      <line x1="750" y1="48" x2="750" y2="56" stroke="rgba(0,0,0,0.22)" stroke-width="2" stroke-linecap="round"/>
+      <line x1="745" y1="56" x2="755" y2="56" stroke="rgba(0,0,0,0.22)" stroke-width="1.5" stroke-linecap="round"/>
+      <!-- Eagle 3 (large) -->
+      <path d="M1100,35 C1074,26 1058,29 1051,37 C1060,33 1074,29 1100,40 C1126,29 1140,33 1149,37 C1142,29 1126,26 1100,35Z"/>
+      <line x1="1100" y1="40" x2="1100" y2="50" stroke="rgba(0,0,0,0.22)" stroke-width="2.2" stroke-linecap="round"/>
+      <line x1="1094" y1="50" x2="1106" y2="50" stroke="rgba(0,0,0,0.22)" stroke-width="1.6" stroke-linecap="round"/>
+      <!-- Eagle 4 small -->
+      <path d="M560,88 C552,84 547,86 544,89 C548,87 552,85 560,91 C568,85 572,87 576,89 C573,86 568,84 560,88Z"/>
+      <!-- Eagle 5 -->
+      <path d="M930,55 C918,49 912,51 909,55 C914,53 919,50 930,57 C941,50 946,53 951,55 C948,51 942,49 930,55Z"/>
+      <line x1="930" y1="57" x2="930" y2="64" stroke="rgba(0,0,0,0.2)" stroke-width="1.8" stroke-linecap="round"/>
+    </g>
+
+    <!-- Pine tree sketches -->
+    <g stroke="rgba(60,30,10,0.4)" stroke-width="1.5" stroke-linecap="round" fill="none">
+      <line x1="80" y1="302" x2="80" y2="316"/><polyline points="71,316 80,298 89,316"/><polyline points="73,310 80,296 87,310"/>
+      <line x1="248" y1="261" x2="248" y2="275"/><polyline points="239,275 248,258 257,275"/><polyline points="241,269 248,256 255,269"/>
+      <line x1="488" y1="238" x2="488" y2="252"/><polyline points="479,252 488,235 497,252"/><polyline points="481,246 488,233 495,246"/>
+      <line x1="756" y1="215" x2="756" y2="229"/><polyline points="747,229 756,212 765,229"/><polyline points="749,223 756,210 763,223"/>
+      <line x1="1000" y1="200" x2="1000" y2="214"/><polyline points="991,214 1000,197 1009,214"/><polyline points="993,208 1000,195 1007,208"/>
+      <line x1="1262" y1="188" x2="1262" y2="202"/><polyline points="1253,202 1262,185 1271,202"/><polyline points="1255,196 1262,183 1269,196"/>
+    </g>
+  </svg>
+
+  <div class="footer-copy">© 2025 Shanmukha Sai Ram Donepudi — DSSRam ✦ Made with caffeine, spite &amp; FLAC audio</div>
+</footer>
+
+<!-- ============================================================
+  IMAGE LIGHTBOX (file explorer poster click)
+============================================================ -->
+<div id="img-lightbox" onclick="lbBgClick(event)">
+  <div class="lb-card" id="lb-card">
+    <img id="lb-img" src="" alt="">
+    <div class="lb-card-label" id="lb-label"></div>
+    <button class="lb-close-btn" onclick="closeLightbox()">✕ close</button>
+  </div>
+  <div class="lb-rating">
+    <div class="lb-rating-label">Rate this work ✦</div>
+    <div class="lb-stars" id="lb-stars">
+      <span class="lb-star" data-v="1">★</span>
+      <span class="lb-star" data-v="2">★</span>
+      <span class="lb-star" data-v="3">★</span>
+      <span class="lb-star" data-v="4">★</span>
+      <span class="lb-star" data-v="5">★</span>
+    </div>
+    <div class="lb-rating-thanks" id="lb-thanks">Thanks for the rating! 🙏</div>
+  </div>
+</div>
+
+<!-- ============================================================
+  ADMIN MODAL (secret — click the 3D door at footer bottom-left)
+============================================================ -->
+<div id="admin-modal">
+  <div class="admin-box">
+    <button class="admin-close" onclick="closeAdmin()">✕</button>
+    <div class="admin-title" id="admin-title">// ADMIN ACCESS</div>
+    <div id="admin-login-form">
+      <input class="admin-input" type="text" id="admin-user" placeholder="username" autocomplete="off">
+      <input class="admin-input" type="password" id="admin-pass" placeholder="password" autocomplete="off">
+      <button class="admin-login-btn" onclick="adminLogin()">AUTHENTICATE</button>
+      <div class="admin-err" id="admin-err">Access denied.</div>
+    </div>
+    <div id="admin-dashboard" style="display:none;">
+      <!-- Admin tabs -->
+      <div style="display:flex;gap:.4rem;margin-bottom:1rem;flex-wrap:wrap;">
+        <div class="stab active" onclick="adminTab('sug',this)" style="font-size:.5rem;">📖 Suggestions</div>
+        <div class="stab" onclick="adminTab('pl',this)" style="font-size:.5rem;">🎧 Playlists</div>
+        <div class="stab" onclick="adminTab('fit',this)" style="font-size:.5rem;">💪 Routines</div>
+        <div class="stab" onclick="adminTab('qt',this)" style="font-size:.5rem;">💬 Quotes</div>
+      </div>
+      <div style="font-family:'Space Mono',monospace;font-size:.55rem;color:#555;margin-bottom:.6rem;" id="admin-tab-header"></div>
+      <!-- Suggestions -->
+      <div id="admin-panel-sug" class="admin-suggestions"></div>
+      <!-- Playlists -->
+      <div id="admin-panel-pl" class="admin-suggestions" style="display:none;"></div>
+      <!-- Routines -->
+      <div id="admin-panel-fit" class="admin-suggestions" style="display:none;"></div>
+      <!-- Quotes -->
+      <div id="admin-panel-qt" class="admin-suggestions" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+  JAVASCRIPT
+============================================================ -->
+<script>
+// ============================================================
+// RGB PIXEL CURSOR
+// ============================================================
+// ============================================================
+// PIXEL CURSOR
+// ============================================================
+const curEl = document.getElementById('px-cursor');
+const trailEl = document.getElementById('px-trail');
+document.addEventListener('mousemove', e => {
+  curEl.style.left = (e.clientX - 5) + 'px';
+  curEl.style.top  = (e.clientY - 5) + 'px';
+  trailEl.style.left = (e.clientX - 3) + 'px';
+  trailEl.style.top  = (e.clientY - 3) + 'px';
+});
+document.querySelectorAll('a, button, .interest-card, .win-file, .humor-card, .book-card, .tool-btn, .color-swatch, .social-link, .stab, .win-mi, .win-btn, .humor-mini').forEach(el => {
+  el.addEventListener('mouseenter', () => curEl.classList.add('hover'));
+  el.addEventListener('mouseleave', () => curEl.classList.remove('hover'));
+});
+
+// ============================================================
+// MULTILANGUAGE GREETING ROTATOR
+// ============================================================
+(function initGreeting() {
+  const words = document.querySelectorAll('.greeting-word');
+  let cur = 0;
+  setInterval(() => {
+    words[cur].classList.remove('active');
+    cur = (cur + 1) % words.length;
+    words[cur].classList.add('active');
+  }, 2200);
+})();
+
+// ============================================================
+// DRAGGABLE PHOTO
+// ============================================================
+(function initPhotoDrag() {
+  const el = document.getElementById('photo-drag');
+  if (!el) return;
+  let dragging = false, startX, startY, tx = 0, ty = 0, lastTx = 0, lastTy = 0;
+  el.addEventListener('mousedown', e => {
+    // don't initiate drag if clicking a corner decoration
+    dragging = true;
+    startX = e.clientX - lastTx;
+    startY = e.clientY - lastTy;
+    el.classList.add('dragging');
+    el.style.transition = 'none';
+    e.preventDefault();
+  });
+  el.addEventListener('touchstart', e => {
+    dragging = true;
+    startX = e.touches[0].clientX - lastTx;
+    startY = e.touches[0].clientY - lastTy;
+    el.classList.add('dragging');
+    el.style.transition = 'none';
+  }, { passive: true });
+  document.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    tx = e.clientX - startX;
+    ty = e.clientY - startY;
+    el.style.transform = `translate(${tx}px,${ty}px)`;
+  });
+  document.addEventListener('touchmove', e => {
+    if (!dragging) return;
+    tx = e.touches[0].clientX - startX;
+    ty = e.touches[0].clientY - startY;
+    el.style.transform = `translate(${tx}px,${ty}px)`;
+  }, { passive: true });
+  function stopDrag() {
+    if (!dragging) return;
+    dragging = false;
+    lastTx = tx; lastTy = ty;
+    el.classList.remove('dragging');
+    el.style.transition = 'transform .25s cubic-bezier(.23,1,.32,1)';
+  }
+  document.addEventListener('mouseup', stopDrag);
+  document.addEventListener('touchend', stopDrag);
+  // Double-click to snap back
+  el.addEventListener('dblclick', () => {
+    tx = 0; ty = 0; lastTx = 0; lastTy = 0;
+    el.style.transition = 'transform .5s cubic-bezier(.23,1,.32,1)';
+    el.style.transform = 'translate(0,0)';
+  });
+})();
+
+// ============================================================
+// IMAGE LIGHTBOX (file explorer preview click)
+// ============================================================
+const lbRatings = JSON.parse(localStorage.getItem('dssram-lb-ratings') || '{}');
+let lbCurrentKey = '';
+
+// Make wp-img images clickable
+document.querySelectorAll('.wp-img').forEach(img => {
+  img.style.cursor = 'pointer';
+  img.addEventListener('click', () => {
+    if (!img.src || img.src.endsWith('/') || img.getAttribute('src') === '') return;
+    openLightbox(img.src, img.alt || 'Design Work');
+  });
+});
+
+// Also hook into future winSel calls — patch wp-img after winSel runs
+const _origWinSel = window.winSel;
+if (_origWinSel) {
+  window.winSel = function(el, key) {
+    _origWinSel(el, key);
+    setTimeout(() => {
+      document.querySelectorAll('.wp-img').forEach(img => {
+        img.style.cursor = 'pointer';
+        img.onclick = () => {
+          if (!img.src || img.getAttribute('src') === '') return;
+          openLightbox(img.src, img.alt || key);
+        };
+      });
+    }, 50);
+  };
+}
+
+function openLightbox(src, label) {
+  lbCurrentKey = src;
+  const lb = document.getElementById('img-lightbox');
+  const lbImg = document.getElementById('lb-img');
+  const lbLabel = document.getElementById('lb-label');
+  const lbThanks = document.getElementById('lb-thanks');
+  lbImg.src = src;
+  lbLabel.textContent = label;
+  lbThanks.style.display = 'none';
+  // restore saved rating
+  const saved = lbRatings[src] || 0;
+  updateStars(saved, false);
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  document.getElementById('img-lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+  setTimeout(() => { document.getElementById('lb-img').src = ''; }, 400);
+}
+function lbBgClick(e) {
+  if (e.target === document.getElementById('img-lightbox')) closeLightbox();
+}
+
+// Star rating
+let lbHovering = false;
+document.querySelectorAll('.lb-star').forEach(star => {
+  star.addEventListener('mouseenter', () => {
+    const v = +star.dataset.v;
+    updateStars(v, true);
+  });
+  star.addEventListener('mouseleave', () => {
+    const saved = lbRatings[lbCurrentKey] || 0;
+    updateStars(saved, false);
+  });
+  star.addEventListener('click', () => {
+    const v = +star.dataset.v;
+    lbRatings[lbCurrentKey] = v;
+    localStorage.setItem('dssram-lb-ratings', JSON.stringify(lbRatings));
+    updateStars(v, false);
+    const thanks = document.getElementById('lb-thanks');
+    thanks.style.display = 'block';
+    thanks.textContent = ['','⭐ Noted!','⭐⭐ Cool!','⭐⭐⭐ Nice!','⭐⭐⭐⭐ Love it!','⭐⭐⭐⭐⭐ You\'re too kind!'][v];
+  });
+});
+function updateStars(count, isHover) {
+  document.querySelectorAll('.lb-star').forEach(s => {
+    s.classList.remove('lit', 'hover-lit');
+    if (+s.dataset.v <= count) s.classList.add(isHover ? 'hover-lit' : 'lit');
+  });
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && document.getElementById('img-lightbox').classList.contains('open')) closeLightbox();
+});
+
+// ============================================================
+// 3D FLYING AUTHOR QUOTES (Books section)
+// ============================================================
+(function initQuotes() {
+  const scene = document.getElementById('quotes-scene');
+  if (!scene) return;
+  const quotes = [
+    '"A reader lives a thousand lives before he dies."',
+    '"Not all those who wander are lost."',
+    '"It is a truth universally acknowledged..."',
+    '"So we beat on, boats against the current."',
+    '"To be or not to be, that is the question."',
+    '"All animals are equal, but some are more equal."',
+    '"It was the best of times, it was the worst of times."',
+    '"Imagination is more important than knowledge."',
+    '"The only way out of the labyrinth is to forgive."',
+    '"We accept the love we think we deserve."',
+    '"Time you enjoy wasting is not wasted time."',
+    '"Call me Ishmael."',
+    '"Stay hungry, stay foolish."',
+    '"The journey of a thousand miles begins with one step."',
+    '"There is no friend as loyal as a book."',
+    '"Words are our most inexhaustible source of magic."',
+    '"I am not afraid of storms, for I am learning to sail."',
+    '"So many books, so little time."',
+  ];
+  quotes.forEach((q, i) => {
+    const el = document.createElement('div');
+    el.className = 'q-float';
+    el.textContent = q;
+    const leftPct = (5 + Math.random() * 80).toFixed(1);
+    const dur     = (16 + Math.random() * 16).toFixed(1);
+    // Stagger all quotes so they're already mid-flight at page load
+    const delay   = (-(Math.random() * parseFloat(dur))).toFixed(1);
+    el.style.left = leftPct + '%';
+    el.style.setProperty('--dur', dur + 's');
+    el.style.setProperty('--delay', delay + 's');
+    el.style.animationDuration = dur + 's';
+    el.style.animationDelay = delay + 's';
+    scene.appendChild(el);
+  });
+})();
+// ============================================================
+// NAV HAMBURGER
+// ============================================================
+function toggleNav() {
+  document.getElementById('nav-links').classList.toggle('open');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('nav')) document.getElementById('nav-links').classList.remove('open');
+});
+
+// ============================================================
+// SCROLL REVEAL
+// ============================================================
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal,.reveal-l').forEach(el => obs.observe(el));
+
+// ============================================================
+// PARALLAX
+// ============================================================
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  const grid = document.getElementById('hero-grid');
+  if (grid) grid.style.transform = `perspective(600px) rotateX(18deg) scale(1.3) translateY(${y*.13}px)`;
+  const pu = document.querySelector('.photo-universe');
+  if (pu) pu.style.transform = `translateY(${y*.04}px)`;
+});
+function toggleIcForm(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.display = el.style.display === 'none' ? 'flex' : 'none';
+}
+function submitIcForm(key) {
+  const val = document.getElementById(key + '-val').value.trim();
+  const who = document.getElementById(key + '-who').value.trim() || 'anonymous';
+  if (!val) return;
+  const store = JSON.parse(localStorage.getItem('dssram-form-' + key) || '[]');
+  store.push({ val, name: who, ts: Date.now() });
+  localStorage.setItem('dssram-form-' + key, JSON.stringify(store));
+  document.getElementById(key + '-val').value = '';
+  document.getElementById(key + '-who').value = '';
+  const confirm = document.getElementById(key + '-confirm');
+  confirm.style.display = 'block';
+  setTimeout(() => { confirm.style.display = 'none'; }, 2800);
+}
+
+// ============================================================
+// GITHUB CONTRIBUTIONS MODAL
+// ============================================================
+function openGhModal() {
+  document.getElementById('gh-modal').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closeGhModal() {
+  document.getElementById('gh-modal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeGhModal();
+    closeLightbox();
+    closeAdmin();
+  }
+});
+// ============================================================
+// WINDOWS EXPLORER SELECT
+// ============================================================
+function winSel(el, msg) {
+ const winData = {
+  designs: { name: 'Designs', desc: 'Original design work · Figma · Illustrations', meta: 'Type: Folder\nItems: 2\nPath: C:\\DSSRam\\Design\\' },
+  ui:      { name: 'UI Exploration', desc: 'Wireframes · Experiments · Component explorations', meta: 'Type: Folder\nItems: 2\nPath: C:\\DSSRam\\UI\\' },
+  content: { name: 'Content Creation', desc: 'Posts · Graphics · Reels · Thumbnails', meta: 'Type: Folder\nItems: 2\nPath: C:\\DSSRam\\Content\\' },
+  app:     { name: 'App Design', desc: 'App screens · User flows · Prototypes', meta: 'Type: Folder\nItems: 2\nPath: C:\\DSSRam\\Apps\\' },
+  motion:  { name: 'Motion.ae', desc: 'Motion graphics — dropping soon.', meta: 'Type: File\nStatus: In progress' },
+  brand:   { name: 'Brand Kit', desc: 'Brand guidelines — dropping soon.', meta: 'Type: Folder\nStatus: In progress' },
+};
+
+function winSel(el, key) {
+  document.querySelectorAll('.win-file').forEach(f => f.classList.remove('selected'));
+  el.classList.add('selected');
+  const d = winData[key] || {};
+  document.getElementById('wp-name').textContent = d.name || '';
+  document.getElementById('wp-desc').textContent = d.desc || '';
+  document.getElementById('wp-meta').textContent = d.meta || '';
+  document.querySelectorAll('.wp-section').forEach(s => s.style.display = 'none');
+  const pane = document.getElementById('wp-' + key);
+  if (pane) pane.style.display = 'block';
+  document.getElementById('win-status').textContent = '"' + d.name + '" selected · ' + (d.desc || '');
+}
+// init
+winSel(document.querySelector('.win-file.selected'), 'designs');
+}
+
+// ============================================================
+// CLOCK (live)
+// ============================================================
+const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+const DAYS = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+function updateClock() {
+  const n = new Date();
+  const h = String(n.getHours()).padStart(2,'0');
+  const m = String(n.getMinutes()).padStart(2,'0');
+  const s = String(n.getSeconds()).padStart(2,'0');
+  document.getElementById('clk-time').textContent = h+':'+m+':'+s;
+  document.getElementById('clk-date').textContent = DAYS[n.getDay()]+' '+String(n.getDate()).padStart(2,'0')+' '+MONTHS[n.getMonth()]+' '+n.getFullYear();
+}
+updateClock(); setInterval(updateClock, 1000);
+
+// ============================================================
+// STARS (night sky in footer)
+// ============================================================
+(function initStars() {
+  const sc = document.getElementById('stars-layer');
+  const footer = document.getElementById('footer');
+  function resizeStars() {
+    sc.width = footer.offsetWidth;
+    sc.height = footer.offsetHeight;
+    drawStars();
+  }
+  function drawStars() {
+    const sctx = sc.getContext('2d');
+    sctx.clearRect(0,0,sc.width,sc.height);
+    // Stars appear in top 60% of footer (the sky part)
+    for (let i = 0; i < 180; i++) {
+      const x = Math.random() * sc.width;
+      const y = Math.random() * sc.height * 0.65;
+      const r = Math.random() * 1.5 + 0.3;
+      const a = Math.random() * 0.8 + 0.2;
+      sctx.beginPath();
+      sctx.arc(x, y, r, 0, Math.PI*2);
+      sctx.fillStyle = `rgba(255,255,220,${a})`;
+      sctx.fill();
+    }
+  }
+  resizeStars();
+  window.addEventListener('resize', resizeStars);
+  // Twinkling
+  setInterval(() => {
+    const sctx = sc.getContext('2d');
+    sctx.clearRect(0,0,sc.width,sc.height);
+    for (let i = 0; i < 180; i++) {
+      const x = (Math.sin(i*1234.567)*0.5+0.5)*sc.width;
+      const y = (Math.sin(i*987.654)*0.5+0.5)*sc.height*0.65;
+      const r = Math.random()*1.5+0.2;
+      const a = Math.random()*0.7+0.15;
+      sctx.beginPath();
+      sctx.arc(x, y, r, 0, Math.PI*2);
+      sctx.fillStyle = `rgba(255,255,215,${a})`;
+      sctx.fill();
+    }
+  }, 1800);
+})();
+
+// ============================================================
+// DOODLE CANVAS
+// ============================================================
+const dcanvas = document.getElementById('doodle-canvas');
+const dctx = dcanvas.getContext('2d');
+let painting = false, dtool = 'draw', dcolor = '#0a0a0a', dbsize = 6;
+function resizeDCanvas() {
+  const data = dcanvas.toDataURL();
+  dcanvas.width = dcanvas.offsetWidth;
+  dcanvas.height = dcanvas.offsetHeight || 400;
+  const img = new Image(); img.onload = () => dctx.drawImage(img,0,0); img.src = data;
+}
+resizeDCanvas(); window.addEventListener('resize', resizeDCanvas);
+const dcolors = ['#0a0a0a','#FF6B1A','#FFD580','#FF6B9D','#6B9DFF','#6BFFB8','#ffffff','#FF4444'];
+const sw = document.getElementById('swatches');
+dcolors.forEach((c,i) => {
+  const s = document.createElement('div');
+  s.className = 'color-swatch'+(i===0?' active':'');
+  s.style.cssText = `background:${c};${c==='#ffffff'?'border:2px solid #ccc;':''}`;
+  s.onclick = () => {
+    dcolor=c; dtool='draw';
+    document.querySelectorAll('.color-swatch').forEach(x=>x.classList.remove('active'));
+    s.classList.add('active'); setTool('draw');
+  };
+  sw.appendChild(s);
+});
+document.getElementById('brush-sz').addEventListener('input', e => dbsize = e.target.value);
+function getDP(e) {
+  const r = dcanvas.getBoundingClientRect();
+  if(e.touches) return {x:e.touches[0].clientX-r.left,y:e.touches[0].clientY-r.top};
+  return {x:e.clientX-r.left,y:e.clientY-r.top};
+}
+dcanvas.addEventListener('mousedown', e=>{painting=true;const p=getDP(e);dctx.beginPath();dctx.moveTo(p.x,p.y);});
+dcanvas.addEventListener('touchstart',e=>{e.preventDefault();painting=true;const p=getDP(e);dctx.beginPath();dctx.moveTo(p.x,p.y);},{passive:false});
+function doDraw(e) {
+  if(!painting) return;
+  const p = getDP(e);
+  dctx.lineWidth = dbsize; dctx.lineCap='round'; dctx.lineJoin='round';
+  if(dtool==='erase'){dctx.globalCompositeOperation='destination-out';dctx.strokeStyle='rgba(0,0,0,1)';}
+  else{dctx.globalCompositeOperation='source-over';dctx.strokeStyle=dcolor;}
+  dctx.lineTo(p.x,p.y); dctx.stroke(); dctx.beginPath(); dctx.moveTo(p.x,p.y);
+}
+dcanvas.addEventListener('mousemove',doDraw);
+dcanvas.addEventListener('touchmove',e=>{e.preventDefault();doDraw(e);},{passive:false});
+dcanvas.addEventListener('mouseup',()=>painting=false);
+dcanvas.addEventListener('touchend',()=>painting=false);
+dcanvas.addEventListener('mouseleave',()=>painting=false);
+function setTool(t) {
+  dtool=t;
+  document.getElementById('btn-draw').classList.toggle('active',t==='draw');
+  document.getElementById('btn-erase').classList.toggle('active',t==='erase');
+}
+function clearC(){dctx.globalCompositeOperation='source-over';dctx.clearRect(0,0,dcanvas.width,dcanvas.height);}
+function dlDoodle(){const a=document.createElement('a');a.download='doodle-dssram.png';a.href=dcanvas.toDataURL();a.click();}
+
+// ============================================================
+// FEEDBACK / STICKY NOTES (shown inside panel only)
+// ============================================================
+let fbOpen = false;
+const sn_c = ['sn-0','sn-1','sn-2','sn-3','sn-4'];
+const savedNotes = JSON.parse(localStorage.getItem('dssram-notes')||'[]');
+function toggleFb() {
+  fbOpen = !fbOpen;
+  document.getElementById('feedback-panel').classList.toggle('open', fbOpen);
+}
+function addNote() {
+  const text = document.getElementById('fb-text').value.trim();
+  const name = document.getElementById('fb-name').value.trim() || 'anonymous weirdo';
+  if(!text) return;
+  const n = {text, name, color: sn_c[savedNotes.length % 5]};
+  savedNotes.push(n);
+  localStorage.setItem('dssram-notes', JSON.stringify(savedNotes));
+  renderNote(n);
+  document.getElementById('fb-text').value='';
+  document.getElementById('fb-name').value='';
+}
+function renderNote(n) {
+  const list = document.getElementById('fb-notes-list');
+  const head = document.getElementById('fb-notes-head');
+  head.style.display = 'block';
+  const el = document.createElement('div');
+  el.className = 'sticky-note ' + n.color;
+  el.innerHTML = n.text + '<span class="sticky-note-from">— ' + n.name + '</span>';
+  list.prepend(el);
+}
+savedNotes.forEach(renderNote);
+
+// ============================================================
+// BOOK / MOVIE SUGGEST (saves to localStorage, NOT shown publicly)
+// ============================================================
+let sugTab = 'book';
+const suggestions = JSON.parse(localStorage.getItem('dssram-suggestions')||'[]');
+function switchTab(tab, el) {
+  sugTab = tab;
+  document.querySelectorAll('.stab').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+}
+function addSuggestion() {
+  const title = document.getElementById('sug-title').value.trim();
+  const why = document.getElementById('sug-why').value.trim();
+  const name = document.getElementById('sug-name').value.trim() || 'a fan';
+  if(!title) return;
+  const s = {title, why, name, type: sugTab, ts: Date.now()};
+  suggestions.push(s);
+  localStorage.setItem('dssram-suggestions', JSON.stringify(suggestions));
+  document.getElementById('sug-title').value='';
+  document.getElementById('sug-why').value='';
+  document.getElementById('sug-name').value='';
+  const cnt = document.getElementById('sug-count');
+  cnt.style.display = 'block';
+  cnt.textContent = '✓ Sent! Shanmukh will check it out.';
+  setTimeout(()=>{ cnt.style.display='none'; }, 3000);
+}
+
+// ============================================================
+// ADMIN AUTH (hidden — click the · in footer 5 times)
+// ============================================================
+let _atc = 0, _atimer;
+// obfuscated creds (btoa)
+const _AU = 'ZHNzcmFtMjQ=';   // dssram24
+const _AP = 'Q2hhbnRpMTIzKg=='; // Chanti123*
+let _adminOpen = false;
+
+function adminTriggerClick() {
+  _atc++;
+  clearTimeout(_atimer);
+  if (_atc >= 5) {
+    _atc = 0;
+    document.getElementById('admin-modal').classList.add('open');
+    document.getElementById('admin-user').focus();
+  }
+  _atimer = setTimeout(() => _atc = 0, 1800);
+}
+function closeAdmin() {
+  document.getElementById('admin-modal').classList.remove('open');
+  document.getElementById('admin-err').style.display = 'none';
+  document.getElementById('admin-user').value = '';
+  document.getElementById('admin-pass').value = '';
+  document.getElementById('admin-dashboard').style.display = 'none';
+  document.getElementById('admin-panel-sug').style.display = 'none';
+  document.getElementById('admin-panel-pl').style.display = 'none';
+  document.getElementById('admin-panel-fit').style.display = 'none';
+  document.getElementById('admin-panel-qt').style.display = 'none';
+  document.getElementById('admin-login-form').style.display = 'block';
+  document.getElementById('admin-title').textContent = '// ADMIN ACCESS';
+}
+function adminLogin() {
+  const u = document.getElementById('admin-user').value.trim();
+  const p = document.getElementById('admin-pass').value;
+  if (btoa(u) === _AU && btoa(p) === _AP) {
+    document.getElementById('admin-login-form').style.display = 'none';
+    document.getElementById('admin-err').style.display = 'none';
+    document.getElementById('admin-title').textContent = '// SUGGESTIONS INBOX';
+    renderAdminSuggestions();
+    document.getElementById('admin-dashboard').style.display = 'block';
+  } else {
+    const err = document.getElementById('admin-err');
+    err.style.display = 'block';
+    err.textContent = 'Access denied. Wrong credentials.';
+    document.getElementById('admin-pass').value = '';
+  }
+}
+function renderAdminSuggestions() {
+  adminTab('sug', document.querySelector('#admin-dashboard .stab'));
+}
+
+let _curAdminTab = 'sug';
+function adminTab(key, el) {
+  _curAdminTab = key;
+  // Switch tab highlight
+  document.querySelectorAll('#admin-dashboard .stab').forEach(s => s.classList.remove('active'));
+  if (el) el.classList.add('active');
+  // Hide all panels
+  ['sug','pl','fit','qt'].forEach(k => {
+    const p = document.getElementById('admin-panel-' + k);
+    if (p) p.style.display = 'none';
+  });
+  const panel = document.getElementById('admin-panel-' + key);
+  if (!panel) return;
+  panel.style.display = 'flex';
+  panel.innerHTML = '';
+
+  const header = document.getElementById('admin-tab-header');
+
+  if (key === 'sug') {
+    const all = JSON.parse(localStorage.getItem('dssram-suggestions') || '[]');
+    header.textContent = all.length + ' book/movie suggestion' + (all.length !== 1 ? 's' : '');
+    if (!all.length) { panel.innerHTML = '<div class="admin-sug-empty">No suggestions yet. 🫙</div>'; return; }
+    [...all].reverse().forEach(s => {
+      const d = document.createElement('div'); d.className = 'admin-sug-item';
+      const date = s.ts ? new Date(s.ts).toLocaleDateString() : '—';
+      d.innerHTML = `<div class="admin-sug-type">${s.type === 'book' ? '📖 Book' : '🎬 Movie'} · ${date}</div>
+        <div class="admin-sug-title">${s.title}</div>
+        ${s.why ? `<div class="admin-sug-why">${s.why}</div>` : ''}
+        <div class="admin-sug-from">— ${s.name}</div>`;
+      panel.appendChild(d);
+    });
+
+  } else if (key === 'pl') {
+    const all = JSON.parse(localStorage.getItem('dssram-form-music') || '[]');
+    header.textContent = all.length + ' playlist' + (all.length !== 1 ? 's' : '') + ' shared';
+    if (!all.length) { panel.innerHTML = '<div class="admin-sug-empty">No playlists yet. 🎵</div>'; return; }
+    [...all].reverse().forEach(s => {
+      const d = document.createElement('div'); d.className = 'admin-sug-item';
+      d.innerHTML = `<div class="admin-sug-type">🎧 Playlist</div>
+        <div class="admin-sug-title">${s.val}</div>
+        <div class="admin-sug-from">— ${s.name}</div>`;
+      panel.appendChild(d);
+    });
+
+  } else if (key === 'fit') {
+    const all = JSON.parse(localStorage.getItem('dssram-form-fitness') || '[]');
+    header.textContent = all.length + ' routine' + (all.length !== 1 ? 's' : '') + ' submitted';
+    if (!all.length) { panel.innerHTML = '<div class="admin-sug-empty">No routines yet. 💪</div>'; return; }
+    [...all].reverse().forEach(s => {
+      const d = document.createElement('div'); d.className = 'admin-sug-item';
+      d.innerHTML = `<div class="admin-sug-type">💪 Routine</div>
+        <div class="admin-sug-title" style="font-size:.85rem;">${s.val}</div>
+        <div class="admin-sug-from">— ${s.name}</div>`;
+      panel.appendChild(d);
+    });
+
+  } else if (key === 'qt') {
+    const all = JSON.parse(localStorage.getItem('dssram-form-speaking') || '[]');
+    header.textContent = all.length + ' quote' + (all.length !== 1 ? 's' : '') + ' dropped';
+    if (!all.length) { panel.innerHTML = '<div class="admin-sug-empty">No quotes yet. 💬</div>'; return; }
+    [...all].reverse().forEach(s => {
+      const d = document.createElement('div'); d.className = 'admin-sug-item';
+      d.style.borderLeftColor = '#FFD580';
+      d.innerHTML = `<div class="admin-sug-type" style="color:#FFD580;">💬 Quote</div>
+        <div class="admin-sug-title" style="font-family:'Playfair Display',serif;font-style:italic;font-size:.95rem;">"${s.val}"</div>
+        <div class="admin-sug-from">— ${s.name}</div>`;
+      panel.appendChild(d);
+    });
+  }
+}
+// admin Enter key
+document.getElementById('admin-pass').addEventListener('keydown', e => {
+  if (e.key === 'Enter') adminLogin();
+});
+</script>
+<!-- FIXED 3D DOOR — always bottom-left of viewport -->
+<div class="door-3d-wrap" onclick="adminTriggerClick()" title="">
+  <div class="door-glow"></div>
+  <svg viewBox="0 0 58 100" width="22" height="38" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+    <polygon points="8,4 58,0 58,100 8,100" fill="rgba(40,15,0,0.55)"/>
+    <polygon points="0,6 50,2 50,98 0,98" fill="rgba(120,55,15,0.82)"/>
+    <line x1="4" y1="10" x2="46" y2="7" stroke="rgba(90,35,5,0.4)" stroke-width="1"/>
+    <line x1="4" y1="30" x2="46" y2="27" stroke="rgba(90,35,5,0.35)" stroke-width="1"/>
+    <line x1="4" y1="50" x2="46" y2="47" stroke="rgba(90,35,5,0.3)" stroke-width="1"/>
+    <line x1="4" y1="70" x2="46" y2="67" stroke="rgba(90,35,5,0.3)" stroke-width="1"/>
+    <polygon points="8,12 42,9.5 42,42 8,44" fill="rgba(100,42,8,0.6)" stroke="rgba(60,20,2,0.5)" stroke-width="1"/>
+    <polygon points="8,52 42,49.5 42,88 8,90" fill="rgba(100,42,8,0.6)" stroke="rgba(60,20,2,0.5)" stroke-width="1"/>
+    <ellipse cx="38" cy="52" rx="4" ry="3.5" fill="rgba(255,200,80,0.9)" stroke="rgba(200,140,30,0.8)" stroke-width="1"/>
+    <ellipse cx="37.5" cy="51.5" rx="2" ry="1.5" fill="rgba(255,240,160,0.7)"/>
+    <polygon points="0,6 50,2 50,98 0,98" fill="none" stroke="rgba(200,100,30,0.7)" stroke-width="1.5"/>
+    <polygon points="50,2 58,0 58,100 50,98" fill="rgba(60,20,0,0.7)"/>
+    <polygon points="0,6 50,2 58,0 8,4" fill="rgba(80,35,5,0.6)"/>
+    <ellipse cx="38" cy="56" rx="2" ry="3" fill="rgba(255,107,26,0.15)" stroke="rgba(255,107,26,0.3)" stroke-width=".8"/>
+  </svg>
+</div>
+
+<!-- GITHUB CONTRIBUTIONS MODAL -->
+<div id="gh-modal" style="position:fixed;inset:0;z-index:99996;background:rgba(0,0,0,.9);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;flex-direction:column;gap:1.5rem;" onclick="if(event.target===this)closeGhModal()">
+  <div style="background:#0a0a0a;border:2px solid #FF6B1A;border-radius:16px;padding:2rem;width:min(860px,94vw);box-shadow:0 40px 100px rgba(0,0,0,.5),6px 6px 0 rgba(255,107,26,.3);position:relative;">
+    <button onclick="closeGhModal()" style="position:absolute;top:.8rem;right:1rem;background:none;border:none;font-family:'Space Mono',monospace;font-size:.75rem;color:#555;padding:.3rem;">✕</button>
+    <div style="font-family:'Press Start 2P',monospace;font-size:.7rem;color:#FF6B1A;margin-bottom:1.5rem;line-height:1.6;">// GitHub Contributions</div>
+    <!-- REPLACE YOUR_GITHUB_USERNAME below with your actual GitHub username -->
+    <div style="background:#111;border-radius:10px;padding:1rem;overflow-x:auto;">
+      <img id="gh-contrib-img" src="https://ghchart.rshah.org/FF6B1A/dssram24" alt="GitHub Contributions" style="width:100%;border-radius:6px;display:block;min-height:120px;background:#0d1117;" onerror="this.style.display='none';document.getElementById('gh-fallback').style.display='block'">
+      <div id="gh-fallback" style="display:none;font-family:'Space Mono',monospace;font-size:.65rem;color:#555;text-align:center;padding:2rem;">
+        Set your GitHub username in the code: <span style="color:#FF6B1A;">ghchart.rshah.org/FF6B1A/<strong>YOUR_USERNAME</strong></span>
+      </div>
+    </div>
+    <div style="margin-top:1rem;display:flex;gap:1.5rem;flex-wrap:wrap;">
+      <div style="font-family:'Space Mono',monospace;font-size:.58rem;color:#555;line-height:1.8;">
+        <span style="color:#FF6B1A;">▸</span> Green = commits pushed<br>
+        <span style="color:#FF6B1A;">▸</span> Darker = more activity<br>
+        <span style="color:#FF6B1A;">▸</span> Replace username above
+      </div>
+    </div>
+  </div>
+  <div style="font-family:'Caveat',cursive;font-size:1.1rem;color:rgba(255,107,26,.5);">press Escape or click outside to close</div>
+</div>
+
+</body>
+</html>
