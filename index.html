@@ -930,6 +930,7 @@ nav {
 }
 </style>
 </head>
+   
 <body>
 
 <!-- RGB PIXEL CURSOR -->
@@ -2335,57 +2336,224 @@ function adminTab(key, el) {
 
   const header = document.getElementById('admin-tab-header');
 
-  if (key === 'sug') {
-    const all = JSON.parse(localStorage.getItem('dssram-suggestions') || '[]');
-    header.textContent = all.length + ' book/movie suggestion' + (all.length !== 1 ? 's' : '');
-    if (!all.length) { panel.innerHTML = '<div class="admin-sug-empty">No suggestions yet. 🫙</div>'; return; }
-    [...all].reverse().forEach(s => {
-      const d = document.createElement('div'); d.className = 'admin-sug-item';
-      const date = s.ts ? new Date(s.ts).toLocaleDateString() : '—';
-      d.innerHTML = `<div class="admin-sug-type">${s.type === 'book' ? '📖 Book' : '🎬 Movie'} · ${date}</div>
-        <div class="admin-sug-title">${s.title}</div>
-        ${s.why ? `<div class="admin-sug-why">${s.why}</div>` : ''}
-        <div class="admin-sug-from">— ${s.name}</div>`;
-      panel.appendChild(d);
-    });
+ if (key === 'sug') {
 
-  } else if (key === 'pl') {
-    const all = JSON.parse(localStorage.getItem('dssram-form-music') || '[]');
-    header.textContent = all.length + ' playlist' + (all.length !== 1 ? 's' : '') + ' shared';
-    if (!all.length) { panel.innerHTML = '<div class="admin-sug-empty">No playlists yet. 🎵</div>'; return; }
-    [...all].reverse().forEach(s => {
-      const d = document.createElement('div'); d.className = 'admin-sug-item';
-      d.innerHTML = `<div class="admin-sug-type">🎧 Playlist</div>
-        <div class="admin-sug-title">${s.val}</div>
-        <div class="admin-sug-from">— ${s.name}</div>`;
-      panel.appendChild(d);
-    });
+  const q = await getDocs(collection(db, "suggestions"));
 
-  } else if (key === 'fit') {
-    const all = JSON.parse(localStorage.getItem('dssram-form-fitness') || '[]');
-    header.textContent = all.length + ' routine' + (all.length !== 1 ? 's' : '') + ' submitted';
-    if (!all.length) { panel.innerHTML = '<div class="admin-sug-empty">No routines yet. 💪</div>'; return; }
-    [...all].reverse().forEach(s => {
-      const d = document.createElement('div'); d.className = 'admin-sug-item';
-      d.innerHTML = `<div class="admin-sug-type">💪 Routine</div>
-        <div class="admin-sug-title" style="font-size:.85rem;">${s.val}</div>
-        <div class="admin-sug-from">— ${s.name}</div>`;
-      panel.appendChild(d);
-    });
+  const all = [];
 
-  } else if (key === 'qt') {
-    const all = JSON.parse(localStorage.getItem('dssram-form-speaking') || '[]');
-    header.textContent = all.length + ' quote' + (all.length !== 1 ? 's' : '') + ' dropped';
-    if (!all.length) { panel.innerHTML = '<div class="admin-sug-empty">No quotes yet. 💬</div>'; return; }
-    [...all].reverse().forEach(s => {
-      const d = document.createElement('div'); d.className = 'admin-sug-item';
-      d.style.borderLeftColor = '#FFD580';
-      d.innerHTML = `<div class="admin-sug-type" style="color:#FFD580;">💬 Quote</div>
-        <div class="admin-sug-title" style="font-family:'Playfair Display',serif;font-style:italic;font-size:.95rem;">"${s.val}"</div>
-        <div class="admin-sug-from">— ${s.name}</div>`;
-      panel.appendChild(d);
-    });
+  q.forEach(doc => {
+    all.push(doc.data());
+  });
+
+  header.textContent =
+    all.length + ' book/movie suggestion' +
+    (all.length !== 1 ? 's' : '');
+
+  if (!all.length) {
+    panel.innerHTML =
+      '<div class="admin-sug-empty">No suggestions yet. 🫙</div>';
+    return;
   }
+
+  [...all].reverse().forEach(s => {
+
+    const d = document.createElement('div');
+    d.className = 'admin-sug-item';
+
+    const date =
+      s.ts ? new Date(s.ts).toLocaleDateString() : '—';
+
+    d.innerHTML = `
+      <div class="admin-sug-type">
+        ${s.type === 'book' ? '📖 Book' : '🎬 Movie'} · ${date}
+      </div>
+
+      <div class="admin-sug-title">
+        ${s.title}
+      </div>
+
+      ${s.why
+        ? `<div class="admin-sug-why">${s.why}</div>`
+        : ''}
+
+      <div class="admin-sug-from">
+        — ${s.name}
+      </div>
+    `;
+
+    panel.appendChild(d);
+
+  });
+
+} else if (key === 'pl') {
+
+  const q = await getDocs(collection(db, "submissions"));
+
+  const all = [];
+
+  q.forEach(doc => {
+    const data = doc.data();
+
+    if (data.type === "playlist") {
+      all.push(data);
+    }
+  });
+
+  header.textContent =
+    all.length + ' playlist' +
+    (all.length !== 1 ? 's' : '') +
+    ' shared';
+
+  if (!all.length) {
+    panel.innerHTML =
+      '<div class="admin-sug-empty">No playlists yet. 🎵</div>';
+    return;
+  }
+
+  [...all].reverse().forEach(s => {
+
+    const d = document.createElement('div');
+
+    d.className = 'admin-sug-item';
+
+    d.innerHTML = `
+      <div class="admin-sug-type">
+        🎧 Playlist
+      </div>
+
+      <div class="admin-sug-title">
+        ${s.value}
+      </div>
+
+      <div class="admin-sug-from">
+        — ${s.name}
+      </div>
+    `;
+
+    panel.appendChild(d);
+
+  });
+
+} else if (key === 'fit') {
+
+  const q = await getDocs(collection(db, "submissions"));
+
+  const all = [];
+
+  q.forEach(doc => {
+
+    const data = doc.data();
+
+    if (data.type === "fitness") {
+      all.push(data);
+    }
+
+  });
+
+  header.textContent =
+    all.length + ' routine' +
+    (all.length !== 1 ? 's' : '') +
+    ' submitted';
+
+  if (!all.length) {
+
+    panel.innerHTML =
+      '<div class="admin-sug-empty">No routines yet. 💪</div>';
+
+    return;
+  }
+
+  [...all].reverse().forEach(s => {
+
+    const d = document.createElement('div');
+
+    d.className = 'admin-sug-item';
+
+    d.innerHTML = `
+      <div class="admin-sug-type">
+        💪 Routine
+      </div>
+
+      <div class="admin-sug-title"
+           style="font-size:.85rem;">
+        ${s.value}
+      </div>
+
+      <div class="admin-sug-from">
+        — ${s.name}
+      </div>
+    `;
+
+    panel.appendChild(d);
+
+  });
+
+} else if (key === 'qt') {
+
+  const q = await getDocs(collection(db, "submissions"));
+
+  const all = [];
+
+  q.forEach(doc => {
+
+    const data = doc.data();
+
+    if (data.type === "quote") {
+      all.push(data);
+    }
+
+  });
+
+  header.textContent =
+    all.length + ' quote' +
+    (all.length !== 1 ? 's' : '') +
+    ' dropped';
+
+  if (!all.length) {
+
+    panel.innerHTML =
+      '<div class="admin-sug-empty">No quotes yet. 💬</div>';
+
+    return;
+  }
+
+  [...all].reverse().forEach(s => {
+
+    const d = document.createElement('div');
+
+    d.className = 'admin-sug-item';
+
+    d.style.borderLeftColor = '#FFD580';
+
+    d.innerHTML = `
+      <div class="admin-sug-type"
+           style="color:#FFD580;">
+
+        💬 Quote
+
+      </div>
+
+      <div class="admin-sug-title"
+           style="
+             font-family:'Playfair Display',serif;
+             font-style:italic;
+             font-size:.95rem;
+           ">
+
+        "${s.value}"
+
+      </div>
+
+      <div class="admin-sug-from">
+        — ${s.name}
+      </div>
+    `;
+
+    panel.appendChild(d);
+
+  });
+
 }
 // admin Enter key
 document.getElementById('admin-pass').addEventListener('keydown', e => {
@@ -2422,19 +2590,43 @@ document.getElementById('admin-pass').addEventListener('keydown', e => {
     <div style="background:#111;border-radius:10px;padding:1rem;overflow-x:auto;">
       <img id="gh-contrib-img" src="https://ghchart.rshah.org/FF6B1A/dssram24" alt="GitHub Contributions" style="width:100%;border-radius:6px;display:block;min-height:120px;background:#0d1117;" onerror="this.style.display='none';document.getElementById('gh-fallback').style.display='block'">
       <div id="gh-fallback" style="display:none;font-family:'Space Mono',monospace;font-size:.65rem;color:#555;text-align:center;padding:2rem;">
-        Set your GitHub username in the code: <span style="color:#FF6B1A;">ghchart.rshah.org/FF6B1A/<strong>YOUR_USERNAME</strong></span>
+        <span style="color:#FF6B1A;">ghchart.rshah.org/FF6B1A/<strong></strong></span>
       </div>
     </div>
     <div style="margin-top:1rem;display:flex;gap:1.5rem;flex-wrap:wrap;">
       <div style="font-family:'Space Mono',monospace;font-size:.58rem;color:#555;line-height:1.8;">
         <span style="color:#FF6B1A;">▸</span> Green = commits pushed<br>
         <span style="color:#FF6B1A;">▸</span> Darker = more activity<br>
-        <span style="color:#FF6B1A;">▸</span> Replace username above
+        <span style="color:#FF6B1A;">▸</span>
       </div>
     </div>
   </div>
   <div style="font-family:'Caveat',cursive;font-size:1.1rem;color:rgba(255,107,26,.5);">press Escape or click outside to close</div>
 </div>
+<!-- Firebase -->
+   <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyDf0V9VkoChFVF-MyeWFXHcYA1G6M2UBp8",
+    authDomain: "dssram-site.firebaseapp.com",
+    projectId: "dssram-site",
+    storageBucket: "dssram-site.firebasestorage.app",
+    messagingSenderId: "92348233842",
+    appId: "1:92348233842:web:e22c91750f6c0ee3c9aaeb",
+    measurementId: "G-LD0CHBQZQE"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
 
 </body>
 </html>
