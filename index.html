@@ -1786,9 +1786,6 @@ nav {
 ============================================================ -->
 <script>
 // ============================================================
-// RGB PIXEL CURSOR
-// ============================================================
-// ============================================================
 // PIXEL CURSOR
 // ============================================================
 const curEl = document.getElementById('px-cursor');
@@ -1799,15 +1796,15 @@ document.addEventListener('mousemove', e => {
   trailEl.style.left = (e.clientX - 3) + 'px';
   trailEl.style.top  = (e.clientY - 3) + 'px';
 });
-document.querySelectorAll('a, button, .interest-card, .win-file, .humor-card, .book-card, .tool-btn, .color-swatch, .social-link, .stab, .win-mi, .win-btn, .humor-mini').forEach(el => {
+document.querySelectorAll('a,button,.interest-card,.win-file,.humor-card,.book-card,.tool-btn,.color-swatch,.social-link,.stab,.win-mi,.win-btn,.humor-mini').forEach(el => {
   el.addEventListener('mouseenter', () => curEl.classList.add('hover'));
   el.addEventListener('mouseleave', () => curEl.classList.remove('hover'));
 });
 
 // ============================================================
-// MULTILANGUAGE GREETING ROTATOR
+// MULTILANGUAGE GREETING
 // ============================================================
-(function initGreeting() {
+(function() {
   const words = document.querySelectorAll('.greeting-word');
   let cur = 0;
   setInterval(() => {
@@ -1820,48 +1817,38 @@ document.querySelectorAll('a, button, .interest-card, .win-file, .humor-card, .b
 // ============================================================
 // DRAGGABLE PHOTO
 // ============================================================
-(function initPhotoDrag() {
+(function() {
   const el = document.getElementById('photo-drag');
   if (!el) return;
   let dragging = false, startX, startY, tx = 0, ty = 0, lastTx = 0, lastTy = 0;
   el.addEventListener('mousedown', e => {
-    // don't initiate drag if clicking a corner decoration
     dragging = true;
-    startX = e.clientX - lastTx;
-    startY = e.clientY - lastTy;
-    el.classList.add('dragging');
-    el.style.transition = 'none';
-    e.preventDefault();
+    startX = e.clientX - lastTx; startY = e.clientY - lastTy;
+    el.classList.add('dragging'); el.style.transition = 'none'; e.preventDefault();
   });
   el.addEventListener('touchstart', e => {
     dragging = true;
-    startX = e.touches[0].clientX - lastTx;
-    startY = e.touches[0].clientY - lastTy;
-    el.classList.add('dragging');
-    el.style.transition = 'none';
+    startX = e.touches[0].clientX - lastTx; startY = e.touches[0].clientY - lastTy;
+    el.classList.add('dragging'); el.style.transition = 'none';
   }, { passive: true });
   document.addEventListener('mousemove', e => {
     if (!dragging) return;
-    tx = e.clientX - startX;
-    ty = e.clientY - startY;
+    tx = e.clientX - startX; ty = e.clientY - startY;
     el.style.transform = `translate(${tx}px,${ty}px)`;
   });
   document.addEventListener('touchmove', e => {
     if (!dragging) return;
-    tx = e.touches[0].clientX - startX;
-    ty = e.touches[0].clientY - startY;
+    tx = e.touches[0].clientX - startX; ty = e.touches[0].clientY - startY;
     el.style.transform = `translate(${tx}px,${ty}px)`;
   }, { passive: true });
   function stopDrag() {
     if (!dragging) return;
-    dragging = false;
-    lastTx = tx; lastTy = ty;
+    dragging = false; lastTx = tx; lastTy = ty;
     el.classList.remove('dragging');
     el.style.transition = 'transform .25s cubic-bezier(.23,1,.32,1)';
   }
   document.addEventListener('mouseup', stopDrag);
   document.addEventListener('touchend', stopDrag);
-  // Double-click to snap back
   el.addEventListener('dblclick', () => {
     tx = 0; ty = 0; lastTx = 0; lastTy = 0;
     el.style.transition = 'transform .5s cubic-bezier(.23,1,.32,1)';
@@ -1870,49 +1857,26 @@ document.querySelectorAll('a, button, .interest-card, .win-file, .humor-card, .b
 })();
 
 // ============================================================
-// IMAGE LIGHTBOX (file explorer preview click)
+// IMAGE LIGHTBOX
 // ============================================================
 const lbRatings = JSON.parse(localStorage.getItem('dssram-lb-ratings') || '{}');
 let lbCurrentKey = '';
 
-// Make wp-img images clickable
 document.querySelectorAll('.wp-img').forEach(img => {
   img.style.cursor = 'pointer';
   img.addEventListener('click', () => {
-    if (!img.src || img.src.endsWith('/') || img.getAttribute('src') === '') return;
+    if (!img.src || img.getAttribute('src') === '') return;
     openLightbox(img.src, img.alt || 'Design Work');
   });
 });
 
-// Also hook into future winSel calls — patch wp-img after winSel runs
-const _origWinSel = window.winSel;
-if (_origWinSel) {
-  window.winSel = function(el, key) {
-    _origWinSel(el, key);
-    setTimeout(() => {
-      document.querySelectorAll('.wp-img').forEach(img => {
-        img.style.cursor = 'pointer';
-        img.onclick = () => {
-          if (!img.src || img.getAttribute('src') === '') return;
-          openLightbox(img.src, img.alt || key);
-        };
-      });
-    }, 50);
-  };
-}
-
 function openLightbox(src, label) {
   lbCurrentKey = src;
   const lb = document.getElementById('img-lightbox');
-  const lbImg = document.getElementById('lb-img');
-  const lbLabel = document.getElementById('lb-label');
-  const lbThanks = document.getElementById('lb-thanks');
-  lbImg.src = src;
-  lbLabel.textContent = label;
-  lbThanks.style.display = 'none';
-  // restore saved rating
-  const saved = lbRatings[src] || 0;
-  updateStars(saved, false);
+  document.getElementById('lb-img').src = src;
+  document.getElementById('lb-label').textContent = label;
+  document.getElementById('lb-thanks').style.display = 'none';
+  updateStars(lbRatings[src] || 0, false);
   lb.classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -1924,80 +1888,65 @@ function closeLightbox() {
 function lbBgClick(e) {
   if (e.target === document.getElementById('img-lightbox')) closeLightbox();
 }
-
-// Star rating
-let lbHovering = false;
 document.querySelectorAll('.lb-star').forEach(star => {
-  star.addEventListener('mouseenter', () => {
-    const v = +star.dataset.v;
-    updateStars(v, true);
-  });
-  star.addEventListener('mouseleave', () => {
-    const saved = lbRatings[lbCurrentKey] || 0;
-    updateStars(saved, false);
-  });
+  star.addEventListener('mouseenter', () => updateStars(+star.dataset.v, true));
+  star.addEventListener('mouseleave', () => updateStars(lbRatings[lbCurrentKey] || 0, false));
   star.addEventListener('click', () => {
     const v = +star.dataset.v;
     lbRatings[lbCurrentKey] = v;
     localStorage.setItem('dssram-lb-ratings', JSON.stringify(lbRatings));
     updateStars(v, false);
-    const thanks = document.getElementById('lb-thanks');
-    thanks.style.display = 'block';
-    thanks.textContent = ['','⭐ Noted!','⭐⭐ Cool!','⭐⭐⭐ Nice!','⭐⭐⭐⭐ Love it!','⭐⭐⭐⭐⭐ You\'re too kind!'][v];
+    const t = document.getElementById('lb-thanks');
+    t.style.display = 'block';
+    t.textContent = ['','⭐ Noted!','⭐⭐ Cool!','⭐⭐⭐ Nice!','⭐⭐⭐⭐ Love it!','⭐⭐⭐⭐⭐ You\'re too kind!'][v];
   });
 });
 function updateStars(count, isHover) {
   document.querySelectorAll('.lb-star').forEach(s => {
-    s.classList.remove('lit', 'hover-lit');
+    s.classList.remove('lit','hover-lit');
     if (+s.dataset.v <= count) s.classList.add(isHover ? 'hover-lit' : 'lit');
   });
 }
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape' && document.getElementById('img-lightbox').classList.contains('open')) closeLightbox();
-});
 
 // ============================================================
-// 3D FLYING AUTHOR QUOTES (Books section)
+// 3D FLYING AUTHOR QUOTES
 // ============================================================
-(function initQuotes() {
+(function() {
   const scene = document.getElementById('quotes-scene');
   if (!scene) return;
   const quotes = [
     '"A reader lives a thousand lives before he dies."',
     '"Not all those who wander are lost."',
-    '"It is a truth universally acknowledged..."',
     '"So we beat on, boats against the current."',
-    '"To be or not to be, that is the question."',
-    '"All animals are equal, but some are more equal."',
     '"It was the best of times, it was the worst of times."',
     '"Imagination is more important than knowledge."',
-    '"The only way out of the labyrinth is to forgive."',
     '"We accept the love we think we deserve."',
     '"Time you enjoy wasting is not wasted time."',
-    '"Call me Ishmael."',
     '"Stay hungry, stay foolish."',
-    '"The journey of a thousand miles begins with one step."',
     '"There is no friend as loyal as a book."',
     '"Words are our most inexhaustible source of magic."',
     '"I am not afraid of storms, for I am learning to sail."',
     '"So many books, so little time."',
+    '"Call me Ishmael."',
+    '"To be or not to be, that is the question."',
+    '"All animals are equal, but some are more equal."',
+    '"The journey of a thousand miles begins with one step."',
+    '"In the beginning was the Word."',
+    '"It is a truth universally acknowledged..."',
   ];
-  quotes.forEach((q, i) => {
+  quotes.forEach(q => {
     const el = document.createElement('div');
     el.className = 'q-float';
     el.textContent = q;
-    const leftPct = (5 + Math.random() * 80).toFixed(1);
-    const dur     = (16 + Math.random() * 16).toFixed(1);
-    // Stagger all quotes so they're already mid-flight at page load
-    const delay   = (-(Math.random() * parseFloat(dur))).toFixed(1);
-    el.style.left = leftPct + '%';
-    el.style.setProperty('--dur', dur + 's');
-    el.style.setProperty('--delay', delay + 's');
+    const dur = (16 + Math.random() * 16).toFixed(1);
+    const delay = (-(Math.random() * parseFloat(dur))).toFixed(1);
+    el.style.left = (5 + Math.random() * 80).toFixed(1) + '%';
     el.style.animationDuration = dur + 's';
     el.style.animationDelay = delay + 's';
     scene.appendChild(el);
   });
 })();
+
 // ============================================================
 // NAV HAMBURGER
 // ============================================================
@@ -2024,56 +1973,19 @@ window.addEventListener('scroll', () => {
   const grid = document.getElementById('hero-grid');
   if (grid) grid.style.transform = `perspective(600px) rotateX(18deg) scale(1.3) translateY(${y*.13}px)`;
   const pu = document.querySelector('.photo-universe');
-  if (pu) pu.style.transform = `translateY(${y*.04}px)`;
+  if (pu && !pu.classList.contains('dragging')) pu.style.transform = `translateY(${y*.04}px)`;
 });
-function toggleIcForm(id) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.style.display = el.style.display === 'none' ? 'flex' : 'none';
-}
-function submitIcForm(key) {
-  const val = document.getElementById(key + '-val').value.trim();
-  const who = document.getElementById(key + '-who').value.trim() || 'anonymous';
-  if (!val) return;
-  const store = JSON.parse(localStorage.getItem('dssram-form-' + key) || '[]');
-  store.push({ val, name: who, ts: Date.now() });
-  localStorage.setItem('dssram-form-' + key, JSON.stringify(store));
-  document.getElementById(key + '-val').value = '';
-  document.getElementById(key + '-who').value = '';
-  const confirm = document.getElementById(key + '-confirm');
-  confirm.style.display = 'block';
-  setTimeout(() => { confirm.style.display = 'none'; }, 2800);
-}
 
 // ============================================================
-// GITHUB CONTRIBUTIONS MODAL
+// WINDOWS EXPLORER — FIXED winSel
 // ============================================================
-function openGhModal() {
-  document.getElementById('gh-modal').style.display = 'flex';
-  document.body.style.overflow = 'hidden';
-}
-function closeGhModal() {
-  document.getElementById('gh-modal').style.display = 'none';
-  document.body.style.overflow = '';
-}
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') {
-    closeGhModal();
-    closeLightbox();
-    closeAdmin();
-  }
-});
-// ============================================================
-// WINDOWS EXPLORER SELECT
-// ============================================================
-function winSel(el, msg) {
- const winData = {
-  designs: { name: 'Designs', desc: 'Original design work · Figma · Illustrations', meta: 'Type: Folder\nItems: 2\nPath: C:\\DSSRam\\Design\\' },
-  ui:      { name: 'UI Exploration', desc: 'Wireframes · Experiments · Component explorations', meta: 'Type: Folder\nItems: 2\nPath: C:\\DSSRam\\UI\\' },
-  content: { name: 'Content Creation', desc: 'Posts · Graphics · Reels · Thumbnails', meta: 'Type: Folder\nItems: 2\nPath: C:\\DSSRam\\Content\\' },
-  app:     { name: 'App Design', desc: 'App screens · User flows · Prototypes', meta: 'Type: Folder\nItems: 2\nPath: C:\\DSSRam\\Apps\\' },
-  motion:  { name: 'Motion.ae', desc: 'Motion graphics — dropping soon.', meta: 'Type: File\nStatus: In progress' },
-  brand:   { name: 'Brand Kit', desc: 'Brand guidelines — dropping soon.', meta: 'Type: Folder\nStatus: In progress' },
+const winData = {
+  designs: { name:'Designs', desc:'Original design work · Figma · Illustrations', meta:'Type: Folder\nPath: C:\\DSSRam\\Design\\' },
+  ui:      { name:'UI Exploration', desc:'Wireframes · Experiments · Component explorations', meta:'Type: Folder\nPath: C:\\DSSRam\\UI\\' },
+  content: { name:'Content Creation', desc:'Posts · Graphics · Reels · Thumbnails', meta:'Type: Folder\nPath: C:\\DSSRam\\Content\\' },
+  app:     { name:'App Design', desc:'App screens · User flows · Prototypes', meta:'Type: Folder\nPath: C:\\DSSRam\\Apps\\' },
+  motion:  { name:'Motion.ae', desc:'Motion graphics — dropping soon.', meta:'Status: In progress' },
+  brand:   { name:'Brand Kit', desc:'Brand guidelines — dropping soon.', meta:'Status: In progress' },
 };
 
 function winSel(el, key) {
@@ -2086,68 +1998,64 @@ function winSel(el, key) {
   document.querySelectorAll('.wp-section').forEach(s => s.style.display = 'none');
   const pane = document.getElementById('wp-' + key);
   if (pane) pane.style.display = 'block';
-  document.getElementById('win-status').textContent = '"' + d.name + '" selected · ' + (d.desc || '');
+  // make images in the pane clickable for lightbox
+  if (pane) pane.querySelectorAll('.wp-img').forEach(img => {
+    img.style.cursor = 'pointer';
+    img.onclick = () => {
+      if (!img.src || img.getAttribute('src') === '') return;
+      openLightbox(img.src, img.alt || d.name);
+    };
+  });
+  document.getElementById('win-status').textContent = '"' + (d.name||key) + '" selected · ' + (d.desc || '');
 }
-// init
-winSel(document.querySelector('.win-file.selected'), 'designs');
-}
+// init on load
+const initSelected = document.querySelector('.win-file.selected');
+if (initSelected) winSel(initSelected, 'designs');
 
 // ============================================================
-// CLOCK (live)
+// CLOCK
 // ============================================================
 const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
 const DAYS = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
 function updateClock() {
   const n = new Date();
-  const h = String(n.getHours()).padStart(2,'0');
-  const m = String(n.getMinutes()).padStart(2,'0');
-  const s = String(n.getSeconds()).padStart(2,'0');
-  document.getElementById('clk-time').textContent = h+':'+m+':'+s;
-  document.getElementById('clk-date').textContent = DAYS[n.getDay()]+' '+String(n.getDate()).padStart(2,'0')+' '+MONTHS[n.getMonth()]+' '+n.getFullYear();
+  document.getElementById('clk-time').textContent =
+    String(n.getHours()).padStart(2,'0') + ':' +
+    String(n.getMinutes()).padStart(2,'0') + ':' +
+    String(n.getSeconds()).padStart(2,'0');
+  document.getElementById('clk-date').textContent =
+    DAYS[n.getDay()] + ' ' + String(n.getDate()).padStart(2,'0') + ' ' +
+    MONTHS[n.getMonth()] + ' ' + n.getFullYear();
 }
 updateClock(); setInterval(updateClock, 1000);
 
 // ============================================================
-// STARS (night sky in footer)
+// FOOTER STARS
 // ============================================================
-(function initStars() {
+(function() {
   const sc = document.getElementById('stars-layer');
   const footer = document.getElementById('footer');
-  function resizeStars() {
-    sc.width = footer.offsetWidth;
-    sc.height = footer.offsetHeight;
-    drawStars();
+  function resize() {
+    sc.width = footer.offsetWidth; sc.height = footer.offsetHeight; draw();
   }
-  function drawStars() {
-    const sctx = sc.getContext('2d');
-    sctx.clearRect(0,0,sc.width,sc.height);
-    // Stars appear in top 60% of footer (the sky part)
+  function draw() {
+    const ctx = sc.getContext('2d');
+    ctx.clearRect(0,0,sc.width,sc.height);
     for (let i = 0; i < 180; i++) {
-      const x = Math.random() * sc.width;
-      const y = Math.random() * sc.height * 0.65;
-      const r = Math.random() * 1.5 + 0.3;
-      const a = Math.random() * 0.8 + 0.2;
-      sctx.beginPath();
-      sctx.arc(x, y, r, 0, Math.PI*2);
-      sctx.fillStyle = `rgba(255,255,220,${a})`;
-      sctx.fill();
+      const x = Math.random()*sc.width, y = Math.random()*sc.height*.65;
+      const r = Math.random()*1.5+.3, a = Math.random()*.8+.2;
+      ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2);
+      ctx.fillStyle = `rgba(255,255,220,${a})`; ctx.fill();
     }
   }
-  resizeStars();
-  window.addEventListener('resize', resizeStars);
-  // Twinkling
+  resize(); window.addEventListener('resize', resize);
   setInterval(() => {
-    const sctx = sc.getContext('2d');
-    sctx.clearRect(0,0,sc.width,sc.height);
+    const ctx = sc.getContext('2d'); ctx.clearRect(0,0,sc.width,sc.height);
     for (let i = 0; i < 180; i++) {
-      const x = (Math.sin(i*1234.567)*0.5+0.5)*sc.width;
-      const y = (Math.sin(i*987.654)*0.5+0.5)*sc.height*0.65;
-      const r = Math.random()*1.5+0.2;
-      const a = Math.random()*0.7+0.15;
-      sctx.beginPath();
-      sctx.arc(x, y, r, 0, Math.PI*2);
-      sctx.fillStyle = `rgba(255,255,215,${a})`;
-      sctx.fill();
+      const x = (Math.sin(i*1234.567)*.5+.5)*sc.width;
+      const y = (Math.sin(i*987.654)*.5+.5)*sc.height*.65;
+      ctx.beginPath(); ctx.arc(x,y,Math.random()*1.5+.2,0,Math.PI*2);
+      ctx.fillStyle = `rgba(255,255,215,${Math.random()*.7+.15})`; ctx.fill();
     }
   }, 1800);
 })();
@@ -2157,7 +2065,7 @@ updateClock(); setInterval(updateClock, 1000);
 // ============================================================
 const dcanvas = document.getElementById('doodle-canvas');
 const dctx = dcanvas.getContext('2d');
-let painting = false, dtool = 'draw', dcolor = '#0a0a0a', dbsize = 6;
+let painting=false, dtool='draw', dcolor='#0a0a0a', dbsize=6;
 function resizeDCanvas() {
   const data = dcanvas.toDataURL();
   dcanvas.width = dcanvas.offsetWidth;
@@ -2181,15 +2089,15 @@ dcolors.forEach((c,i) => {
 document.getElementById('brush-sz').addEventListener('input', e => dbsize = e.target.value);
 function getDP(e) {
   const r = dcanvas.getBoundingClientRect();
-  if(e.touches) return {x:e.touches[0].clientX-r.left,y:e.touches[0].clientY-r.top};
-  return {x:e.clientX-r.left,y:e.clientY-r.top};
+  if(e.touches) return {x:e.touches[0].clientX-r.left, y:e.touches[0].clientY-r.top};
+  return {x:e.clientX-r.left, y:e.clientY-r.top};
 }
 dcanvas.addEventListener('mousedown', e=>{painting=true;const p=getDP(e);dctx.beginPath();dctx.moveTo(p.x,p.y);});
 dcanvas.addEventListener('touchstart',e=>{e.preventDefault();painting=true;const p=getDP(e);dctx.beginPath();dctx.moveTo(p.x,p.y);},{passive:false});
 function doDraw(e) {
   if(!painting) return;
-  const p = getDP(e);
-  dctx.lineWidth = dbsize; dctx.lineCap='round'; dctx.lineJoin='round';
+  const p=getDP(e);
+  dctx.lineWidth=dbsize; dctx.lineCap='round'; dctx.lineJoin='round';
   if(dtool==='erase'){dctx.globalCompositeOperation='destination-out';dctx.strokeStyle='rgba(0,0,0,1)';}
   else{dctx.globalCompositeOperation='source-over';dctx.strokeStyle=dcolor;}
   dctx.lineTo(p.x,p.y); dctx.stroke(); dctx.beginPath(); dctx.moveTo(p.x,p.y);
@@ -2208,72 +2116,47 @@ function clearC(){dctx.globalCompositeOperation='source-over';dctx.clearRect(0,0
 function dlDoodle(){const a=document.createElement('a');a.download='doodle-dssram.png';a.href=dcanvas.toDataURL();a.click();}
 
 // ============================================================
-// FEEDBACK / STICKY NOTES (shown inside panel only)
+// FEEDBACK PANEL (UI only — saving handled by Firebase module)
 // ============================================================
 let fbOpen = false;
-const sn_c = ['sn-0','sn-1','sn-2','sn-3','sn-4'];
-const savedNotes = JSON.parse(localStorage.getItem('dssram-notes')||'[]');
 function toggleFb() {
   fbOpen = !fbOpen;
   document.getElementById('feedback-panel').classList.toggle('open', fbOpen);
 }
-function addNote() {
-  const text = document.getElementById('fb-text').value.trim();
-  const name = document.getElementById('fb-name').value.trim() || 'anonymous weirdo';
-  if(!text) return;
-  const n = {text, name, color: sn_c[savedNotes.length % 5]};
-  savedNotes.push(n);
-  localStorage.setItem('dssram-notes', JSON.stringify(savedNotes));
-  renderNote(n);
-  document.getElementById('fb-text').value='';
-  document.getElementById('fb-name').value='';
+function toggleIcForm(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.display = el.style.display === 'none' ? 'flex' : 'none';
 }
-function renderNote(n) {
-  const list = document.getElementById('fb-notes-list');
-  const head = document.getElementById('fb-notes-head');
-  head.style.display = 'block';
-  const el = document.createElement('div');
-  el.className = 'sticky-note ' + n.color;
-  el.innerHTML = n.text + '<span class="sticky-note-from">— ' + n.name + '</span>';
-  list.prepend(el);
-}
-savedNotes.forEach(renderNote);
 
 // ============================================================
-// BOOK / MOVIE SUGGEST (saves to localStorage, NOT shown publicly)
+// BOOK/MOVIE SUGGEST — tab switching (saving handled by Firebase module)
 // ============================================================
-let sugTab = 'book';
-const suggestions = JSON.parse(localStorage.getItem('dssram-suggestions')||'[]');
+window._sugTab = 'book';
 function switchTab(tab, el) {
-  sugTab = tab;
+  window._sugTab = tab;
   document.querySelectorAll('.stab').forEach(s => s.classList.remove('active'));
   el.classList.add('active');
 }
-function addSuggestion() {
-  const title = document.getElementById('sug-title').value.trim();
-  const why = document.getElementById('sug-why').value.trim();
-  const name = document.getElementById('sug-name').value.trim() || 'a fan';
-  if(!title) return;
-  const s = {title, why, name, type: sugTab, ts: Date.now()};
-  suggestions.push(s);
-  localStorage.setItem('dssram-suggestions', JSON.stringify(suggestions));
-  document.getElementById('sug-title').value='';
-  document.getElementById('sug-why').value='';
-  document.getElementById('sug-name').value='';
-  const cnt = document.getElementById('sug-count');
-  cnt.style.display = 'block';
-  cnt.textContent = '✓ Sent! Shanmukh will check it out.';
-  setTimeout(()=>{ cnt.style.display='none'; }, 3000);
+
+// ============================================================
+// GITHUB CONTRIBUTIONS MODAL
+// ============================================================
+function openGhModal() {
+  document.getElementById('gh-modal').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closeGhModal() {
+  document.getElementById('gh-modal').style.display = 'none';
+  document.body.style.overflow = '';
 }
 
 // ============================================================
-// ADMIN AUTH (hidden — click the · in footer 5 times)
+// ADMIN AUTH TRIGGER (5 clicks on door)
 // ============================================================
 let _atc = 0, _atimer;
-// obfuscated creds (btoa)
-const _AU = 'ZHNzcmFtMjQ=';   // dssram24
+const _AU = 'ZHNzcmFtMjQ=';    // dssram24
 const _AP = 'Q2hhbnRpMTIzKg=='; // Chanti123*
-let _adminOpen = false;
 
 function adminTriggerClick() {
   _atc++;
@@ -2285,19 +2168,21 @@ function adminTriggerClick() {
   }
   _atimer = setTimeout(() => _atc = 0, 1800);
 }
+
 function closeAdmin() {
   document.getElementById('admin-modal').classList.remove('open');
   document.getElementById('admin-err').style.display = 'none';
   document.getElementById('admin-user').value = '';
   document.getElementById('admin-pass').value = '';
   document.getElementById('admin-dashboard').style.display = 'none';
-  document.getElementById('admin-panel-sug').style.display = 'none';
-  document.getElementById('admin-panel-pl').style.display = 'none';
-  document.getElementById('admin-panel-fit').style.display = 'none';
-  document.getElementById('admin-panel-qt').style.display = 'none';
+  ['sug','pl','fit','qt'].forEach(k => {
+    const p = document.getElementById('admin-panel-' + k);
+    if (p) p.style.display = 'none';
+  });
   document.getElementById('admin-login-form').style.display = 'block';
   document.getElementById('admin-title').textContent = '// ADMIN ACCESS';
 }
+
 function adminLogin() {
   const u = document.getElementById('admin-user').value.trim();
   const p = document.getElementById('admin-pass').value;
@@ -2305,260 +2190,105 @@ function adminLogin() {
     document.getElementById('admin-login-form').style.display = 'none';
     document.getElementById('admin-err').style.display = 'none';
     document.getElementById('admin-title').textContent = '// SUGGESTIONS INBOX';
-    renderAdminSuggestions();
     document.getElementById('admin-dashboard').style.display = 'block';
+    // adminTab is defined in the Firebase module and exposed to window
+    if (window.adminTab) {
+      window.adminTab('sug', document.querySelector('#admin-dashboard .stab'));
+    }
   } else {
     const err = document.getElementById('admin-err');
     err.style.display = 'block';
-    err.textContent = 'Access denied. Wrong credentials.';
+    err.textContent = 'Access denied.';
     document.getElementById('admin-pass').value = '';
   }
 }
-function renderAdminSuggestions() {
-  adminTab('sug', document.querySelector('#admin-dashboard .stab'));
-}
 
-let _curAdminTab = 'sug';
-function adminTab(key, el) {
-  _curAdminTab = key;
-  // Switch tab highlight
-  document.querySelectorAll('#admin-dashboard .stab').forEach(s => s.classList.remove('active'));
-  if (el) el.classList.add('active');
-  // Hide all panels
-  ['sug','pl','fit','qt'].forEach(k => {
-    const p = document.getElementById('admin-panel-' + k);
-    if (p) p.style.display = 'none';
-  });
-  const panel = document.getElementById('admin-panel-' + key);
-  if (!panel) return;
-  panel.style.display = 'flex';
-  panel.innerHTML = '';
-
-  const header = document.getElementById('admin-tab-header');
-
- if (key === 'sug') {
-
-  const q = await getDocs(collection(db, "suggestions"));
-
-  const all = [];
-
-  q.forEach(doc => {
-    all.push(doc.data());
-  });
-
-  header.textContent =
-    all.length + ' book/movie suggestion' +
-    (all.length !== 1 ? 's' : '');
-
-  if (!all.length) {
-    panel.innerHTML =
-      '<div class="admin-sug-empty">No suggestions yet. 🫙</div>';
-    return;
-  }
-
-  [...all].reverse().forEach(s => {
-
-    const d = document.createElement('div');
-    d.className = 'admin-sug-item';
-
-    const date =
-      s.ts ? new Date(s.ts).toLocaleDateString() : '—';
-
-    d.innerHTML = `
-      <div class="admin-sug-type">
-        ${s.type === 'book' ? '📖 Book' : '🎬 Movie'} · ${date}
-      </div>
-
-      <div class="admin-sug-title">
-        ${s.title}
-      </div>
-
-      ${s.why
-        ? `<div class="admin-sug-why">${s.why}</div>`
-        : ''}
-
-      <div class="admin-sug-from">
-        — ${s.name}
-      </div>
-    `;
-
-    panel.appendChild(d);
-
-  });
-
-} else if (key === 'pl') {
-
-  const q = await getDocs(collection(db, "submissions"));
-
-  const all = [];
-
-  q.forEach(doc => {
-    const data = doc.data();
-
-    if (data.type === "playlist") {
-      all.push(data);
-    }
-  });
-
-  header.textContent =
-    all.length + ' playlist' +
-    (all.length !== 1 ? 's' : '') +
-    ' shared';
-
-  if (!all.length) {
-    panel.innerHTML =
-      '<div class="admin-sug-empty">No playlists yet. 🎵</div>';
-    return;
-  }
-
-  [...all].reverse().forEach(s => {
-
-    const d = document.createElement('div');
-
-    d.className = 'admin-sug-item';
-
-    d.innerHTML = `
-      <div class="admin-sug-type">
-        🎧 Playlist
-      </div>
-
-      <div class="admin-sug-title">
-        ${s.value}
-      </div>
-
-      <div class="admin-sug-from">
-        — ${s.name}
-      </div>
-    `;
-
-    panel.appendChild(d);
-
-  });
-
-} else if (key === 'fit') {
-
-  const q = await getDocs(collection(db, "submissions"));
-
-  const all = [];
-
-  q.forEach(doc => {
-
-    const data = doc.data();
-
-    if (data.type === "fitness") {
-      all.push(data);
-    }
-
-  });
-
-  header.textContent =
-    all.length + ' routine' +
-    (all.length !== 1 ? 's' : '') +
-    ' submitted';
-
-  if (!all.length) {
-
-    panel.innerHTML =
-      '<div class="admin-sug-empty">No routines yet. 💪</div>';
-
-    return;
-  }
-
-  [...all].reverse().forEach(s => {
-
-    const d = document.createElement('div');
-
-    d.className = 'admin-sug-item';
-
-    d.innerHTML = `
-      <div class="admin-sug-type">
-        💪 Routine
-      </div>
-
-      <div class="admin-sug-title"
-           style="font-size:.85rem;">
-        ${s.value}
-      </div>
-
-      <div class="admin-sug-from">
-        — ${s.name}
-      </div>
-    `;
-
-    panel.appendChild(d);
-
-  });
-
-} else if (key === 'qt') {
-
-  const q = await getDocs(collection(db, "submissions"));
-
-  const all = [];
-
-  q.forEach(doc => {
-
-    const data = doc.data();
-
-    if (data.type === "quote") {
-      all.push(data);
-    }
-
-  });
-
-  header.textContent =
-    all.length + ' quote' +
-    (all.length !== 1 ? 's' : '') +
-    ' dropped';
-
-  if (!all.length) {
-
-    panel.innerHTML =
-      '<div class="admin-sug-empty">No quotes yet. 💬</div>';
-
-    return;
-  }
-
-  [...all].reverse().forEach(s => {
-
-    const d = document.createElement('div');
-
-    d.className = 'admin-sug-item';
-
-    d.style.borderLeftColor = '#FFD580';
-
-    d.innerHTML = `
-      <div class="admin-sug-type"
-           style="color:#FFD580;">
-
-        💬 Quote
-
-      </div>
-
-      <div class="admin-sug-title"
-           style="
-             font-family:'Playfair Display',serif;
-             font-style:italic;
-             font-size:.95rem;
-           ">
-
-        "${s.value}"
-
-      </div>
-
-      <div class="admin-sug-from">
-        — ${s.name}
-      </div>
-    `;
-
-    panel.appendChild(d);
-
-  });
-
-}
-// admin Enter key
 document.getElementById('admin-pass').addEventListener('keydown', e => {
   if (e.key === 'Enter') adminLogin();
 });
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeGhModal();
+    closeLightbox();
+    closeAdmin();
+  }
+});
+
+// ============================================================
+// NIGHT SKY — scroll-triggered stars + meteors on dark sections
+// ============================================================
+(function() {
+  const canvas = document.getElementById('night-sky-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, stars=[], meteors=[], raf, active=false, spawnInterval;
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+    buildStars();
+  }
+  function buildStars() {
+    stars = [];
+    for (let i=0;i<200;i++) stars.push({
+      x:Math.random()*W, y:Math.random()*H,
+      r:Math.random()*1.4+.2, a:Math.random(),
+      da:(Math.random()*.008+.003)*(Math.random()<.5?1:-1), z:Math.random()
+    });
+  }
+  function spawnMeteor() {
+    meteors.push({
+      x:Math.random()*W*1.4-W*.2, y:-20,
+      vx:3+Math.random()*5, vy:4+Math.random()*6,
+      len:80+Math.random()*140, alpha:1,
+      width:.8+Math.random()*1.2, bright:Math.random()<.2
+    });
+  }
+  function drawFrame() {
+    ctx.clearRect(0,0,W,H);
+    stars.forEach(s => {
+      s.a = Math.max(.05, Math.min(1, s.a+s.da));
+      if (s.a<=.05||s.a>=1) s.da*=-1;
+      ctx.beginPath(); ctx.arc(s.x,s.y,s.r*(.5+s.z*.5),0,Math.PI*2);
+      ctx.fillStyle = s.z>.7?`rgba(255,230,180,${s.a*.85})`:`rgba(220,225,255,${s.a*.7})`;
+      ctx.fill();
+    });
+    meteors = meteors.filter(m => m.alpha>.02 && m.x<W+100 && m.y<H+100);
+    meteors.forEach(m => {
+      const hyp = Math.hypot(m.vx,m.vy);
+      const tx=m.x-(m.vx/hyp)*m.len, ty=m.y-(m.vy/hyp)*m.len;
+      const g = ctx.createLinearGradient(tx,ty,m.x,m.y);
+      if (m.bright) { g.addColorStop(0,`rgba(255,220,120,0)`); g.addColorStop(.6,`rgba(255,180,80,${m.alpha*.5})`); g.addColorStop(1,`rgba(255,240,200,${m.alpha})`); }
+      else { g.addColorStop(0,`rgba(180,200,255,0)`); g.addColorStop(1,`rgba(220,230,255,${m.alpha})`); }
+      ctx.beginPath(); ctx.moveTo(tx,ty); ctx.lineTo(m.x,m.y);
+      ctx.strokeStyle=g; ctx.lineWidth=m.width*(m.bright?1.8:1); ctx.stroke();
+      ctx.beginPath(); ctx.arc(m.x,m.y,m.bright?2.2:1.2,0,Math.PI*2);
+      ctx.fillStyle=m.bright?`rgba(255,220,150,${m.alpha})`:`rgba(200,220,255,${m.alpha})`; ctx.fill();
+      m.x+=m.vx; m.y+=m.vy; m.alpha-=.016;
+    });
+    raf = requestAnimationFrame(drawFrame);
+  }
+  function startSky() {
+    if (active) return; active=true;
+    canvas.style.opacity='1'; buildStars(); drawFrame(); spawnMeteor();
+    spawnInterval=setInterval(()=>{ if(Math.random()<.6)spawnMeteor(); if(Math.random()<.2)spawnMeteor(); },900);
+  }
+  function stopSky() {
+    if (!active) return; active=false;
+    canvas.style.opacity='0'; cancelAnimationFrame(raf); clearInterval(spawnInterval);
+    ctx.clearRect(0,0,W,H);
+  }
+  const darkSections = document.querySelectorAll('#humor,#books,#footer');
+  const visibleDark = new Set();
+  const nightObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) visibleDark.add(e.target.id); else visibleDark.delete(e.target.id); });
+    visibleDark.size > 0 ? startSky() : stopSky();
+  }, { threshold: 0.08 });
+  darkSections.forEach(s => nightObs.observe(s));
+  window.addEventListener('resize', resize);
+  resize();
+})();
 </script>
 <!-- FIXED 3D DOOR — always bottom-left of viewport -->
 <div class="door-3d-wrap" onclick="adminTriggerClick()" title="">
