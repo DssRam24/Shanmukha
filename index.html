@@ -1805,23 +1805,28 @@ nav {
 // ============================================================
 // PIXEL CURSOR
 // ============================================================
-const curEl = document.getElementById('px-cursor');
+const curEl   = document.getElementById('px-cursor');
 const trailEl = document.getElementById('px-trail');
+
 document.addEventListener('mousemove', e => {
-  curEl.style.left = (e.clientX - 5) + 'px';
-  curEl.style.top  = (e.clientY - 5) + 'px';
+  curEl.style.left   = (e.clientX - 5) + 'px';
+  curEl.style.top    = (e.clientY - 5) + 'px';
   trailEl.style.left = (e.clientX - 3) + 'px';
   trailEl.style.top  = (e.clientY - 3) + 'px';
 });
-document.querySelectorAll('a,button,.interest-card,.win-file,.humor-card,.book-card,.tool-btn,.color-swatch,.social-link,.stab,.win-mi,.win-btn,.humor-mini').forEach(el => {
+
+document.querySelectorAll(
+  'a,button,.interest-card,.win-file,.humor-card,.book-card,' +
+  '.tool-btn,.color-swatch,.social-link,.stab,.win-mi,.win-btn,.humor-mini'
+).forEach(el => {
   el.addEventListener('mouseenter', () => curEl.classList.add('hover'));
   el.addEventListener('mouseleave', () => curEl.classList.remove('hover'));
 });
 
 // ============================================================
-// MULTILANGUAGE GREETING
+// MULTILANGUAGE GREETING ROTATOR
 // ============================================================
-(function() {
+(function initGreeting() {
   const words = document.querySelectorAll('.greeting-word');
   let cur = 0;
   setInterval(() => {
@@ -1834,104 +1839,132 @@ document.querySelectorAll('a,button,.interest-card,.win-file,.humor-card,.book-c
 // ============================================================
 // DRAGGABLE PHOTO
 // ============================================================
-(function() {
+(function initPhotoDrag() {
   const el = document.getElementById('photo-drag');
   if (!el) return;
-  let dragging = false, startX, startY, tx = 0, ty = 0, lastTx = 0, lastTy = 0;
+  let dragging = false, startX = 0, startY = 0,
+      tx = 0, ty = 0, lastTx = 0, lastTy = 0;
+
   el.addEventListener('mousedown', e => {
     dragging = true;
-    startX = e.clientX - lastTx; startY = e.clientY - lastTy;
-    el.classList.add('dragging'); el.style.transition = 'none'; e.preventDefault();
+    startX = e.clientX - lastTx;
+    startY = e.clientY - lastTy;
+    el.classList.add('dragging');
+    el.style.transition = 'none';
+    e.preventDefault();
   });
+
   el.addEventListener('touchstart', e => {
     dragging = true;
-    startX = e.touches[0].clientX - lastTx; startY = e.touches[0].clientY - lastTy;
-    el.classList.add('dragging'); el.style.transition = 'none';
+    startX = e.touches[0].clientX - lastTx;
+    startY = e.touches[0].clientY - lastTy;
+    el.classList.add('dragging');
+    el.style.transition = 'none';
   }, { passive: true });
+
   document.addEventListener('mousemove', e => {
     if (!dragging) return;
-    tx = e.clientX - startX; ty = e.clientY - startY;
-    el.style.transform = `translate(${tx}px,${ty}px)`;
+    tx = e.clientX - startX;
+    ty = e.clientY - startY;
+    el.style.transform = 'translate(' + tx + 'px,' + ty + 'px)';
   });
+
   document.addEventListener('touchmove', e => {
     if (!dragging) return;
-    tx = e.touches[0].clientX - startX; ty = e.touches[0].clientY - startY;
-    el.style.transform = `translate(${tx}px,${ty}px)`;
+    tx = e.touches[0].clientX - startX;
+    ty = e.touches[0].clientY - startY;
+    el.style.transform = 'translate(' + tx + 'px,' + ty + 'px)';
   }, { passive: true });
+
   function stopDrag() {
     if (!dragging) return;
-    dragging = false; lastTx = tx; lastTy = ty;
+    dragging = false;
+    lastTx = tx; lastTy = ty;
     el.classList.remove('dragging');
     el.style.transition = 'transform .25s cubic-bezier(.23,1,.32,1)';
   }
-  document.addEventListener('mouseup', stopDrag);
+  document.addEventListener('mouseup',  stopDrag);
   document.addEventListener('touchend', stopDrag);
+
   el.addEventListener('dblclick', () => {
     tx = 0; ty = 0; lastTx = 0; lastTy = 0;
     el.style.transition = 'transform .5s cubic-bezier(.23,1,.32,1)';
-    el.style.transform = 'translate(0,0)';
+    el.style.transform  = 'translate(0,0)';
   });
 })();
 
 // ============================================================
 // IMAGE LIGHTBOX
 // ============================================================
-const lbRatings = JSON.parse(localStorage.getItem('dssram-lb-ratings') || '{}');
-let lbCurrentKey = '';
+var lbRatings    = JSON.parse(localStorage.getItem('dssram-lb-ratings') || '{}');
+var lbCurrentKey = '';
 
-document.querySelectorAll('.wp-img').forEach(img => {
+function openLightbox(src, label) {
+  lbCurrentKey = src;
+  document.getElementById('lb-img').src           = src;
+  document.getElementById('lb-label').textContent  = label || '';
+  document.getElementById('lb-thanks').style.display = 'none';
+  updateStars(lbRatings[src] || 0, false);
+  document.getElementById('img-lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  document.getElementById('img-lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+  setTimeout(function() {
+    document.getElementById('lb-img').src = '';
+  }, 400);
+}
+
+function lbBgClick(e) {
+  if (e.target === document.getElementById('img-lightbox')) closeLightbox();
+}
+
+function updateStars(count, isHover) {
+  document.querySelectorAll('.lb-star').forEach(function(s) {
+    s.classList.remove('lit', 'hover-lit');
+    if (+s.dataset.v <= count) {
+      s.classList.add(isHover ? 'hover-lit' : 'lit');
+    }
+  });
+}
+
+document.querySelectorAll('.lb-star').forEach(function(star) {
+  star.addEventListener('mouseenter', function() {
+    updateStars(+star.dataset.v, true);
+  });
+  star.addEventListener('mouseleave', function() {
+    updateStars(lbRatings[lbCurrentKey] || 0, false);
+  });
+  star.addEventListener('click', function() {
+    var v = +star.dataset.v;
+    lbRatings[lbCurrentKey] = v;
+    localStorage.setItem('dssram-lb-ratings', JSON.stringify(lbRatings));
+    updateStars(v, false);
+    var t = document.getElementById('lb-thanks');
+    t.style.display  = 'block';
+    t.textContent = ['','⭐ Noted!','⭐⭐ Cool!','⭐⭐⭐ Nice!',
+                     '⭐⭐⭐⭐ Love it!','⭐⭐⭐⭐⭐ Too kind!'][v];
+  });
+});
+
+// Make wp-img elements open lightbox on click
+document.querySelectorAll('.wp-img').forEach(function(img) {
   img.style.cursor = 'pointer';
-  img.addEventListener('click', () => {
+  img.addEventListener('click', function() {
     if (!img.src || img.getAttribute('src') === '') return;
     openLightbox(img.src, img.alt || 'Design Work');
   });
 });
 
-function openLightbox(src, label) {
-  lbCurrentKey = src;
-  const lb = document.getElementById('img-lightbox');
-  document.getElementById('lb-img').src = src;
-  document.getElementById('lb-label').textContent = label;
-  document.getElementById('lb-thanks').style.display = 'none';
-  updateStars(lbRatings[src] || 0, false);
-  lb.classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeLightbox() {
-  document.getElementById('img-lightbox').classList.remove('open');
-  document.body.style.overflow = '';
-  setTimeout(() => { document.getElementById('lb-img').src = ''; }, 400);
-}
-function lbBgClick(e) {
-  if (e.target === document.getElementById('img-lightbox')) closeLightbox();
-}
-document.querySelectorAll('.lb-star').forEach(star => {
-  star.addEventListener('mouseenter', () => updateStars(+star.dataset.v, true));
-  star.addEventListener('mouseleave', () => updateStars(lbRatings[lbCurrentKey] || 0, false));
-  star.addEventListener('click', () => {
-    const v = +star.dataset.v;
-    lbRatings[lbCurrentKey] = v;
-    localStorage.setItem('dssram-lb-ratings', JSON.stringify(lbRatings));
-    updateStars(v, false);
-    const t = document.getElementById('lb-thanks');
-    t.style.display = 'block';
-    t.textContent = ['','⭐ Noted!','⭐⭐ Cool!','⭐⭐⭐ Nice!','⭐⭐⭐⭐ Love it!','⭐⭐⭐⭐⭐ You\'re too kind!'][v];
-  });
-});
-function updateStars(count, isHover) {
-  document.querySelectorAll('.lb-star').forEach(s => {
-    s.classList.remove('lit','hover-lit');
-    if (+s.dataset.v <= count) s.classList.add(isHover ? 'hover-lit' : 'lit');
-  });
-}
-
 // ============================================================
-// 3D FLYING AUTHOR QUOTES
+// 3D FLYING AUTHOR QUOTES (Books section)
 // ============================================================
-(function() {
-  const scene = document.getElementById('quotes-scene');
+(function initQuotes() {
+  var scene = document.getElementById('quotes-scene');
   if (!scene) return;
-  const quotes = [
+  var quotes = [
     '"A reader lives a thousand lives before he dies."',
     '"Not all those who wander are lost."',
     '"So we beat on, boats against the current."',
@@ -1951,15 +1984,15 @@ function updateStars(count, isHover) {
     '"In the beginning was the Word."',
     '"It is a truth universally acknowledged..."',
   ];
-  quotes.forEach(q => {
-    const el = document.createElement('div');
+  quotes.forEach(function(q) {
+    var el  = document.createElement('div');
     el.className = 'q-float';
     el.textContent = q;
-    const dur = (16 + Math.random() * 16).toFixed(1);
-    const delay = (-(Math.random() * parseFloat(dur))).toFixed(1);
-    el.style.left = (5 + Math.random() * 80).toFixed(1) + '%';
-    el.style.animationDuration = dur + 's';
-    el.style.animationDelay = delay + 's';
+    var dur   = (16 + Math.random() * 16).toFixed(1);
+    var delay = (-(Math.random() * parseFloat(dur))).toFixed(1);
+    el.style.left             = (5 + Math.random() * 80).toFixed(1) + '%';
+    el.style.animationDuration = dur   + 's';
+    el.style.animationDelay   = delay + 's';
     scene.appendChild(el);
   });
 })();
@@ -1970,109 +2003,181 @@ function updateStars(count, isHover) {
 function toggleNav() {
   document.getElementById('nav-links').classList.toggle('open');
 }
-document.addEventListener('click', e => {
-  if (!e.target.closest('nav')) document.getElementById('nav-links').classList.remove('open');
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('nav')) {
+    document.getElementById('nav-links').classList.remove('open');
+  }
 });
 
 // ============================================================
 // SCROLL REVEAL
 // ============================================================
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+var revealObs = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) {
+    if (e.isIntersecting) e.target.classList.add('visible');
+  });
 }, { threshold: 0.1 });
-document.querySelectorAll('.reveal,.reveal-l').forEach(el => obs.observe(el));
+
+document.querySelectorAll('.reveal, .reveal-l').forEach(function(el) {
+  revealObs.observe(el);
+});
 
 // ============================================================
 // PARALLAX
 // ============================================================
-window.addEventListener('scroll', () => {
-  const y = window.scrollY;
-  const grid = document.getElementById('hero-grid');
-  if (grid) grid.style.transform = `perspective(600px) rotateX(18deg) scale(1.3) translateY(${y*.13}px)`;
-  const pu = document.querySelector('.photo-universe');
-  if (pu && !pu.classList.contains('dragging')) pu.style.transform = `translateY(${y*.04}px)`;
+window.addEventListener('scroll', function() {
+  var y    = window.scrollY;
+  var grid = document.getElementById('hero-grid');
+  var pu   = document.querySelector('.photo-universe');
+  if (grid) {
+    grid.style.transform =
+      'perspective(600px) rotateX(18deg) scale(1.3) translateY(' + (y * 0.13) + 'px)';
+  }
+  if (pu && !pu.classList.contains('dragging')) {
+    pu.style.transform = 'translateY(' + (y * 0.04) + 'px)';
+  }
 });
 
 // ============================================================
-// WINDOWS EXPLORER — FIXED winSel
+// WINDOWS EXPLORER — winSel (single clean declaration)
 // ============================================================
-const winData = {
-  designs: { name:'Designs', desc:'Original design work · Figma · Illustrations', meta:'Type: Folder\nPath: C:\\DSSRam\\Design\\' },
-  ui:      { name:'UI Exploration', desc:'Wireframes · Experiments · Component explorations', meta:'Type: Folder\nPath: C:\\DSSRam\\UI\\' },
-  content: { name:'Content Creation', desc:'Posts · Graphics · Reels · Thumbnails', meta:'Type: Folder\nPath: C:\\DSSRam\\Content\\' },
-  app:     { name:'App Design', desc:'App screens · User flows · Prototypes', meta:'Type: Folder\nPath: C:\\DSSRam\\Apps\\' },
-  motion:  { name:'Motion.ae', desc:'Motion graphics — dropping soon.', meta:'Status: In progress' },
-  brand:   { name:'Brand Kit', desc:'Brand guidelines — dropping soon.', meta:'Status: In progress' },
+var winData = {
+  designs: {
+    name: 'Designs',
+    desc: 'Original design work · Figma · Illustrations',
+    meta: 'Type: Folder\nPath: C:\\DSSRam\\Design\\'
+  },
+  ui: {
+    name: 'UI Exploration',
+    desc: 'Wireframes · Experiments · Component explorations',
+    meta: 'Type: Folder\nPath: C:\\DSSRam\\UI\\'
+  },
+  content: {
+    name: 'Content Creation',
+    desc: 'Posts · Graphics · Reels · Thumbnails',
+    meta: 'Type: Folder\nPath: C:\\DSSRam\\Content\\'
+  },
+  app: {
+    name: 'App Design',
+    desc: 'App screens · User flows · Prototypes',
+    meta: 'Type: Folder\nPath: C:\\DSSRam\\Apps\\'
+  },
+  motion: {
+    name: 'Motion.ae',
+    desc: 'Motion graphics — dropping soon.',
+    meta: 'Status: In progress'
+  },
+  brand: {
+    name: 'Brand Kit',
+    desc: 'Brand guidelines — dropping soon.',
+    meta: 'Status: In progress'
+  }
 };
 
 function winSel(el, key) {
-  document.querySelectorAll('.win-file').forEach(f => f.classList.remove('selected'));
+  document.querySelectorAll('.win-file').forEach(function(f) {
+    f.classList.remove('selected');
+  });
   el.classList.add('selected');
-  const d = winData[key] || {};
+
+  var d = winData[key] || {};
   document.getElementById('wp-name').textContent = d.name || '';
   document.getElementById('wp-desc').textContent = d.desc || '';
   document.getElementById('wp-meta').textContent = d.meta || '';
-  document.querySelectorAll('.wp-section').forEach(s => s.style.display = 'none');
-  const pane = document.getElementById('wp-' + key);
-  if (pane) pane.style.display = 'block';
-  // make images in the pane clickable for lightbox
-  if (pane) pane.querySelectorAll('.wp-img').forEach(img => {
-    img.style.cursor = 'pointer';
-    img.onclick = () => {
-      if (!img.src || img.getAttribute('src') === '') return;
-      openLightbox(img.src, img.alt || d.name);
-    };
+
+  document.querySelectorAll('.wp-section').forEach(function(s) {
+    s.style.display = 'none';
   });
-  document.getElementById('win-status').textContent = '"' + (d.name||key) + '" selected · ' + (d.desc || '');
+
+  var pane = document.getElementById('wp-' + key);
+  if (pane) {
+    pane.style.display = 'block';
+    pane.querySelectorAll('.wp-img').forEach(function(img) {
+      img.style.cursor = 'pointer';
+      img.onclick = function() {
+        if (!img.src || img.getAttribute('src') === '') return;
+        openLightbox(img.src, img.alt || d.name);
+      };
+    });
+  }
+
+  var statusEl = document.getElementById('win-status');
+  if (statusEl) {
+    statusEl.textContent =
+      '"' + (d.name || key) + '" selected · ' + (d.desc || '');
+  }
 }
-// init on load
-const initSelected = document.querySelector('.win-file.selected');
-if (initSelected) winSel(initSelected, 'designs');
+
+// Initialise on page load
+(function() {
+  var first = document.querySelector('.win-file.selected');
+  if (first) winSel(first, 'designs');
+})();
 
 // ============================================================
 // CLOCK
 // ============================================================
-const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
-const DAYS = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+var MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN',
+              'JUL','AUG','SEP','OCT','NOV','DEC'];
+var DAYS   = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+
 function updateClock() {
-  const n = new Date();
-  document.getElementById('clk-time').textContent =
-    String(n.getHours()).padStart(2,'0') + ':' +
-    String(n.getMinutes()).padStart(2,'0') + ':' +
-    String(n.getSeconds()).padStart(2,'0');
+  var n = new Date();
+  var h = String(n.getHours()).padStart(2,'0');
+  var m = String(n.getMinutes()).padStart(2,'0');
+  var s = String(n.getSeconds()).padStart(2,'0');
+  document.getElementById('clk-time').textContent = h + ':' + m + ':' + s;
   document.getElementById('clk-date').textContent =
-    DAYS[n.getDay()] + ' ' + String(n.getDate()).padStart(2,'0') + ' ' +
-    MONTHS[n.getMonth()] + ' ' + n.getFullYear();
+    DAYS[n.getDay()] + ' ' +
+    String(n.getDate()).padStart(2,'0') + ' ' +
+    MONTHS[n.getMonth()] + ' ' +
+    n.getFullYear();
 }
-updateClock(); setInterval(updateClock, 1000);
+updateClock();
+setInterval(updateClock, 1000);
 
 // ============================================================
 // FOOTER STARS
 // ============================================================
-(function() {
-  const sc = document.getElementById('stars-layer');
-  const footer = document.getElementById('footer');
+(function initStars() {
+  var sc     = document.getElementById('stars-layer');
+  var footer = document.getElementById('footer');
+  if (!sc || !footer) return;
+
   function resize() {
-    sc.width = footer.offsetWidth; sc.height = footer.offsetHeight; draw();
+    sc.width  = footer.offsetWidth;
+    sc.height = footer.offsetHeight;
+    draw();
   }
+
   function draw() {
-    const ctx = sc.getContext('2d');
-    ctx.clearRect(0,0,sc.width,sc.height);
-    for (let i = 0; i < 180; i++) {
-      const x = Math.random()*sc.width, y = Math.random()*sc.height*.65;
-      const r = Math.random()*1.5+.3, a = Math.random()*.8+.2;
-      ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2);
-      ctx.fillStyle = `rgba(255,255,220,${a})`; ctx.fill();
+    var ctx = sc.getContext('2d');
+    ctx.clearRect(0, 0, sc.width, sc.height);
+    for (var i = 0; i < 180; i++) {
+      var x = Math.random() * sc.width;
+      var y = Math.random() * sc.height * 0.65;
+      var r = Math.random() * 1.5 + 0.3;
+      var a = Math.random() * 0.8 + 0.2;
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255,255,220,' + a + ')';
+      ctx.fill();
     }
   }
-  resize(); window.addEventListener('resize', resize);
-  setInterval(() => {
-    const ctx = sc.getContext('2d'); ctx.clearRect(0,0,sc.width,sc.height);
-    for (let i = 0; i < 180; i++) {
-      const x = (Math.sin(i*1234.567)*.5+.5)*sc.width;
-      const y = (Math.sin(i*987.654)*.5+.5)*sc.height*.65;
-      ctx.beginPath(); ctx.arc(x,y,Math.random()*1.5+.2,0,Math.PI*2);
-      ctx.fillStyle = `rgba(255,255,215,${Math.random()*.7+.15})`; ctx.fill();
+
+  resize();
+  window.addEventListener('resize', resize);
+
+  setInterval(function() {
+    var ctx = sc.getContext('2d');
+    ctx.clearRect(0, 0, sc.width, sc.height);
+    for (var i = 0; i < 180; i++) {
+      var x = (Math.sin(i * 1234.567) * 0.5 + 0.5) * sc.width;
+      var y = (Math.sin(i * 987.654)  * 0.5 + 0.5) * sc.height * 0.65;
+      ctx.beginPath();
+      ctx.arc(x, y, Math.random() * 1.5 + 0.2, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255,255,215,' + (Math.random() * 0.7 + 0.15) + ')';
+      ctx.fill();
     }
   }, 1800);
 })();
@@ -2080,79 +2185,146 @@ updateClock(); setInterval(updateClock, 1000);
 // ============================================================
 // DOODLE CANVAS
 // ============================================================
-const dcanvas = document.getElementById('doodle-canvas');
-const dctx = dcanvas.getContext('2d');
-let painting=false, dtool='draw', dcolor='#0a0a0a', dbsize=6;
+var dcanvas  = document.getElementById('doodle-canvas');
+var dctx     = dcanvas.getContext('2d');
+var painting = false;
+var dtool    = 'draw';
+var dcolor   = '#0a0a0a';
+var dbsize   = 6;
+
 function resizeDCanvas() {
-  const data = dcanvas.toDataURL();
-  dcanvas.width = dcanvas.offsetWidth;
+  var data = dcanvas.toDataURL();
+  dcanvas.width  = dcanvas.offsetWidth;
   dcanvas.height = dcanvas.offsetHeight || 400;
-  const img = new Image(); img.onload = () => dctx.drawImage(img,0,0); img.src = data;
+  var img   = new Image();
+  img.onload = function() { dctx.drawImage(img, 0, 0); };
+  img.src    = data;
 }
-resizeDCanvas(); window.addEventListener('resize', resizeDCanvas);
-const dcolors = ['#0a0a0a','#FF6B1A','#FFD580','#FF6B9D','#6B9DFF','#6BFFB8','#ffffff','#FF4444'];
-const sw = document.getElementById('swatches');
-dcolors.forEach((c,i) => {
-  const s = document.createElement('div');
-  s.className = 'color-swatch'+(i===0?' active':'');
-  s.style.cssText = `background:${c};${c==='#ffffff'?'border:2px solid #ccc;':''}`;
-  s.onclick = () => {
-    dcolor=c; dtool='draw';
-    document.querySelectorAll('.color-swatch').forEach(x=>x.classList.remove('active'));
-    s.classList.add('active'); setTool('draw');
+resizeDCanvas();
+window.addEventListener('resize', resizeDCanvas);
+
+var dcolors = ['#0a0a0a','#FF6B1A','#FFD580','#FF6B9D',
+               '#6B9DFF','#6BFFB8','#ffffff','#FF4444'];
+var swatchContainer = document.getElementById('swatches');
+
+dcolors.forEach(function(c, i) {
+  var s = document.createElement('div');
+  s.className = 'color-swatch' + (i === 0 ? ' active' : '');
+  s.style.background = c;
+  if (c === '#ffffff') s.style.border = '2px solid #ccc';
+  s.onclick = function() {
+    dcolor = c;
+    dtool  = 'draw';
+    document.querySelectorAll('.color-swatch').forEach(function(x) {
+      x.classList.remove('active');
+    });
+    s.classList.add('active');
+    setTool('draw');
   };
-  sw.appendChild(s);
+  swatchContainer.appendChild(s);
 });
-document.getElementById('brush-sz').addEventListener('input', e => dbsize = e.target.value);
+
+document.getElementById('brush-sz').addEventListener('input', function(e) {
+  dbsize = e.target.value;
+});
+
 function getDP(e) {
-  const r = dcanvas.getBoundingClientRect();
-  if(e.touches) return {x:e.touches[0].clientX-r.left, y:e.touches[0].clientY-r.top};
-  return {x:e.clientX-r.left, y:e.clientY-r.top};
+  var r = dcanvas.getBoundingClientRect();
+  if (e.touches) {
+    return { x: e.touches[0].clientX - r.left, y: e.touches[0].clientY - r.top };
+  }
+  return { x: e.clientX - r.left, y: e.clientY - r.top };
 }
-dcanvas.addEventListener('mousedown', e=>{painting=true;const p=getDP(e);dctx.beginPath();dctx.moveTo(p.x,p.y);});
-dcanvas.addEventListener('touchstart',e=>{e.preventDefault();painting=true;const p=getDP(e);dctx.beginPath();dctx.moveTo(p.x,p.y);},{passive:false});
+
+dcanvas.addEventListener('mousedown', function(e) {
+  painting = true;
+  var p = getDP(e);
+  dctx.beginPath();
+  dctx.moveTo(p.x, p.y);
+});
+
+dcanvas.addEventListener('touchstart', function(e) {
+  e.preventDefault();
+  painting = true;
+  var p = getDP(e);
+  dctx.beginPath();
+  dctx.moveTo(p.x, p.y);
+}, { passive: false });
+
 function doDraw(e) {
-  if(!painting) return;
-  const p=getDP(e);
-  dctx.lineWidth=dbsize; dctx.lineCap='round'; dctx.lineJoin='round';
-  if(dtool==='erase'){dctx.globalCompositeOperation='destination-out';dctx.strokeStyle='rgba(0,0,0,1)';}
-  else{dctx.globalCompositeOperation='source-over';dctx.strokeStyle=dcolor;}
-  dctx.lineTo(p.x,p.y); dctx.stroke(); dctx.beginPath(); dctx.moveTo(p.x,p.y);
+  if (!painting) return;
+  var p = getDP(e);
+  dctx.lineWidth  = dbsize;
+  dctx.lineCap    = 'round';
+  dctx.lineJoin   = 'round';
+  if (dtool === 'erase') {
+    dctx.globalCompositeOperation = 'destination-out';
+    dctx.strokeStyle = 'rgba(0,0,0,1)';
+  } else {
+    dctx.globalCompositeOperation = 'source-over';
+    dctx.strokeStyle = dcolor;
+  }
+  dctx.lineTo(p.x, p.y);
+  dctx.stroke();
+  dctx.beginPath();
+  dctx.moveTo(p.x, p.y);
 }
-dcanvas.addEventListener('mousemove',doDraw);
-dcanvas.addEventListener('touchmove',e=>{e.preventDefault();doDraw(e);},{passive:false});
-dcanvas.addEventListener('mouseup',()=>painting=false);
-dcanvas.addEventListener('touchend',()=>painting=false);
-dcanvas.addEventListener('mouseleave',()=>painting=false);
+
+dcanvas.addEventListener('mousemove', doDraw);
+dcanvas.addEventListener('touchmove', function(e) {
+  e.preventDefault();
+  doDraw(e);
+}, { passive: false });
+
+dcanvas.addEventListener('mouseup',    function() { painting = false; });
+dcanvas.addEventListener('touchend',   function() { painting = false; });
+dcanvas.addEventListener('mouseleave', function() { painting = false; });
+
 function setTool(t) {
-  dtool=t;
-  document.getElementById('btn-draw').classList.toggle('active',t==='draw');
-  document.getElementById('btn-erase').classList.toggle('active',t==='erase');
+  dtool = t;
+  document.getElementById('btn-draw').classList.toggle('active',  t === 'draw');
+  document.getElementById('btn-erase').classList.toggle('active', t === 'erase');
 }
-function clearC(){dctx.globalCompositeOperation='source-over';dctx.clearRect(0,0,dcanvas.width,dcanvas.height);}
-function dlDoodle(){const a=document.createElement('a');a.download='doodle-dssram.png';a.href=dcanvas.toDataURL();a.click();}
+function clearC() {
+  dctx.globalCompositeOperation = 'source-over';
+  dctx.clearRect(0, 0, dcanvas.width, dcanvas.height);
+}
+function dlDoodle() {
+  var a      = document.createElement('a');
+  a.download = 'doodle-dssram.png';
+  a.href     = dcanvas.toDataURL();
+  a.click();
+}
 
 // ============================================================
-// FEEDBACK PANEL (UI only — saving handled by Firebase module)
+// FEEDBACK PANEL — UI toggle only (save is in Firebase module)
 // ============================================================
-let fbOpen = false;
+var fbOpen = false;
 function toggleFb() {
   fbOpen = !fbOpen;
   document.getElementById('feedback-panel').classList.toggle('open', fbOpen);
 }
+
+// ============================================================
+// INTEREST CARD FORMS — toggle open/close only
+// (submitIcForm is handled by Firebase module below)
+// ============================================================
 function toggleIcForm(id) {
-  const el = document.getElementById(id);
+  var el = document.getElementById(id);
   if (!el) return;
-  el.style.display = el.style.display === 'none' ? 'flex' : 'none';
+  el.style.display = (el.style.display === 'none') ? 'flex' : 'none';
 }
 
 // ============================================================
-// BOOK/MOVIE SUGGEST — tab switching (saving handled by Firebase module)
+// BOOK / MOVIE SUGGEST — tab switching
+// (addSuggestion is handled by Firebase module below)
 // ============================================================
 window._sugTab = 'book';
 function switchTab(tab, el) {
   window._sugTab = tab;
-  document.querySelectorAll('.stab').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.stab').forEach(function(s) {
+    s.classList.remove('active');
+  });
   el.classList.add('active');
 }
 
@@ -2169,11 +2341,12 @@ function closeGhModal() {
 }
 
 // ============================================================
-// ADMIN AUTH TRIGGER (5 clicks on door)
+// ADMIN DOOR TRIGGER (click 5 times)
 // ============================================================
-let _atc = 0, _atimer;
-const _AU = 'ZHNzcmFtMjQ=';    // dssram24
-const _AP = 'Q2hhbnRpMTIzKg=='; // Chanti123*
+var _atc   = 0;
+var _atimer;
+var _AU    = 'ZHNzcmFtMjQ=';    // dssram24
+var _AP    = 'Q2hhbnRpMTIzKg=='; // Chanti123*
 
 function adminTriggerClick() {
   _atc++;
@@ -2183,126 +2356,193 @@ function adminTriggerClick() {
     document.getElementById('admin-modal').classList.add('open');
     document.getElementById('admin-user').focus();
   }
-  _atimer = setTimeout(() => _atc = 0, 1800);
+  _atimer = setTimeout(function() { _atc = 0; }, 1800);
 }
 
 function closeAdmin() {
   document.getElementById('admin-modal').classList.remove('open');
-  document.getElementById('admin-err').style.display = 'none';
-  document.getElementById('admin-user').value = '';
-  document.getElementById('admin-pass').value = '';
+  document.getElementById('admin-err').style.display    = 'none';
+  document.getElementById('admin-user').value           = '';
+  document.getElementById('admin-pass').value           = '';
   document.getElementById('admin-dashboard').style.display = 'none';
-  ['sug','pl','fit','qt'].forEach(k => {
-    const p = document.getElementById('admin-panel-' + k);
+  document.getElementById('admin-login-form').style.display = 'block';
+  document.getElementById('admin-title').textContent    = '// ADMIN ACCESS';
+  ['sug','pl','fit','qt'].forEach(function(k) {
+    var p = document.getElementById('admin-panel-' + k);
     if (p) p.style.display = 'none';
   });
-  document.getElementById('admin-login-form').style.display = 'block';
-  document.getElementById('admin-title').textContent = '// ADMIN ACCESS';
 }
 
 function adminLogin() {
-  const u = document.getElementById('admin-user').value.trim();
-  const p = document.getElementById('admin-pass').value;
+  var u = document.getElementById('admin-user').value.trim();
+  var p = document.getElementById('admin-pass').value;
   if (btoa(u) === _AU && btoa(p) === _AP) {
     document.getElementById('admin-login-form').style.display = 'none';
-    document.getElementById('admin-err').style.display = 'none';
-    document.getElementById('admin-title').textContent = '// SUGGESTIONS INBOX';
-    document.getElementById('admin-dashboard').style.display = 'block';
-    // adminTab is defined in the Firebase module and exposed to window
-    if (window.adminTab) {
+    document.getElementById('admin-err').style.display        = 'none';
+    document.getElementById('admin-title').textContent        = '// INBOX';
+    document.getElementById('admin-dashboard').style.display  = 'block';
+    // adminTab lives in the Firebase module — call it via window
+    if (typeof window.adminTab === 'function') {
       window.adminTab('sug', document.querySelector('#admin-dashboard .stab'));
     }
   } else {
-    const err = document.getElementById('admin-err');
+    var err = document.getElementById('admin-err');
     err.style.display = 'block';
-    err.textContent = 'Access denied.';
+    err.textContent   = 'Access denied.';
     document.getElementById('admin-pass').value = '';
   }
 }
 
-document.getElementById('admin-pass').addEventListener('keydown', e => {
+document.getElementById('admin-pass').addEventListener('keydown', function(e) {
   if (e.key === 'Enter') adminLogin();
 });
 
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') {
-    closeGhModal();
-    closeLightbox();
-    closeAdmin();
-  }
+// ============================================================
+// KEYBOARD SHORTCUTS
+// ============================================================
+document.addEventListener('keydown', function(e) {
+  if (e.key !== 'Escape') return;
+  if (document.getElementById('img-lightbox').classList.contains('open')) closeLightbox();
+  if (document.getElementById('gh-modal').style.display === 'flex') closeGhModal();
+  if (document.getElementById('admin-modal').classList.contains('open')) closeAdmin();
 });
 
 // ============================================================
-// NIGHT SKY — scroll-triggered stars + meteors on dark sections
+// NIGHT SKY CANVAS (stars + meteors on dark sections)
 // ============================================================
-(function() {
-  const canvas = document.getElementById('night-sky-canvas');
+(function initNightSky() {
+  var canvas = document.getElementById('night-sky-canvas');
   if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  let W, H, stars=[], meteors=[], raf, active=false, spawnInterval;
+  var ctx     = canvas.getContext('2d');
+  var W, H;
+  var stars   = [];
+  var meteors = [];
+  var raf, active = false, spawnInterval;
 
   function resize() {
-    W = canvas.width = window.innerWidth;
+    W = canvas.width  = window.innerWidth;
     H = canvas.height = window.innerHeight;
     buildStars();
   }
+
   function buildStars() {
     stars = [];
-    for (let i=0;i<200;i++) stars.push({
-      x:Math.random()*W, y:Math.random()*H,
-      r:Math.random()*1.4+.2, a:Math.random(),
-      da:(Math.random()*.008+.003)*(Math.random()<.5?1:-1), z:Math.random()
-    });
+    for (var i = 0; i < 200; i++) {
+      stars.push({
+        x:  Math.random() * W,
+        y:  Math.random() * H,
+        r:  Math.random() * 1.4 + 0.2,
+        a:  Math.random(),
+        da: (Math.random() * 0.008 + 0.003) * (Math.random() < 0.5 ? 1 : -1),
+        z:  Math.random()
+      });
+    }
   }
+
   function spawnMeteor() {
     meteors.push({
-      x:Math.random()*W*1.4-W*.2, y:-20,
-      vx:3+Math.random()*5, vy:4+Math.random()*6,
-      len:80+Math.random()*140, alpha:1,
-      width:.8+Math.random()*1.2, bright:Math.random()<.2
+      x:      Math.random() * W * 1.4 - W * 0.2,
+      y:      -20,
+      vx:     3  + Math.random() * 5,
+      vy:     4  + Math.random() * 6,
+      len:    80 + Math.random() * 140,
+      alpha:  1,
+      width:  0.8 + Math.random() * 1.2,
+      bright: Math.random() < 0.2
     });
   }
+
   function drawFrame() {
-    ctx.clearRect(0,0,W,H);
-    stars.forEach(s => {
-      s.a = Math.max(.05, Math.min(1, s.a+s.da));
-      if (s.a<=.05||s.a>=1) s.da*=-1;
-      ctx.beginPath(); ctx.arc(s.x,s.y,s.r*(.5+s.z*.5),0,Math.PI*2);
-      ctx.fillStyle = s.z>.7?`rgba(255,230,180,${s.a*.85})`:`rgba(220,225,255,${s.a*.7})`;
+    ctx.clearRect(0, 0, W, H);
+
+    stars.forEach(function(s) {
+      s.a = Math.max(0.05, Math.min(1, s.a + s.da));
+      if (s.a <= 0.05 || s.a >= 1) s.da *= -1;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r * (0.5 + s.z * 0.5), 0, Math.PI * 2);
+      ctx.fillStyle = s.z > 0.7
+        ? 'rgba(255,230,180,' + (s.a * 0.85) + ')'
+        : 'rgba(220,225,255,' + (s.a * 0.7)  + ')';
       ctx.fill();
     });
-    meteors = meteors.filter(m => m.alpha>.02 && m.x<W+100 && m.y<H+100);
-    meteors.forEach(m => {
-      const hyp = Math.hypot(m.vx,m.vy);
-      const tx=m.x-(m.vx/hyp)*m.len, ty=m.y-(m.vy/hyp)*m.len;
-      const g = ctx.createLinearGradient(tx,ty,m.x,m.y);
-      if (m.bright) { g.addColorStop(0,`rgba(255,220,120,0)`); g.addColorStop(.6,`rgba(255,180,80,${m.alpha*.5})`); g.addColorStop(1,`rgba(255,240,200,${m.alpha})`); }
-      else { g.addColorStop(0,`rgba(180,200,255,0)`); g.addColorStop(1,`rgba(220,230,255,${m.alpha})`); }
-      ctx.beginPath(); ctx.moveTo(tx,ty); ctx.lineTo(m.x,m.y);
-      ctx.strokeStyle=g; ctx.lineWidth=m.width*(m.bright?1.8:1); ctx.stroke();
-      ctx.beginPath(); ctx.arc(m.x,m.y,m.bright?2.2:1.2,0,Math.PI*2);
-      ctx.fillStyle=m.bright?`rgba(255,220,150,${m.alpha})`:`rgba(200,220,255,${m.alpha})`; ctx.fill();
-      m.x+=m.vx; m.y+=m.vy; m.alpha-=.016;
+
+    meteors = meteors.filter(function(m) {
+      return m.alpha > 0.02 && m.x < W + 100 && m.y < H + 100;
     });
+
+    meteors.forEach(function(m) {
+      var hyp = Math.hypot(m.vx, m.vy);
+      var tx  = m.x - (m.vx / hyp) * m.len;
+      var ty  = m.y - (m.vy / hyp) * m.len;
+      var g   = ctx.createLinearGradient(tx, ty, m.x, m.y);
+
+      if (m.bright) {
+        g.addColorStop(0,   'rgba(255,220,120,0)');
+        g.addColorStop(0.6, 'rgba(255,180,80,'  + (m.alpha * 0.5) + ')');
+        g.addColorStop(1,   'rgba(255,240,200,' + m.alpha + ')');
+      } else {
+        g.addColorStop(0, 'rgba(180,200,255,0)');
+        g.addColorStop(1, 'rgba(220,230,255,' + m.alpha + ')');
+      }
+
+      ctx.beginPath();
+      ctx.moveTo(tx, ty);
+      ctx.lineTo(m.x, m.y);
+      ctx.strokeStyle = g;
+      ctx.lineWidth   = m.width * (m.bright ? 1.8 : 1);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.arc(m.x, m.y, m.bright ? 2.2 : 1.2, 0, Math.PI * 2);
+      ctx.fillStyle = m.bright
+        ? 'rgba(255,220,150,' + m.alpha + ')'
+        : 'rgba(200,220,255,' + m.alpha + ')';
+      ctx.fill();
+
+      m.x    += m.vx;
+      m.y    += m.vy;
+      m.alpha -= 0.016;
+    });
+
     raf = requestAnimationFrame(drawFrame);
   }
+
   function startSky() {
-    if (active) return; active=true;
-    canvas.style.opacity='1'; buildStars(); drawFrame(); spawnMeteor();
-    spawnInterval=setInterval(()=>{ if(Math.random()<.6)spawnMeteor(); if(Math.random()<.2)spawnMeteor(); },900);
+    if (active) return;
+    active = true;
+    canvas.style.opacity = '1';
+    buildStars();
+    drawFrame();
+    spawnMeteor();
+    spawnInterval = setInterval(function() {
+      if (Math.random() < 0.6) spawnMeteor();
+      if (Math.random() < 0.2) spawnMeteor();
+    }, 900);
   }
+
   function stopSky() {
-    if (!active) return; active=false;
-    canvas.style.opacity='0'; cancelAnimationFrame(raf); clearInterval(spawnInterval);
-    ctx.clearRect(0,0,W,H);
+    if (!active) return;
+    active = false;
+    canvas.style.opacity = '0';
+    cancelAnimationFrame(raf);
+    clearInterval(spawnInterval);
+    ctx.clearRect(0, 0, W, H);
   }
-  const darkSections = document.querySelectorAll('#humor,#books,#footer');
-  const visibleDark = new Set();
-  const nightObs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if(e.isIntersecting) visibleDark.add(e.target.id); else visibleDark.delete(e.target.id); });
-    visibleDark.size > 0 ? startSky() : stopSky();
+
+  var visibleDark = new Set();
+  var nightObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) visibleDark.add(e.target.id);
+      else visibleDark.delete(e.target.id);
+    });
+    if (visibleDark.size > 0) startSky();
+    else stopSky();
   }, { threshold: 0.08 });
-  darkSections.forEach(s => nightObs.observe(s));
+
+  document.querySelectorAll('#humor, #books, #footer').forEach(function(s) {
+    nightObs.observe(s);
+  });
+
   window.addEventListener('resize', resize);
   resize();
 })();
@@ -2351,28 +2591,288 @@ document.addEventListener('keydown', e => {
   <div style="font-family:'Caveat',cursive;font-size:1.1rem;color:rgba(255,107,26,.5);">press Escape or click outside to close</div>
 </div>
 <!-- Firebase -->
-   <script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+ <script type="module">
+import { initializeApp }  from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+import { getAnalytics }   from "https://www.gstatic.com/firebasejs/12.13.0/firebase-analytics.js";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs
+} from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyDf0V9VkoChFVF-MyeWFXHcYA1G6M2UBp8",
-    authDomain: "dssram-site.firebaseapp.com",
-    projectId: "dssram-site",
-    storageBucket: "dssram-site.firebasestorage.app",
-    messagingSenderId: "92348233842",
-    appId: "1:92348233842:web:e22c91750f6c0ee3c9aaeb",
-    measurementId: "G-LD0CHBQZQE"
-  };
+// ── Firebase init ────────────────────────────────────────────
+var firebaseConfig = {
+  apiKey:            "AIzaSyDf0V9VkoChFVF-MyeWFXHcYA1G6M2UBp8",
+  authDomain:        "dssram-site.firebaseapp.com",
+  projectId:         "dssram-site",
+  storageBucket:     "dssram-site.firebasestorage.app",
+  messagingSenderId: "92348233842",
+  appId:             "1:92348233842:web:e22c91750f6c0ee3c9aaeb",
+  measurementId:     "G-LD0CHBQZQE"
+};
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
+var app       = initializeApp(firebaseConfig);
+var analytics = getAnalytics(app);
+var db        = getFirestore(app);
+
+// ============================================================
+// INTEREST CARD FORMS → writes to Firestore "submissions"
+// music  → type: 'playlist'
+// fitness → type: 'fitness'
+// speaking → type: 'quote'
+// ============================================================
+window.submitIcForm = async function(key) {
+  var valEl = document.getElementById(key + '-val');
+  var whoEl = document.getElementById(key + '-who');
+  if (!valEl) return;
+
+  var val = valEl.value.trim();
+  var who = (whoEl && whoEl.value.trim()) ? whoEl.value.trim() : 'anonymous';
+  if (!val) return;
+
+  var typeMap = { music: 'playlist', fitness: 'fitness', speaking: 'quote' };
+
+  try {
+    await addDoc(collection(db, 'submissions'), {
+      type:  typeMap[key] || key,
+      value: val,
+      name:  who,
+      ts:    Date.now()
+    });
+  } catch (err) {
+    console.error('Firestore write error (submissions):', err);
+  }
+
+  valEl.value = '';
+  if (whoEl) whoEl.value = '';
+
+  var confirmEl = document.getElementById(key + '-confirm');
+  if (confirmEl) {
+    confirmEl.style.display = 'block';
+    setTimeout(function() { confirmEl.style.display = 'none'; }, 2800);
+  }
+};
+
+// ============================================================
+// BOOK / MOVIE SUGGESTIONS → writes to Firestore "suggestions"
+// ============================================================
+window.addSuggestion = async function() {
+  var titleEl = document.getElementById('sug-title');
+  var whyEl   = document.getElementById('sug-why');
+  var nameEl  = document.getElementById('sug-name');
+  var cntEl   = document.getElementById('sug-count');
+
+  var title = titleEl ? titleEl.value.trim() : '';
+  var why   = whyEl   ? whyEl.value.trim()   : '';
+  var name  = (nameEl && nameEl.value.trim()) ? nameEl.value.trim() : 'a fan';
+  if (!title) return;
+
+  try {
+    await addDoc(collection(db, 'suggestions'), {
+      title: title,
+      why:   why,
+      name:  name,
+      type:  window._sugTab || 'book',
+      ts:    Date.now()
+    });
+  } catch (err) {
+    console.error('Firestore write error (suggestions):', err);
+  }
+
+  if (titleEl) titleEl.value = '';
+  if (whyEl)   whyEl.value   = '';
+  if (nameEl)  nameEl.value  = '';
+
+  if (cntEl) {
+    cntEl.style.display = 'block';
+    cntEl.textContent   = '✓ Sent! Shanmukh will check it out.';
+    setTimeout(function() { cntEl.style.display = 'none'; }, 3000);
+  }
+};
+
+// ============================================================
+// FEEDBACK NOTES → writes to Firestore "notes"
+//                  + shows locally in the panel
+// ============================================================
+window.addNote = async function() {
+  var textEl = document.getElementById('fb-text');
+  var nameEl = document.getElementById('fb-name');
+
+  var text = textEl ? textEl.value.trim() : '';
+  var name = (nameEl && nameEl.value.trim()) ? nameEl.value.trim() : 'anonymous weirdo';
+  if (!text) return;
+
+  try {
+    await addDoc(collection(db, 'notes'), {
+      text: text,
+      name: name,
+      ts:   Date.now()
+    });
+  } catch (err) {
+    console.error('Firestore write error (notes):', err);
+  }
+
+  // Show locally inside the feedback panel
+  var colors   = ['sn-0','sn-1','sn-2','sn-3','sn-4'];
+  var list     = document.getElementById('fb-notes-list');
+  var headEl   = document.getElementById('fb-notes-head');
+  if (headEl) headEl.style.display = 'block';
+  if (list) {
+    var el = document.createElement('div');
+    el.className = 'sticky-note ' + colors[Math.floor(Math.random() * 5)];
+    el.innerHTML = text + '<span class="sticky-note-from">— ' + name + '</span>';
+    list.prepend(el);
+  }
+
+  if (textEl) textEl.value = '';
+  if (nameEl) nameEl.value = '';
+};
+
+// ============================================================
+// ADMIN PANEL → reads from Firestore (async — works correctly)
+// ============================================================
+window.adminTab = async function(key, el) {
+  // Highlight selected tab
+  document.querySelectorAll('#admin-dashboard .stab').forEach(function(s) {
+    s.classList.remove('active');
+  });
+  if (el) el.classList.add('active');
+
+  // Hide all panels
+  ['sug','pl','fit','qt'].forEach(function(k) {
+    var p = document.getElementById('admin-panel-' + k);
+    if (p) p.style.display = 'none';
+  });
+
+  var panel  = document.getElementById('admin-panel-' + key);
+  var header = document.getElementById('admin-tab-header');
+  if (!panel) return;
+
+  panel.style.display = 'flex';
+  panel.innerHTML =
+    '<div style="font-family:\'Space Mono\',monospace;font-size:.6rem;' +
+    'color:#555;padding:1rem;">⟳ Loading...</div>';
+
+  try {
+
+    if (key === 'sug') {
+      // ── Book / Movie Suggestions ──────────────────────────
+      var snap = await getDocs(collection(db, 'suggestions'));
+      var all  = snap.docs.map(function(d) { return d.data(); })
+                    .sort(function(a,b) { return (b.ts||0)-(a.ts||0); });
+
+      if (header) header.textContent =
+        all.length + ' suggestion' + (all.length !== 1 ? 's' : '');
+
+      panel.innerHTML = '';
+      if (!all.length) {
+        panel.innerHTML = '<div class="admin-sug-empty">No suggestions yet. 🫙</div>';
+        return;
+      }
+      all.forEach(function(s) {
+        var d    = document.createElement('div');
+        d.className = 'admin-sug-item';
+        var date = s.ts ? new Date(s.ts).toLocaleDateString('en-IN') : '—';
+        d.innerHTML =
+          '<div class="admin-sug-type">' +
+            (s.type === 'book' ? '📖 Book' : '🎬 Movie') + ' · ' + date +
+          '</div>' +
+          '<div class="admin-sug-title">' + s.title + '</div>' +
+          (s.why ? '<div class="admin-sug-why">' + s.why + '</div>' : '') +
+          '<div class="admin-sug-from">— ' + s.name + '</div>';
+        panel.appendChild(d);
+      });
+
+    } else if (key === 'pl') {
+      // ── Playlists ─────────────────────────────────────────
+      var snap = await getDocs(collection(db, 'submissions'));
+      var all  = snap.docs.map(function(d) { return d.data(); })
+                    .filter(function(d) { return d.type === 'playlist'; })
+                    .sort(function(a,b) { return (b.ts||0)-(a.ts||0); });
+
+      if (header) header.textContent =
+        all.length + ' playlist' + (all.length !== 1 ? 's' : '') + ' shared';
+
+      panel.innerHTML = '';
+      if (!all.length) {
+        panel.innerHTML = '<div class="admin-sug-empty">No playlists yet. 🎵</div>';
+        return;
+      }
+      all.forEach(function(s) {
+        var d = document.createElement('div');
+        d.className = 'admin-sug-item';
+        var date = s.ts ? new Date(s.ts).toLocaleDateString('en-IN') : '—';
+        d.innerHTML =
+          '<div class="admin-sug-type">🎧 Playlist · ' + date + '</div>' +
+          '<div class="admin-sug-title">' + s.value + '</div>' +
+          '<div class="admin-sug-from">— ' + s.name + '</div>';
+        panel.appendChild(d);
+      });
+
+    } else if (key === 'fit') {
+      // ── Fitness Routines ──────────────────────────────────
+      var snap = await getDocs(collection(db, 'submissions'));
+      var all  = snap.docs.map(function(d) { return d.data(); })
+                    .filter(function(d) { return d.type === 'fitness'; })
+                    .sort(function(a,b) { return (b.ts||0)-(a.ts||0); });
+
+      if (header) header.textContent =
+        all.length + ' routine' + (all.length !== 1 ? 's' : '') + ' submitted';
+
+      panel.innerHTML = '';
+      if (!all.length) {
+        panel.innerHTML = '<div class="admin-sug-empty">No routines yet. 💪</div>';
+        return;
+      }
+      all.forEach(function(s) {
+        var d = document.createElement('div');
+        d.className = 'admin-sug-item';
+        var date = s.ts ? new Date(s.ts).toLocaleDateString('en-IN') : '—';
+        d.innerHTML =
+          '<div class="admin-sug-type">💪 Routine · ' + date + '</div>' +
+          '<div class="admin-sug-title" style="font-size:.85rem;">' + s.value + '</div>' +
+          '<div class="admin-sug-from">— ' + s.name + '</div>';
+        panel.appendChild(d);
+      });
+
+    } else if (key === 'qt') {
+      // ── Quotes ────────────────────────────────────────────
+      var snap = await getDocs(collection(db, 'submissions'));
+      var all  = snap.docs.map(function(d) { return d.data(); })
+                    .filter(function(d) { return d.type === 'quote'; })
+                    .sort(function(a,b) { return (b.ts||0)-(a.ts||0); });
+
+      if (header) header.textContent =
+        all.length + ' quote' + (all.length !== 1 ? 's' : '') + ' dropped';
+
+      panel.innerHTML = '';
+      if (!all.length) {
+        panel.innerHTML = '<div class="admin-sug-empty">No quotes yet. 💬</div>';
+        return;
+      }
+      all.forEach(function(s) {
+        var d = document.createElement('div');
+        d.className = 'admin-sug-item';
+        d.style.borderLeftColor = '#FFD580';
+        var date = s.ts ? new Date(s.ts).toLocaleDateString('en-IN') : '—';
+        d.innerHTML =
+          '<div class="admin-sug-type" style="color:#FFD580;">💬 Quote · ' + date + '</div>' +
+          '<div class="admin-sug-title" style="font-family:\'Playfair Display\',serif;' +
+            'font-style:italic;font-size:.95rem;">"' + s.value + '"</div>' +
+          '<div class="admin-sug-from">— ' + s.name + '</div>';
+        panel.appendChild(d);
+      });
+    }
+
+  } catch (err) {
+    panel.innerHTML =
+      '<div class="admin-sug-empty" style="color:#FF4444;">' +
+        '⚠ Database error: ' + err.message +
+      '</div>';
+    console.error('Firestore read error:', err);
+  }
+};
 </script>
 
 </body>
