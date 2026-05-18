@@ -941,6 +941,356 @@ nav {
   .footer-big-text { font-size: clamp(2rem,8vw,3.5rem); }
   #socials { gap: 1rem; }
 }
+   /* ============================================================
+   GLOBAL 3D & TRANSITION UPGRADES
+============================================================ */
+:root {
+  --ease-smooth: cubic-bezier(.23,1,.32,1);
+  --ease-bounce: cubic-bezier(.34,1.56,.64,1);
+  --shadow-lift: 0 20px 60px rgba(0,0,0,.25), 0 8px 20px rgba(255,107,26,.08);
+  --shadow-deep: 0 40px 100px rgba(0,0,0,.4), 0 0 0 1px rgba(255,107,26,.1);
+}
+
+/* Smoother scrolling */
+* { scroll-behavior: smooth; }
+
+/* ── Interest cards — 3D tilt on hover ── */
+.interests-grid { perspective: 1200px; }
+.interest-card {
+  transform-style: preserve-3d;
+  transition: transform .4s var(--ease-smooth), box-shadow .4s var(--ease-smooth);
+  will-change: transform;
+}
+.interest-card:hover {
+  box-shadow: var(--shadow-lift);
+}
+.ic-emoji {
+  transition: transform .3s var(--ease-bounce);
+  display: inline-block;
+}
+.interest-card:hover .ic-emoji {
+  transform: translateZ(20px) scale(1.2);
+}
+
+/* ── Humor cards — 3D lift ── */
+.humor-cards { perspective: 1000px; }
+.humor-card {
+  transform-style: preserve-3d;
+  transition: transform .4s var(--ease-smooth),
+              box-shadow .4s var(--ease-smooth),
+              border-color .3s;
+}
+.humor-card:hover {
+  transform: translateY(-12px) rotateX(4deg) scale(1.02);
+  box-shadow: 0 30px 60px rgba(0,0,0,.4), 0 0 30px rgba(255,107,26,.15);
+}
+.humor-emoji {
+  display: inline-block;
+  transition: transform .4s var(--ease-bounce);
+}
+.humor-card:hover .humor-emoji { transform: translateY(-4px) scale(1.3); }
+
+/* ── Book cards — 3D perspective flip ── */
+.books-grid { perspective: 1400px; }
+.book-card {
+  transform-style: preserve-3d;
+  transition: transform .5s var(--ease-smooth), box-shadow .5s;
+}
+.book-card:hover {
+  transform: translateY(-14px) rotateY(-6deg) rotateX(2deg);
+  box-shadow: 20px 30px 60px rgba(0,0,0,.5), -4px 0 20px rgba(255,213,128,.1);
+}
+
+/* ── Windows Explorer floating ── */
+.win-explorer {
+  transition: transform .6s var(--ease-smooth), box-shadow .6s;
+}
+.win-explorer:hover {
+  box-shadow: 0 80px 160px rgba(0,0,0,.2), 0 0 60px rgba(255,107,26,.12);
+}
+.win-file {
+  transition: background .15s, transform .2s var(--ease-bounce);
+}
+.win-file:hover  { transform: scale(1.06) translateY(-2px); }
+.win-file.selected { transform: scale(1.04); }
+
+/* ── Section heading 3D text ── */
+.section-title {
+  text-shadow: 2px 4px 12px rgba(0,0,0,.08);
+  transition: letter-spacing .4s var(--ease-smooth);
+}
+section:hover .section-title { letter-spacing: -.01em; }
+
+/* ── Reveal animation — deeper 3D entrance ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(50px) rotateX(12deg) scale(.97);
+  transition: opacity .9s var(--ease-smooth),
+              transform .9s var(--ease-smooth);
+  transform-origin: center bottom;
+}
+.reveal.visible { opacity: 1; transform: none; }
+.reveal-l {
+  opacity: 0; transform: translateX(-60px);
+  transition: opacity .8s var(--ease-smooth), transform .8s var(--ease-smooth);
+}
+.reveal-l.visible { opacity: 1; transform: none; }
+
+/* Stagger children */
+.interests-grid .interest-card:nth-child(1) { transition-delay: .05s; }
+.interests-grid .interest-card:nth-child(2) { transition-delay: .12s; }
+.interests-grid .interest-card:nth-child(3) { transition-delay: .19s; }
+.interests-grid .interest-card:nth-child(4) { transition-delay: .26s; }
+.interests-grid .interest-card:nth-child(5) { transition-delay: .33s; }
+.interests-grid .interest-card:nth-child(6) { transition-delay: .40s; }
+
+.humor-card:nth-child(1) { transition-delay: .05s; }
+.humor-card:nth-child(2) { transition-delay: .12s; }
+.humor-card:nth-child(3) { transition-delay: .19s; }
+.humor-card:nth-child(4) { transition-delay: .26s; }
+.humor-card:nth-child(5) { transition-delay: .33s; }
+.humor-card:nth-child(6) { transition-delay: .40s; }
+
+/* ── Hero bg grid — deeper perspective ── */
+.hero-bg-grid {
+  background-image:
+    linear-gradient(rgba(255,107,26,.10) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,107,26,.06) 1px, transparent 1px);
+  background-size: 44px 44px;
+  transform: perspective(800px) rotateX(22deg) scale(1.4);
+}
+
+/* ── Nav 3D drop shadow ── */
+nav {
+  box-shadow: 0 4px 30px rgba(0,0,0,.08), 0 1px 0 rgba(255,107,26,.1);
+  transition: box-shadow .3s;
+}
+nav:hover { box-shadow: 0 8px 40px rgba(0,0,0,.12), 0 1px 0 rgba(255,107,26,.2); }
+
+/* ── Photo universe — floating glow ── */
+.photo-wrap {
+  transition: box-shadow .5s var(--ease-smooth);
+}
+.photo-universe:hover .photo-wrap {
+  box-shadow: 0 40px 90px rgba(0,0,0,.35), 0 0 60px rgba(255,107,26,.2);
+}
+.fshape {
+  filter: blur(0px);
+  transition: filter .4s, transform .4s var(--ease-smooth);
+}
+.photo-universe:hover .fshape { filter: blur(.5px); }
+
+/* ── Social links 3D pop ── */
+.social-link {
+  transition: transform .3s var(--ease-bounce), color .2s;
+}
+.social-link:hover { transform: translateY(-8px) scale(1.1); }
+
+/* ── Badge 3D ── */
+.badge {
+  transition: transform .25s var(--ease-bounce), box-shadow .25s;
+}
+.badge:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 6px 16px rgba(255,107,26,.25);
+}
+
+/* ============================================================
+   STORY SECTION
+============================================================ */
+#story {
+  position: relative;
+  background: linear-gradient(180deg, #050508 0%, #0a0a12 50%, #0d0a0a 100%);
+  padding: 8rem 0 7rem;
+  overflow: hidden;
+}
+
+/* Ambient glow blobs */
+#story::before {
+  content: '';
+  position: absolute; top: -200px; left: -200px;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(255,107,26,.06) 0%, transparent 65%);
+  border-radius: 50%; pointer-events: none;
+  animation: storyBlob1 12s ease-in-out infinite alternate;
+}
+#story::after {
+  content: '';
+  position: absolute; bottom: -150px; right: -150px;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(107,157,255,.05) 0%, transparent 65%);
+  border-radius: 50%; pointer-events: none;
+  animation: storyBlob2 15s ease-in-out infinite alternate;
+}
+@keyframes storyBlob1 { to { transform: translate(60px, 40px); } }
+@keyframes storyBlob2 { to { transform: translate(-40px, -60px); } }
+
+/* Vertical timeline line */
+.story-line {
+  position: absolute; left: 50%;
+  top: 0; bottom: 0; width: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg,
+    transparent 0%,
+    rgba(255,107,26,.25) 15%,
+    rgba(255,107,26,.4)  50%,
+    rgba(255,107,26,.25) 85%,
+    transparent 100%
+  );
+  pointer-events: none; z-index: 0;
+}
+
+.story-inner {
+  max-width: 780px; margin: 0 auto;
+  padding: 0 5%;
+  position: relative; z-index: 2;
+}
+
+/* Label */
+.story-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: .62rem; color: #FF6B1A;
+  letter-spacing: .25em; text-transform: uppercase;
+  margin-bottom: 3rem;
+  display: flex; align-items: center; gap: 1rem;
+}
+.story-tag::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, rgba(255,107,26,.4), transparent);
+}
+
+/* Each paragraph block */
+.story-para {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity .85s var(--ease-smooth), transform .85s var(--ease-smooth);
+  margin-bottom: 2.2rem;
+}
+.story-para.visible { opacity: 1; transform: none; }
+
+.story-para p {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1rem, 1.8vw, 1.2rem);
+  line-height: 1.9;
+  color: rgba(232,228,218,.75);
+  font-weight: 300;
+}
+
+/* Highlight first word of first paragraph */
+.story-para:first-of-type p::first-line {
+  color: rgba(232,228,218,.95);
+}
+
+/* Accent sentences */
+.story-accent {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.1rem, 2vw, 1.35rem);
+  font-style: italic;
+  color: rgba(255,180,120,.85);
+  line-height: 1.75;
+  display: block;
+  padding-left: 1.5rem;
+  border-left: 2px solid rgba(255,107,26,.45);
+  margin: .8rem 0;
+}
+
+/* Pull quote — the big final lines */
+.story-pullquote {
+  background: rgba(255,107,26,.06);
+  border: 1px solid rgba(255,107,26,.15);
+  border-radius: 16px;
+  padding: 2rem 2.5rem;
+  margin-top: 3rem;
+  position: relative;
+  overflow: hidden;
+}
+.story-pullquote::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,107,26,.04), transparent);
+  pointer-events: none;
+}
+.story-pullquote p {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1rem, 1.8vw, 1.2rem);
+  color: rgba(255,207,170,.9);
+  line-height: 1.9; font-weight: 300;
+}
+.story-pullquote .story-final-line {
+  display: block;
+  font-family: 'Caveat', cursive;
+  font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+  color: #FF6B1A;
+  margin-top: 1.2rem;
+  letter-spacing: .03em;
+  font-weight: 600;
+}
+
+/* Dot decorations on the line */
+.story-dot {
+  position: absolute; left: 50%;
+  width: 10px; height: 10px;
+  background: #FF6B1A;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 0 20px rgba(255,107,26,.6);
+  z-index: 3;
+}
+
+/* ============================================================
+   SECTION DARK BACKGROUNDS
+============================================================ */
+/* Give #design a slightly darker feel */
+#design {
+  background: linear-gradient(180deg, #FFFAF2 0%, #F5EEE2 100%);
+}
+
+/* Give #photos a warm-dark gradient */
+#photos {
+  background: linear-gradient(180deg, #FFFAF2 0%, #F0E8DE 100%);
+}
+
+/* Photo cards 3D hover */
+.photo-card {
+  transition: transform .35s var(--ease-smooth), box-shadow .35s;
+  transform-style: preserve-3d;
+}
+.photo-card:hover {
+  transform: scale(1.03) translateY(-6px);
+  box-shadow: 0 20px 50px rgba(0,0,0,.15);
+}
+
+/* Doodle section keep light */
+#doodle { background: #FFFAF2; }
+
+/* ============================================================
+   FEEDBACK BUTTON 3D
+============================================================ */
+#feedback-btn {
+  transition: transform .2s var(--ease-bounce), box-shadow .2s;
+}
+#feedback-btn:hover {
+  transform: translate(-3px,-3px) rotate(5deg);
+  box-shadow: 6px 6px 0 #FF6B1A;
+}
+
+/* ============================================================
+   SMOOTH SECTION TRANSITIONS
+============================================================ */
+section {
+  transition: background .4s;
+}
+
+/* ============================================================
+   CTA BUTTON 3D
+============================================================ */
+.footer-cta {
+  transition: transform .2s var(--ease-bounce), box-shadow .2s;
+}
+.footer-cta:hover {
+  transform: translate(-3px,-3px);
+  box-shadow: 8px 8px 0 #e55c10;
+}
 </style>
 </head>
    
@@ -993,7 +1343,7 @@ nav {
         Shanmukha<br><span>Donepudi</span>
       </h1>
       <span class="hero-alias">రామ్</span>
-      <span class="hero-alias-sub">alias DSSRam · B.Tech CSE/IT · Hyderabad</span>
+      <span class="hero-alias-sub">alias dssr · B.Tech CSE · Vijayawada</span>
     </div>
 
     <div class="terminal-box reveal-l" style="transition-delay:.2s">
@@ -1038,26 +1388,6 @@ nav {
   </div>
 </section>
 
-<!-- MARQUEE -->
-<div class="marquee-section">
-  <div class="marquee-track">
-    <span class="marquee-item">Development</span><span class="marquee-sep"> ✦ </span>
-    <span class="marquee-item">Design</span><span class="marquee-sep"> ✦ </span>
-    <span class="marquee-item">UI/UX</span><span class="marquee-sep"> ✦ </span>
-    <span class="marquee-item">Books</span><span class="marquee-sep"> ✦ </span>
-  
-    <span class="marquee-item">React</span><span class="marquee-sep"> ✦ </span>
-  
-    <span class="marquee-item">Development</span><span class="marquee-sep"> ✦ </span>
-    <span class="marquee-item">Design</span><span class="marquee-sep"> ✦ </span>
-    <span class="marquee-item">UI/UX</span><span class="marquee-sep"> ✦ </span>
-    <span class="marquee-item">Books</span><span class="marquee-sep"> ✦ </span>
-    <span class="marquee-item">FLAC Audio</span><span class="marquee-sep"> ✦ </span>
-   
-    <span class="marquee-item">React</span><span class="marquee-sep"> ✦ </span>
-    <span class="marquee-item">Public Speaking</span><span class="marquee-sep"> ✦ </span>
-  </div>
-</div>
 
 <!-- ABOUT / INTERESTS (centered) -->
 <section id="about" style="padding:7rem 5% 6rem;background:#FFFAF2;text-align:center;">
@@ -1160,6 +1490,78 @@ nav {
     </div>
   </div>
 </div>
+  </div>
+</section>
+   <!-- STORY SECTION -->
+<section id="story">
+  <div class="story-line"></div>
+  <div class="story-dot" style="top:6rem;"></div>
+  <div class="story-dot" style="bottom:6rem;"></div>
+
+  <div class="story-inner">
+
+    <div class="story-tag reveal">000 — Origin</div>
+
+    <div class="story-para reveal">
+      <p>
+        When I was a kid, I was the quiet one in the corner.
+        Bullied sometimes. Sick often.
+        <span class="story-accent">Sinusitis made breathing feel like a battle on certain days, but my mind never stopped running.</span>
+        Cricket was my escape. A bat in hand felt lighter than the weight of overthinking.
+      </p>
+    </div>
+
+    <div class="story-para reveal">
+      <p>
+        At home, curiosity ruled everything. While most kids played games,
+        I opened CPUs with my brother just to see what lived inside them.
+        We probably dismantled 10 to 15 computers over the years —
+        not because we knew what we were doing,
+        <span class="story-accent">but because we needed to know how things worked.</span>
+        Wires, fans, motherboards, boot screens, BIOS sounds… that world fascinated me.
+      </p>
+    </div>
+
+    <div class="story-para reveal">
+      <p>
+        My first real experience with a smartphone was my father's rare
+        <span style="color:rgba(255,180,120,.9);font-style:italic;">Nokia Lumia 530.</span>
+        That Windows interface felt futuristic to me.
+        I explored every corner of it like a tiny scientist discovering another planet.
+      </p>
+    </div>
+
+    <div class="story-para reveal">
+      <p>
+        And somewhere in between all of that, I discovered art.
+        I used to sit in front of my father's computer drawing random things
+        in MS Paint for hours. Bad sketches. Weird color combinations.
+        <span class="story-accent">Endless creativity. That artistic side never left me.</span>
+      </p>
+    </div>
+
+    <div class="story-para reveal">
+      <p>
+        Today, it evolved. I design posters. I edit videos. I build projects.
+        I create ideas from scratch.
+        <span class="story-accent">I mix technology with creativity because I never liked choosing only one side.</span>
+        What started as curiosity became obsession.
+        What started as struggle became fuel.
+      </p>
+    </div>
+
+    <div class="story-para reveal">
+      <div class="story-pullquote">
+        <p>
+          Now I'm focused on building things of my own. Not just products or projects,
+          but a life that reflects who I really am.
+        </p>
+        <span class="story-final-line">
+          Creative. Curious. Restless. Always learning. ✦
+        </span>
+      </div>
+    </div>
+
   </div>
 </section>
 
