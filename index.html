@@ -2414,6 +2414,62 @@ document.querySelectorAll('.wp-img').forEach(function(img) {
   });
 })();
 
+   // ============================================================
+// 3D CARD TILT on mouse move
+// ============================================================
+(function initTilt() {
+  var tiltCards = document.querySelectorAll(
+    '.interest-card, .humor-card, .book-card'
+  );
+
+  tiltCards.forEach(function(card) {
+    card.addEventListener('mousemove', function(e) {
+      var rect   = card.getBoundingClientRect();
+      var cx     = rect.left + rect.width  / 2;
+      var cy     = rect.top  + rect.height / 2;
+      var dx     = (e.clientX - cx) / (rect.width  / 2);
+      var dy     = (e.clientY - cy) / (rect.height / 2);
+      var rotX   = -dy * 8;   // max 8deg tilt
+      var rotY   =  dx * 8;
+      card.style.transform =
+        'perspective(800px) rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg) translateY(-8px) scale(1.02)';
+      card.style.boxShadow =
+        (dx * 8) + 'px ' + (dy * 8 + 16) + 'px 40px rgba(0,0,0,.25),' +
+        '0 0 20px rgba(255,107,26,.08)';
+    });
+
+    card.addEventListener('mouseleave', function() {
+      card.style.transform  = '';
+      card.style.boxShadow  = '';
+      card.style.transition =
+        'transform .5s cubic-bezier(.23,1,.32,1), box-shadow .5s cubic-bezier(.23,1,.32,1)';
+    });
+
+    card.addEventListener('mouseenter', function() {
+      card.style.transition = 'none';
+    });
+  });
+})();
+
+// ============================================================
+// STORY SECTION — paragraph scroll reveals with stagger
+// ============================================================
+(function initStory() {
+  var paras = document.querySelectorAll('.story-para');
+  var storyObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry, i) {
+      if (entry.isIntersecting) {
+        var el = entry.target;
+        var idx = Array.from(paras).indexOf(el);
+        setTimeout(function() {
+          el.classList.add('visible');
+        }, idx * 120);
+        storyObs.unobserve(el);
+      }
+    });
+  }, { threshold: 0.15 });
+  paras.forEach(function(p) { storyObs.observe(p); });
+})();
 // ============================================================
 // NAV HAMBURGER
 // ============================================================
