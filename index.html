@@ -1305,6 +1305,78 @@ section {
   transform: translate(-3px,-3px);
   box-shadow: 8px 8px 0 #e55c10;
 }
+   /* ── HERO: fix whitespace, enlarge everything ── */
+#hero {
+  gap: 2rem;
+  padding: 7rem 4% 4rem;
+  align-items: center;
+}
+.hero-left {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.hero-name {
+  font-size: clamp(3rem, 6vw, 6rem);
+}
+.terminal-box {
+  max-width: 100%;
+  width: 100%;
+}
+.t-line { font-size: .8rem;  line-height: 2.1; }
+.t-out  { font-size: .78rem; }
+.hero-right {
+  flex: 0 0 min(480px, 44vw);
+}
+.photo-universe {
+  width:  min(430px, 42vw);
+  height: min(490px, 52vw);
+}
+
+/* ── Paper-cut stickers ── */
+.hero-sticker {
+  position: absolute;
+  pointer-events: none;
+  z-index: 4;
+  transform-origin: center center;
+}
+.sticker-confused {
+  width: clamp(130px, 14vw, 210px);
+  top:  44%;
+  left: 36%;
+  animation: stickerWobble 5.5s ease-in-out infinite;
+  --r: -7deg;
+}
+.sticker-heart {
+  width: clamp(72px, 8vw, 115px);
+  top:  16%;
+  left: 50%;
+  animation: stickerWobble 4.2s ease-in-out infinite reverse;
+  animation-delay: 1.4s;
+  --r: 10deg;
+}
+@keyframes stickerWobble {
+  0%,100% { transform: rotate(var(--r)) translateY(0px); }
+  50%      { transform: rotate(calc(var(--r) + 4deg)) translateY(-8px); }
+}
+.sticker-confused img {
+  display: block;
+  width: 100%;
+  border-radius: 3px;
+  filter: drop-shadow(2px 5px 10px rgba(0,0,0,.28))
+          drop-shadow(0 1px 0 rgba(255,255,255,.6));
+}
+.sticker-heart img {
+  display: block;
+  width: 100%;
+  filter: drop-shadow(2px 4px 8px rgba(255,107,26,.35))
+          drop-shadow(0 0 16px rgba(255,107,26,.15));
+}
+
+/* float tags larger */
+.float-tag { font-size: 1rem; opacity: .9; font-weight: 600; }
 </style>
 </head>
    
@@ -1329,13 +1401,34 @@ section {
     <span></span><span></span><span></span>
   </button>
 </nav>
-    <a href="https://rchives.com" class="rchives-logo">
+  <button>  <a href="https://rchives.com" class="rchives-logo">
   Rchives<span>.</span>
 </a>
-
+</button>
 
 <!-- HERO -->
 <section id="hero">
+   import base64
+
+with open('1779205376657_image.png', 'rb') as f:
+    confused = base64.b64encode(f.read()).decode()
+
+with open('1779205572953_image.png', 'rb') as f:
+    heart = base64.b64encode(f.read()).decode()
+
+html = f'''
+<div class="hero-sticker sticker-confused" style="--r:-7deg">
+  <img src="data:image/jpeg;base64,{confused}" alt="a little bit confused">
+</div>
+<div class="hero-sticker sticker-heart" style="--r:10deg">
+  <img src="data:image/jpeg;base64,{heart}" alt="pixel heart">
+</div>
+'''
+
+with open('stickers.html', 'w') as f:
+    f.write(html)
+
+print("Done — copy from stickers.html")
   <div class="hero-bg-grid" id="hero-grid"></div>
   <div class="float-tag ft-1">✦ creative</div>
   <div class="float-tag ft-2">↗ lets build</div>
@@ -1367,7 +1460,7 @@ section {
       </div>
       <div class="t-line"><span class="t-prompt">$ </span>whoami</div>
       <span class="t-out">Shanmukha Sai Ram Donepudi</span>
-      <span class="t-comment"># B.Tech CSE/IT · Hyderabad, India</span>
+      <span class="t-comment"># B.Tech CSE/IT · Vijayawada, India</span>
       <br>
       <div class="t-line"><span class="t-prompt">$ </span>ls interests/</div>
       <span class="t-out">development/ &nbsp;design/ &nbsp;books/</span>
