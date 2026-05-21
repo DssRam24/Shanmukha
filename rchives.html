@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rchives</title>
+<meta name="description" content="A curated public library of everything I consume — books, videos, podcasts, knowledge, and philosophy.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Syne:wght@300;400;500;600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0b0d;
+    --surface: #111115;
+    --surface2: #17171d;
+    --surface3: #1d1d25;
+    --salmon: #e07060;
+    --salmon-glow: rgba(224,112,96,0.12);
+    --salmon-dim: rgba(224,112,96,0.35);
+    --salmon-soft: #c9604e;
+    --text: #e8e4df;
+    --text-muted: #7a7570;
+    --text-dim: #3e3c3a;
+    --border: rgba(255,255,255,0.055);
+    --border-salmon: rgba(224,112,96,0.22);
+    --radius: 20px;
+    --radius-sm: 12px;
+    --radius-lg: 32px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Syne', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  .blob {
+    position: fixed; border-radius: 50%;
+    pointer-events: none; z-index: 0; filter: blur(80px);
+  }
+  .blob-1 {
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(224,112,96,0.08) 0%, transparent 70%);
+    top: -180px; right: -120px;
+    animation: drift1 14s ease-in-out infinite alternate;
+  }
+  .blob-2 {
+    width: 350px; height: 350px;
+    background: radial-gradient(circle, rgba(224,112,96,0.05) 0%, transparent 70%);
+    bottom: -80px; left: -80px;
+    animation: drift2 18s ease-in-out infinite alternate;
+  }
+  @keyframes drift1 { to { transform: translate(30px, 40px); } }
+  @keyframes drift2 { to { transform: translate(-20px, -30px); } }
+
+  /* Sidebar */
+  .sidebar {
+    position: fixed; left: 0; top: 0; bottom: 0; width: 232px;
+    background: rgba(17,17,21,0.97);
+    backdrop-filter: blur(24px);
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    z-index: 100;
+  }
+
+  .logo-wrap {
+    padding: 32px 28px 26px;
+    border-bottom: 1px solid var(--border);
+  }
+  .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem; font-weight: 300;
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .logo span { color: var(--salmon); }
+  .logo-tagline {
+    font-size: 0.62rem; color: var(--text-dim);
+    letter-spacing: 0.18em; text-transform: uppercase; margin-top: 6px;
+  }
+
+  .nav { flex: 1; padding: 18px 14px; overflow-y: auto; }
+  .nav-label {
+    font-size: 0.58rem; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--text-dim);
+    padding: 0 10px; margin: 14px 0 5px;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 10px; border-radius: var(--radius-sm);
+    cursor: pointer; font-size: 0.8rem; color: var(--text-muted);
+    font-weight: 400; transition: all 0.2s;
+    border: 1px solid transparent; letter-spacing: 0.01em; user-select: none;
+  }
+  .nav-item:hover { color: var(--text); background: var(--surface2); }
+  .nav-item.active { color: var(--salmon); background: var(--salmon-glow); border-color: var(--border-salmon); }
+  .nav-item .ni { font-size: 0.88rem; width: 16px; text-align: center; }
+  .badge {
+    margin-left: auto; font-size: 0.58rem; font-family: 'DM Mono', monospace;
+    color: var(--text-dim); background: var(--surface3);
+    padding: 2px 7px; border-radius: 50px;
+  }
+  .nav-item.active .badge { color: var(--salmon); background: rgba(224,112,96,0.1); }
+
+  .sidebar-foot {
+    padding: 16px 28px; border-top: 1px solid var(--border);
+  }
+  .foot-date { font-family: 'DM Mono', monospace; font-size: 0.64rem; color: var(--text-dim); letter-spacing: 0.06em; }
+  .foot-dot {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--salmon);
+    display: inline-block; margin-right: 6px;
+    box-shadow: 0 0 6px rgba(224,112,96,0.5);
+    animation: blink 2.4s ease infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  /* Main */
+  .main { margin-left: 232px; min-height: 100vh; position: relative; z-index: 1; }
+
+  .topbar {
+    position: sticky; top: 0;
+    padding: 20px 48px; display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    background: rgba(11,11,13,0.88); backdrop-filter: blur(24px); z-index: 50;
+  }
+  .topbar-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem; font-weight: 300; letter-spacing: -0.01em;
+  }
+  .topbar-title em { color: var(--salmon); font-style: italic; }
+  .topbar-meta { font-size: 0.66rem; font-family: 'DM Mono', monospace; color: var(--text-dim); letter-spacing: 0.08em; }
+
+  /* Pages */
+  .page { display: none; padding: 44px 48px 80px; animation: appear 0.3s ease both; }
+  .page.active { display: block; }
+  @keyframes appear { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
+
+  /* Hero */
+  .hero { margin-bottom: 48px; }
+  .hero-eyebrow {
+    font-size: 0.63rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--text-muted); margin-bottom: 14px; font-family: 'DM Mono', monospace;
+  }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.4rem; font-weight: 300; line-height: 1.1;
+    letter-spacing: -0.03em; margin-bottom: 18px;
+  }
+  .hero-title em { color: var(--salmon); font-style: italic; }
+  .hero-body { font-size: 0.87rem; color: var(--text-muted); line-height: 1.85; max-width: 500px; font-weight: 300; }
+
+  /* Stats */
+  .stats-row { display: flex; gap: 14px; margin-bottom: 52px; flex-wrap: wrap; }
+  .stat {
+    flex: 1; min-width: 100px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 20px 22px;
+    transition: all 0.25s ease;
+  }
+  .stat:hover { border-color: var(--border-salmon); box-shadow: 0 0 28px rgba(224,112,96,0.07); transform: translateY(-2px); }
+  .stat-num { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 300; line-height: 1; color: var(--salmon); margin-bottom: 4px; }
+  .stat-lbl { font-size: 0.67rem; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; }
+
+  /* Section header */
+  .sec { display: flex; align-items: baseline; gap: 12px; margin-bottom: 20px; }
+  .sec-title { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 400; letter-spacing: -0.01em; }
+  .sec-count { font-size: 0.65rem; font-family: 'DM Mono', monospace; color: var(--text-dim); letter-spacing: 0.06em; }
+
+  /* Grid */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(268px, 1fr)); gap: 14px; margin-bottom: 50px; }
+
+  /* Card */
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 22px;
+    transition: all 0.25s ease; position: relative; overflow: hidden;
+  }
+  .card::after {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 2px; height: 0;
+    background: linear-gradient(to bottom, var(--salmon), transparent);
+    transition: height 0.35s ease; border-radius: 2px;
+  }
+  .card:hover { border-color: var(--border-salmon); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.35), 0 0 24px rgba(224,112,96,0.06); }
+  .card:hover::after { height: 100%; }
+
+  .card-pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--salmon); background: var(--salmon-glow);
+    border: 1px solid var(--border-salmon);
+    padding: 3px 10px; border-radius: 50px; margin-bottom: 13px; font-weight: 500;
+  }
+  .card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem; font-weight: 400; line-height: 1.35;
+    margin-bottom: 7px; color: var(--text);
+  }
+  .card-author { font-size: 0.68rem; color: var(--text-muted); font-family: 'DM Mono', monospace; margin-bottom: 10px; letter-spacing: 0.04em; }
+  .card-note { font-size: 0.78rem; color: var(--text-muted); line-height: 1.65; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 12px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 5px; }
+  .chip { padding: 2px 8px; border: 1px solid var(--border); border-radius: 50px; font-size: 0.6rem; color: var(--text-dim); letter-spacing: 0.07em; text-transform: uppercase; }
+  .card-date { margin-top: 10px; font-size: 0.62rem; color: var(--text-dim); font-family: 'DM Mono', monospace; letter-spacing: 0.04em; }
+
+  /* Philosophy */
+  .quote-block {
+    background: var(--surface); border: 1px solid var(--border);
+    border-left: 2px solid var(--salmon);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 24px 28px; margin-bottom: 12px; transition: all 0.22s ease;
+  }
+  .quote-block:hover { border-left-width: 3px; box-shadow: 0 4px 28px rgba(224,112,96,0.07); transform: translateX(4px); }
+  .quote-text { font-family: 'Cormorant Garamond', serif; font-size: 1.32rem; font-weight: 300; font-style: italic; line-height: 1.6; color: var(--text); margin-bottom: 10px; }
+  .quote-source { font-size: 0.67rem; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; font-family: 'DM Mono', monospace; }
+  .quote-note { font-size: 0.78rem; color: var(--text-muted); line-height: 1.65; margin-top: 10px; }
+
+  /* DSA */
+  .dsa-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(116px, 1fr)); gap: 10px; margin-bottom: 36px; }
+  .dsa-chip { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px 12px; text-align: center; transition: all 0.2s; }
+  .dsa-chip.done { border-color: var(--border-salmon); background: var(--salmon-glow); }
+  .dsa-chip:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+  .dsa-ico { font-size: 1.35rem; margin-bottom: 6px; }
+  .dsa-name { font-size: 0.68rem; color: var(--text-muted); }
+  .dsa-chip.done .dsa-name { color: var(--salmon); }
+  .dsa-check { font-size: 0.54rem; color: var(--salmon); margin-top: 4px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+  /* Certs */
+  .cert-row { display: flex; flex-wrap: wrap; gap: 10px; }
+  .cert-tag {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 9px 16px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 50px;
+    font-size: 0.75rem; color: var(--text-muted); transition: all 0.2s;
+  }
+  .cert-tag:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
+  .cert-tag.done { border-color: var(--border-salmon); color: var(--salmon); background: var(--salmon-glow); }
+  .cert-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+  .cert-tag.done .cert-dot { box-shadow: 0 0 6px rgba(224,112,96,0.6); animation: pulse 2.2s ease infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .cert-status { font-size: 0.58rem; opacity: 0.6; letter-spacing: 0.06em; text-transform: uppercase; font-family: 'DM Mono', monospace; }
+
+  /* Progress bars */
+  .prog-item { margin-bottom: 20px; }
+  .prog-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .prog-label { font-size: 0.78rem; color: var(--text-muted); }
+  .prog-pct { font-size: 0.68rem; color: var(--salmon); font-family: 'DM Mono', monospace; }
+  .prog-bar { height: 3px; background: var(--surface3); border-radius: 50px; overflow: hidden; }
+  .prog-fill { height: 100%; background: linear-gradient(90deg, var(--salmon-soft), var(--salmon)); border-radius: 50px; box-shadow: 0 0 6px rgba(224,112,96,0.35); }
+
+  /* About */
+  .about-panel {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 36px 40px;
+    margin-bottom: 28px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 36px;
+  }
+  .about-label { font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 10px; }
+  .about-val { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 300; color: var(--text-muted); line-height: 1.75; }
+  .mantra { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-style: italic; color: var(--text-muted); line-height: 1.7; padding: 13px 0 13px 18px; border-bottom: 1px solid var(--border); position: relative; }
+  .mantra::before { content: '"'; position: absolute; left: 0; top: 12px; color: var(--salmon); font-size: 1.5rem; opacity: 0.45; line-height: 1; }
+  .mantra:last-child { border-bottom: none; }
+
+  /* Divider */
+  .divider { height: 1px; background: var(--border); margin: 40px 0; }
+
+  /* Empty */
+  .empty { grid-column: 1/-1; padding: 50px 20px; text-align: center; border: 1px dashed var(--border); border-radius: var(--radius-lg); }
+  .empty-ico { font-size: 2rem; opacity: 0.2; margin-bottom: 10px; }
+  .empty-txt { font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: var(--text-dim); font-weight: 300; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 4px; }
+
+  /* Mobile */
+  .mob-btn {
+    display: none; position: fixed; top: 14px; left: 14px; z-index: 200;
+    width: 36px; height: 36px; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 1rem; color: var(--text-muted);
+  }
+  .mob-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 99; }
+  .mob-overlay.open { display: block; }
+
+  @media (max-width: 860px) {
+    .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; }
+    .sidebar.open { transform: none; }
+    .main { margin-left: 0; }
+    .page { padding: 28px 20px 60px; }
+    .topbar { padding: 16px 20px 16px 62px; }
+    .hero-title { font-size: 2.2rem; }
+    .stats-row { gap: 10px; }
+    .about-panel { grid-template-columns: 1fr; gap: 24px; }
+    .mob-btn { display: flex; }
+    .topbar-meta { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="mob-overlay" id="overlay" onclick="closeSidebar()"></div>
+<button class="mob-btn" onclick="toggleSidebar()">☰</button>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+  <div class="logo-wrap">
+    <div class="logo"><span>R</span>chives</div>
+    <div class="logo-tagline">A public knowledge library</div>
+  </div>
+  <nav class="nav">
+    <div class="nav-label">Explore</div>
+    <div class="nav-item active" onclick="goto('home',this)"><span class="ni">⌂</span> Home <span class="badge" id="b-home">—</span></div>
+
+    <div class="nav-label">Content</div>
+    <div class="nav-item" onclick="goto('videos',this)"><span class="ni">▷</span> YouTube <span class="badge" id="b-videos">0</span></div>
+    <div class="nav-item" onclick="goto('books',this)"><span class="ni">◎</span> Books <span class="badge" id="b-books">0</span></div>
+    <div class="nav-item" onclick="goto('podcasts',this)"><span class="ni">◉</span> Podcasts <span class="badge" id="b-podcasts">0</span></div>
+    <div class="nav-item" onclick="goto('knowledge',this)"><span class="ni">✦</span> Knowledge <span class="badge" id="b-knowledge">0</span></div>
+    <div class="nav-item" onclick="goto('philosophy',this)"><span class="ni">∿</span> Philosophy <span class="badge" id="b-philosophy">0</span></div>
+
+    <div class="nav-label">My Journey</div>
+    <div class="nav-item" onclick="goto('dsa',this)"><span class="ni">⟨⟩</span> DSA</div>
+    <div class="nav-item" onclick="goto('certs',this)"><span class="ni">⬡</span> Certs</div>
+    <div class="nav-item" onclick="goto('about',this)"><span class="ni">◑</span> About</div>
+  </nav>
+  <div class="sidebar-foot">
+    <div class="foot-date"><span class="foot-dot"></span><span id="foot-date"></span></div>
+  </div>
+</aside>
+
+<!-- Main -->
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-title" id="topbar-title"><em>Rchives</em> — Home</div>
+    <div class="topbar-meta" id="topbar-meta"></div>
+  </div>
+
+  <!-- HOME -->
+  <section class="page active" id="page-home">
+    <div class="hero">
+      <div class="hero-eyebrow">Public Knowledge Library</div>
+      <div class="hero-title">Everything I <em>read,</em><br>watch &amp; absorb.</div>
+      <div class="hero-body">This is my open archive — a living record of the books, videos, podcasts, ideas and philosophies that have shaped how I think. Browse freely.</div>
+    </div>
+    <div class="stats-row" id="stats-row"></div>
+    <div class="sec">
+      <div class="sec-title">Recently Added</div>
+      <div class="sec-count" id="recent-count"></div>
+    </div>
+    <div class="grid" id="recent-grid"></div>
+  </section>
+
+  <!-- YOUTUBE -->
+  <section class="page" id="page-videos">
+    <div class="sec"><div class="sec-title">YouTube ▷</div><div class="sec-count" id="cnt-videos"></div></div>
+    <div class="grid" id="grid-videos"></div>
+  </section>
+
+  <!-- BOOKS -->
+  <section class="page" id="page-books">
+    <div class="sec"><div class="sec-title">Books ◎</div><div class="sec-count" id="cnt-books"></div></div>
+    <div class="grid" id="grid-books"></div>
+  </section>
+
+  <!-- PODCASTS -->
+  <section class="page" id="page-podcasts">
+    <div class="sec"><div class="sec-title">Podcasts ◉</div><div class="sec-count" id="cnt-podcasts"></div></div>
+    <div class="grid" id="grid-podcasts"></div>
+  </section>
+
+  <!-- KNOWLEDGE -->
+  <section class="page" id="page-knowledge">
+    <div class="sec"><div class="sec-title">Knowledge ✦</div><div class="sec-count" id="cnt-knowledge"></div></div>
+    <div class="grid" id="grid-knowledge"></div>
+  </section>
+
+  <!-- PHILOSOPHY -->
+  <section class="page" id="page-philosophy">
+    <div class="sec"><div class="sec-title">Life Philosophies ∿</div><div class="sec-count" id="cnt-philosophy"></div></div>
+    <div id="grid-philosophy"></div>
+  </section>
+
+  <!-- DSA -->
+  <section class="page" id="page-dsa">
+    <div class="hero" style="margin-bottom:36px">
+      <div class="hero-eyebrow">Self-Improvement</div>
+      <div class="hero-title" style="font-size:2.4rem">DSA <em>Progress</em></div>
+      <div class="hero-body">Topics I'm working through. Consistency over speed.</div>
+    </div>
+    <div class="sec"><div class="sec-title">Core Topics</div><div class="sec-count" id="dsa-count"></div></div>
+    <div class="dsa-grid" id="dsa-grid"></div>
+    <div class="divider"></div>
+    <div class="sec"><div class="sec-title">Completion</div></div>
+    <div style="max-width:460px">
+      <div class="prog-item">
+        <div class="prog-top"><span class="prog-label">Topics Mastered</span><span class="prog-pct" id="pp-dsa"></span></div>
+        <div class="prog-bar"><div class="prog-fill" id="pf-dsa"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CERTS -->
+  <section class="page" id="page-certs">
+    <div class="hero" style="margin-bottom:36px">
+      <div class="hero-eyebrow">Credential Roadmap</div>
+      <div class="hero-title" style="font-size:2.4rem">Certifications <em>⬡</em></div>
+      <div class="hero-body">Planned, in-progress, and completed credentials.</div>
+    </div>
+    <div class="sec"><div class="sec-title">All Certifications</div></div>
+    <div class="cert-row" id="cert-row"></div>
+    <div class="divider"></div>
+    <div class="sec"><div class="sec-title">Progress Overview</div></div>
+    <div style="max-width:460px">
+      <div class="prog-item">
+        <div class="prog-top"><span class="prog-label">Certifications Completed</span><span class="prog-pct" id="pp-cert"></span></div>
+        <div class="prog-bar"><div class="prog-fill" id="pf-cert"></div></div>
+      </div>
+      <div class="prog-item">
+        <div class="prog-top"><span class="prog-label">DSA Topics Mastered</span><span class="prog-pct" id="pp-cert-dsa"></span></div>
+        <div class="prog-bar"><div class="prog-fill" id="pf-cert-dsa"></div></div>
+      </div>
+      <div class="prog-item">
+        <div class="prog-top"><span class="prog-label">Content Archived (goal: 50)</span><span class="prog-pct" id="pp-content"></span></div>
+        <div class="prog-bar"><div class="prog-fill" id="pf-content"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="page" id="page-about">
+    <div class="hero" style="margin-bottom:36px">
+      <div class="hero-eyebrow">Behind Rchives</div>
+      <div class="hero-title" style="font-size:2.4rem">About <em>this library</em></div>
+    </div>
+    <div class="about-panel">
+      <div>
+        <div class="about-label">What is Rchives?</div>
+        <div class="about-val">A public archive of everything I consume and learn — books, videos, ideas, philosophies, and knowledge worth preserving. Think of it as a second brain, open to the world.</div>
+      </div>
+      <div>
+        <div class="about-label">Why public?</div>
+        <div class="about-val">Good ideas deserve to be shared. If something I've read or watched resonates with you too, this library has served its purpose.</div>
+      </div>
+      <div>
+        <div class="about-label">Current Focus</div>
+        <div class="about-val">DSA, certifications, and building strong software fundamentals. Documenting the journey in real time.</div>
+      </div>
+      <div>
+        <div class="about-label">Mantras I Live By</div>
+        <div>
+          <div class="mantra">Be so good they can't ignore you.</div>
+          <div class="mantra">Discipline equals freedom.</div>
+          <div class="mantra">Every day is a chance to be the greatest version of yourself.</div>
+          <div class="mantra">Show up even when you don't feel like it — that's who you're becoming.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+//  ✏️  YOUR CONTENT — Edit anything below to update the site
+// ═══════════════════════════════════════════════════════════
+
+const LIBRARY = {
+
+  videos: [
+    {
+      title: "The Philosophy of Naval Ravikant",
+      author: "Naval Ravikant",
+      notes: "Wealth is created by leveraging code, media, and capital. Learn to build things that work while you sleep. Seek specific knowledge — skills the world can't easily teach.",
+      tags: ["philosophy", "wealth", "mindset"],
+      date: "01 May 2025"
+    },
+    {
+      title: "How to Study Effectively — Evidence Based",
+      author: "Andrew Huberman",
+      notes: "Spaced repetition, active recall, and interleaving are the gold standards. Sleep is the most underrated study tool.",
+      tags: ["learning", "science", "study"],
+      date: "03 May 2025"
+    },
+    {
+      title: "Why Most People Will Never Be Successful",
+      author: "Dan Koe",
+      notes: "Most people optimize for comfort. Success is just being willing to stay uncomfortable for longer than others.",
+      tags: ["motivation", "mindset"],
+      date: "08 May 2025"
+    },
+  ],
+
+  books: [
+    {
+      title: "Atomic Habits",
+      author: "James Clear",
+      notes: "Identity-based habits beat outcome-based ones. You don't rise to your goals, you fall to your systems. Make the good habit obvious, attractive, easy, satisfying.",
+      tags: ["habits", "self-improvement", "systems"],
+      date: "15 Apr 2025"
+    },
+    {
+      title: "Deep Work",
+      author: "Cal Newport",
+      notes: "The ability to focus without distraction is becoming rare and valuable. Schedule depth. Quit social media ruthlessly.",
+      tags: ["focus", "productivity", "work"],
+      date: "22 Apr 2025"
+    },
+    {
+      title: "The Almanack of Naval Ravikant",
+      author: "Eric Jorgenson",
+      notes: "Seek wealth, not money. Learn to sell, learn to build. If you can do both, you will be unstoppable.",
+      tags: ["philosophy", "wealth", "wisdom"],
+      date: "02 May 2025"
+    },
+  ],
+
+  podcasts: [
+    {
+      title: "Huberman Lab — Master Your Sleep",
+      author: "Andrew Huberman",
+      notes: "Morning sunlight, consistent wake time, and no caffeine for 90 minutes after waking. Sleep is the foundation of everything.",
+      tags: ["health", "sleep", "science"],
+      date: "05 May 2025"
+    },
+    {
+      title: "Lex Fridman — Elon Musk on First Principles",
+      author: "Lex Fridman",
+      notes: "Break down problems to their most fundamental truths and reason up from there. Don't reason by analogy — most people do.",
+      tags: ["thinking", "engineering", "innovation"],
+      date: "10 May 2025"
+    },
+  ],
+
+  knowledge: [
+    {
+      title: "Virtual Memory vs Cache Memory",
+      author: "COA",
+      notes: "Virtual memory extends RAM using disk. Cache is SRAM between CPU and RAM for speed. Locality of reference is why caching works — temporal and spatial.",
+      tags: ["computer-science", "coa", "memory"],
+      date: "12 Apr 2025"
+    },
+    {
+      title: "ACID Properties in DBMS",
+      author: "DBMS",
+      notes: "Atomicity, Consistency, Isolation, Durability. Transactions must satisfy all four. Serializability ensures isolation in concurrent environments.",
+      tags: ["dbms", "transactions", "computer-science"],
+      date: "18 Apr 2025"
+    },
+    {
+      title: "Sliding Window Technique",
+      author: "DSA Practice",
+      notes: "Maintain a window of size k or variable size. Expand right pointer, contract left when condition breaks. Turns O(n²) into O(n).",
+      tags: ["dsa", "algorithms", "patterns"],
+      date: "07 May 2025"
+    },
+  ],
+
+  philosophy: [
+    {
+      title: "Discipline equals freedom.",
+      source: "Jocko Willink",
+      notes: "The more structure you impose on yourself, the more freedom you ultimately experience. People see discipline as restriction — it's the opposite.",
+      tags: ["discipline", "mindset"],
+      date: "01 Apr 2025"
+    },
+    {
+      title: "The obstacle is the way.",
+      source: "Marcus Aurelius",
+      notes: "Stoicism at its core: what stands in the way becomes the way. Every adversity contains the seed of the solution.",
+      tags: ["stoicism", "adversity", "growth"],
+      date: "10 Apr 2025"
+    },
+    {
+      title: "You are the average of the five people you spend the most time with.",
+      source: "Jim Rohn",
+      notes: "Environment is stronger than willpower. Build your inputs — people, media, and spaces — consciously.",
+      tags: ["environment", "influence", "people"],
+      date: "20 Apr 2025"
+    },
+    {
+      title: "Do not pray for an easy life. Pray for the strength to endure a difficult one.",
+      source: "Bruce Lee",
+      notes: "Comfort is the enemy of growth. Seek challenge deliberately.",
+      tags: ["resilience", "growth"],
+      date: "28 Apr 2025"
+    },
+  ],
+
+};
+
+// ═══════════════════════════════════════════════════════════
+//  ✏️  DSA TOPICS — set done: true when you complete a topic
+// ═══════════════════════════════════════════════════════════
+
+const DSA_TOPICS = [
+  { name: 'Arrays',       icon: '▦', done: true  },
+  { name: 'Strings',      icon: '∑', done: true  },
+  { name: 'Linked List',  icon: '◌', done: false },
+  { name: 'Stacks',       icon: '⊟', done: true  },
+  { name: 'Queues',       icon: '⊞', done: false },
+  { name: 'Trees',        icon: '⊤', done: false },
+  { name: 'Graphs',       icon: '⬡', done: false },
+  { name: 'Dyn. Prog.',   icon: '◈', done: false },
+  { name: 'Sorting',      icon: '↕', done: true  },
+  { name: 'Searching',    icon: '⊛', done: true  },
+  { name: 'Hashing',      icon: '⊕', done: false },
+  { name: 'Heap / PQ',    icon: '△', done: false },
+  { name: 'Trie',         icon: '⊳', done: false },
+  { name: 'Backtracking', icon: '↺', done: false },
+  { name: 'Greedy',       icon: '→', done: false },
+  { name: 'Bit Manip.',   icon: '⊗', done: true  },
+  { name: 'Two Pointer',  icon: '⇔', done: true  },
+  { name: 'Sliding Win.', icon: '⊡', done: true  },
+  { name: 'Recursion',    icon: '∞', done: false },
+  { name: 'Seg. Tree',    icon: '⊾', done: false },
+];
+
+// ═══════════════════════════════════════════════════════════
+//  ✏️  CERTIFICATIONS — status: "planned" | "in-progress" | "done"
+// ═══════════════════════════════════════════════════════════
+
+const CERTS = [
+  { name: "AWS Cloud Practitioner",       status: "planned"     },
+  { name: "Google Data Analytics",        status: "in-progress" },
+  { name: "Meta Front-End Developer",     status: "planned"     },
+  { name: "Cisco CCNA Intro",             status: "planned"     },
+  { name: "HackerRank Problem Solving",   status: "done"        },
+  { name: "freeCodeCamp JS Algorithms",   status: "in-progress" },
+];
+
+// ═══════════════════════════════════════════════════════════
+//  ENGINE — no need to edit below
+// ═══════════════════════════════════════════════════════════
+
+const TYPE_META = {
+  video:     { label: 'YouTube',    icon: '▷' },
+  book:      { label: 'Book',       icon: '◎' },
+  podcast:   { label: 'Podcast',    icon: '◉' },
+  knowledge: { label: 'Note',       icon: '✦' },
+  philosophy:{ label: 'Philosophy', icon: '∿' },
+};
+
+function makeCard(item, type) {
+  const m = TYPE_META[type] || { label: type, icon: '·' };
+  const author = item.author || item.source || '';
+  const tags = (item.tags || []).map(t => `<span class="chip">${t}</span>`).join('');
+  return `<div class="card">
+    <div class="card-pill">${m.icon} ${m.label}</div>
+    <div class="card-title">${item.title}</div>
+    ${author ? `<div class="card-author">— ${author}</div>` : ''}
+    ${item.notes ? `<div class="card-note">${item.notes}</div>` : ''}
+    ${tags ? `<div class="chips">${tags}</div>` : ''}
+    ${item.date ? `<div class="card-date">${item.date}</div>` : ''}
+  </div>`;
+}
+
+function makeQuote(item) {
+  const tags = (item.tags || []).map(t => `<span class="chip">${t}</span>`).join('');
+  return `<div class="quote-block">
+    <div class="quote-text">"${item.title}"</div>
+    ${item.source ? `<div class="quote-source">— ${item.source}</div>` : ''}
+    ${item.notes ? `<div class="quote-note">${item.notes}</div>` : ''}
+    ${tags ? `<div class="chips" style="margin-top:10px">${tags}</div>` : ''}
+  </div>`;
+}
+
+function fillGrid(id, items, type) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.innerHTML = items.length
+    ? items.map(i => makeCard(i, type)).join('')
+    : `<div class="empty"><div class="empty-ico">◌</div><div class="empty-txt">Nothing here yet</div></div>`;
+}
+
+function setBar(fillId, pctId, val) {
+  const f = document.getElementById(fillId), p = document.getElementById(pctId);
+  if (f) f.style.width = val + '%';
+  if (p) p.textContent = val + '%';
+}
+
+function setText(id, val) { const el = document.getElementById(id); if (el) el.textContent = val; }
+
+function boot() {
+  // Date
+  const now = new Date();
+  setText('foot-date', now.toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' }));
+  setText('topbar-meta', now.toLocaleDateString('en-IN', { weekday:'long', day:'numeric', month:'long' }).toUpperCase());
+
+  // Counts
+  const c = {
+    videos: LIBRARY.videos.length, books: LIBRARY.books.length,
+    podcasts: LIBRARY.podcasts.length, knowledge: LIBRARY.knowledge.length,
+    philosophy: LIBRARY.philosophy.length,
+  };
+  const total = Object.values(c).reduce((a,b) => a+b, 0);
+
+  Object.entries(c).forEach(([k,v]) => { const el = document.getElementById('b-'+k); if (el) el.textContent = v; });
+  setText('b-home', total);
+
+  // Stats row
+  const stats = [
+    { num: c.videos, lbl: 'Videos' }, { num: c.books, lbl: 'Books' },
+    { num: c.podcasts, lbl: 'Podcasts' }, { num: c.knowledge, lbl: 'Notes' },
+    { num: c.philosophy, lbl: 'Philosophies' }, { num: total, lbl: 'Total' },
+  ];
+  document.getElementById('stats-row').innerHTML = stats.map(s =>
+    `<div class="stat"><div class="stat-num">${s.num}</div><div class="stat-lbl">${s.lbl}</div></div>`
+  ).join('');
+
+  // Recent
+  const all = [
+    ...LIBRARY.videos.map(i => ({...i, _t:'video'})),
+    ...LIBRARY.books.map(i => ({...i, _t:'book'})),
+    ...LIBRARY.podcasts.map(i => ({...i, _t:'podcast'})),
+    ...LIBRARY.knowledge.map(i => ({...i, _t:'knowledge'})),
+    ...LIBRARY.philosophy.map(i => ({...i, _t:'philosophy'})),
+  ];
+  setText('recent-count', total + ' total entries');
+  document.getElementById('recent-grid').innerHTML = all.slice(-6).reverse().map(i => makeCard(i, i._t)).join('');
+
+  // Grids
+  fillGrid('grid-videos',    LIBRARY.videos,     'video');
+  fillGrid('grid-books',     LIBRARY.books,      'book');
+  fillGrid('grid-podcasts',  LIBRARY.podcasts,   'podcast');
+  fillGrid('grid-knowledge', LIBRARY.knowledge,  'knowledge');
+  setText('cnt-videos',    c.videos    + ' saved');
+  setText('cnt-books',     c.books     + ' archived');
+  setText('cnt-podcasts',  c.podcasts  + ' listened');
+  setText('cnt-knowledge', c.knowledge + ' notes');
+
+  // Philosophy
+  setText('cnt-philosophy', c.philosophy + ' principles');
+  const ph = document.getElementById('grid-philosophy');
+  ph.innerHTML = LIBRARY.philosophy.length ? LIBRARY.philosophy.map(makeQuote).join('') :
+    `<div class="empty"><div class="empty-ico">∿</div><div class="empty-txt">Nothing yet</div></div>`;
+
+  // DSA
+  const dsaDone = DSA_TOPICS.filter(t => t.done).length;
+  const dsaPct  = Math.round((dsaDone / DSA_TOPICS.length) * 100);
+  setText('dsa-count', `${dsaDone} / ${DSA_TOPICS.length} complete`);
+  document.getElementById('dsa-grid').innerHTML = DSA_TOPICS.map(t =>
+    `<div class="dsa-chip ${t.done ? 'done' : ''}">
+      <div class="dsa-ico">${t.icon}</div>
+      <div class="dsa-name">${t.name}</div>
+      ${t.done ? '<div class="dsa-check">✓ done</div>' : ''}
+    </div>`).join('');
+  setBar('pf-dsa', 'pp-dsa', dsaPct);
+
+  // Certs
+  const certDone = CERTS.filter(c => c.status === 'done').length;
+  const certPct  = CERTS.length ? Math.round((certDone / CERTS.length) * 100) : 0;
+  const sMap = { planned:'Planned', 'in-progress':'In Progress', done:'Completed' };
+  document.getElementById('cert-row').innerHTML = CERTS.map(c =>
+    `<div class="cert-tag ${c.status === 'done' ? 'done' : c.status === 'in-progress' ? 'inprogress' : ''}">
+      <span class="cert-dot"></span>
+      ${c.name}
+      <span class="cert-status">${sMap[c.status] || c.status}</span>
+    </div>`).join('');
+  setBar('pf-cert',     'pp-cert',     certPct);
+  setBar('pf-cert-dsa', 'pp-cert-dsa', dsaPct);
+  setBar('pf-content',  'pp-content',  Math.min(Math.round((total / 50) * 100), 100));
+}
+
+// Navigation
+const PAGE_TITLES = {
+  home: '<em>Rchives</em> — Home', videos: 'YouTube ▷', books: 'Books ◎',
+  podcasts: 'Podcasts ◉', knowledge: 'Knowledge ✦', philosophy: 'Life Philosophies ∿',
+  dsa: 'DSA Progress ⟨⟩', certs: 'Certifications ⬡', about: 'About',
+};
+
+function goto(page, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  el.classList.add('active');
+  document.getElementById('topbar-title').innerHTML = PAGE_TITLES[page] || page;
+  if (window.innerWidth < 860) closeSidebar();
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('open');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+}
+
+boot();
+</script>
+</body>
+</html>
