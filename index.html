@@ -1307,72 +1307,48 @@ section {
 }
    /* ── HERO: fix whitespace, enlarge everything ── */
 #hero {
-  gap: 2rem;
-  padding: 7rem 4% 4rem;
+  gap: 1.2rem;
+  padding: 5rem 4% 3rem;
   align-items: center;
 }
+
 .hero-left {
-  flex: 1 1 0;
+  flex: 1;
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-}
-.hero-name {
-  font-size: clamp(3rem, 6vw, 6rem);
-}
-.terminal-box {
-  max-width: 100%;
-  width: 100%;
-}
-.t-line { font-size: .8rem;  line-height: 2.1; }
-.t-out  { font-size: .78rem; }
-.hero-right {
-  flex: 0 0 min(480px, 44vw);
-}
-.photo-universe {
-  width:  min(430px, 42vw);
-  height: min(490px, 52vw);
+  gap: 1rem;
 }
 
-/* ── Paper-cut stickers ── */
-.hero-sticker {
-  position: absolute;
-  pointer-events: none;
-  z-index: 4;
-  transform-origin: center center;
+.hero-name {
+  font-size: clamp(2.2rem, 4vw, 4rem);
+  line-height: 1.1;
 }
-.sticker-confused {
-  width: clamp(130px, 14vw, 210px);
-  top:  44%;
-  left: 36%;
-  animation: stickerWobble 5.5s ease-in-out infinite;
-  --r: -7deg;
-}
-.sticker-heart {
-  width: clamp(72px, 8vw, 115px);
-  top:  16%;
-  left: 50%;
-  animation: stickerWobble 4.2s ease-in-out infinite reverse;
-  animation-delay: 1.4s;
-  --r: 10deg;
-}
-@keyframes stickerWobble {
-  0%,100% { transform: rotate(var(--r)) translateY(0px); }
-  50%      { transform: rotate(calc(var(--r) + 4deg)) translateY(-8px); }
-}
-.sticker-confused img {
-  display: block;
+
+.terminal-box {
+  max-width: 520px;
   width: 100%;
-  border-radius: 3px;
-  filter: drop-shadow(2px 5px 10px rgba(0,0,0,.28))
-          drop-shadow(0 1px 0 rgba(255,255,255,.6));
 }
-.sticker-heart img {
-  display: block;
-  width: 100%;
-  filter: drop-shadow(2px 4px 8px rgba(255,107,26,.35))
-          drop-shadow(0 0 16px rgba(255,107,26,.15));
+
+.t-line {
+  font-size: 0.72rem;
+  line-height: 1.8;
+}
+
+.t-out {
+  font-size: 0.72rem;
+}
+
+.hero-right {
+  flex: 0 0 360px;
+  display: flex;
+  justify-content: center;
+}
+
+.photo-universe {
+  width: min(320px, 80vw);
+  height: auto;
+  max-height: 420px;
 }
 
 /* float tags larger */
