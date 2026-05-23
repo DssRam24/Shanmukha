@@ -2049,9 +2049,9 @@ section {
 </button>
 <div id="feedback-panel">
   <div class="fb-title">✦ Leave a Note</div>
-  <textarea class="fb-input" id="fb-text" placeholder="Say something nice... or not. I'm a portfolio, not a therapist 🙃" rows="4"></textarea>
+  <textarea class="fb-input" id="fb-text" placeholder="Say something nice... " rows="4"></textarea>
   <input class="fb-name" id="fb-name" placeholder="Your name (or 'anonymous weirdo')">
-  <button class="fb-submit" onclick="addNote()">PIN IT</button>
+ <button class="fb-submit" id="fb-submit-btn" onclick="addNote()">PIN IT</button>
   <div class="fb-notes-head" id="fb-notes-head" style="display:none;">Visitor Notes</div>
   <div class="fb-notes-list" id="fb-notes-list"></div>
 </div>
@@ -2864,6 +2864,11 @@ var fbOpen = false;
 function toggleFb() {
   fbOpen = !fbOpen;
   document.getElementById('feedback-panel').classList.toggle('open', fbOpen);
+
+  // Load all notes from Firestore every time panel opens
+  if (fbOpen && typeof window.loadNotes === 'function') {
+    window.loadNotes();
+  }
 }
 
 // ============================================================
@@ -3256,13 +3261,67 @@ window.addSuggestion = async function() {
 // FEEDBACK NOTES → writes to Firestore "notes"
 //                  + shows locally in the panel
 // ============================================================
+// ============================================================
+// LOAD NOTES FROM FIRESTORE (visible to all visitors)
+// ============================================================
+window.loadNotes = async function() {
+  var list   = document.getElementById('fb-notes-list');
+  var headEl = document.getElementById('fb-notes-head');
+  if (!list) return;
+
+  list.innerHTML =
+    '<div style="font-family:\'Space Mono\',monospace;font-size:.55rem;' +
+    'color:#555;padding:.5rem 0;">⟳ Loading notes...</div>';
+
+  try {
+    var snap = await getDocs(collection(db, 'notes'));
+    var all  = snap.docs.map(function(d) { return d.data(); })
+                   .sort(function(a,b) { return (b.ts||0) - (a.ts||0) });
+
+    list.innerHTML = '';
+
+    if (!all.length) {
+      list.innerHTML =
+        '<div style="font-family:\'Caveat\',cursive;font-size:1rem;' +
+        'color:#444;text-align:center;padding:1rem;">No notes yet. Be the first! 📝</div>';
+      return;
+    }
+
+    if (headEl) headEl.style.display = 'block';
+
+    var colors = ['sn-0','sn-1','sn-2','sn-3','sn-4'];
+    all.forEach(function(n, i) {
+      var el = document.createElement('div');
+      el.className = 'sticky-note ' + colors[i % 5];
+      el.style.transform = 'rotate(' + ((Math.random()-0.5)*5).toFixed(1) + 'deg)';
+      el.innerHTML =
+        n.text +
+        '<span class="sticky-note-from">— ' + n.name + '</span>';
+      list.appendChild(el);
+    });
+
+  } catch(err) {
+    list.innerHTML =
+      '<div style="font-family:\'Space Mono\',monospace;font-size:.55rem;' +
+      'color:#FF4444;padding:.5rem;">Error loading notes.</div>';
+    console.error('loadNotes error:', err);
+  }
+};
+
+// ============================================================
+// ADD NOTE → saves to Firestore then reloads all notes
+// ============================================================
 window.addNote = async function() {
   var textEl = document.getElementById('fb-text');
   var nameEl = document.getElementById('fb-name');
+  var submitBtn = document.getElementById('fb-submit-btn');
 
   var text = textEl ? textEl.value.trim() : '';
   var name = (nameEl && nameEl.value.trim()) ? nameEl.value.trim() : 'anonymous weirdo';
   if (!text) return;
+
+  // Show saving state
+  if (submitBtn) { submitBtn.textContent = 'Saving...'; submitBtn.disabled = true; }
 
   try {
     await addDoc(collection(db, 'notes'), {
@@ -3274,20 +3333,12 @@ window.addNote = async function() {
     console.error('Firestore write error (notes):', err);
   }
 
-  // Show locally inside the feedback panel
-  var colors   = ['sn-0','sn-1','sn-2','sn-3','sn-4'];
-  var list     = document.getElementById('fb-notes-list');
-  var headEl   = document.getElementById('fb-notes-head');
-  if (headEl) headEl.style.display = 'block';
-  if (list) {
-    var el = document.createElement('div');
-    el.className = 'sticky-note ' + colors[Math.floor(Math.random() * 5)];
-    el.innerHTML = text + '<span class="sticky-note-from">— ' + name + '</span>';
-    list.prepend(el);
-  }
-
   if (textEl) textEl.value = '';
   if (nameEl) nameEl.value = '';
+  if (submitBtn) { submitBtn.textContent = 'PIN IT'; submitBtn.disabled = false; }
+
+  // Reload all notes so visitor sees everyone's
+  window.loadNotes();
 };
 
 // ============================================================
