@@ -630,26 +630,32 @@ nav {
 }
 .footer-big-text em { color: #FF6B1A; font-style: italic; }
 /* Contact Me — simple pixel button */
+/* Contact Me — simple pixel button */
 .cta-scene {
   display: inline-block;
   margin-top: 1.5rem;
 }
-.footer-cta{
-  display:inline-block;
-  padding:14px 34px;
-  border-radius:14px;
-  text-decoration:none;
-  font-size:1rem;
-  font-weight:600;
-  color:white;
-  background:#ff6b1a;
-  transition:all .7s ease;
-  position:relative;
-  overflow:hidden;
+
+.footer-cta {
+  display: inline-block;
+  padding: 14px 34px;
+  border-radius: 0px; /* Start sharp like the video */
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #00ff33;      /* Start with terminal green */
+  background: #000000; /* Start with flat black */
+  
+  /* Faster transition works much better for glitchy, digital cuts */
+  transition: all 0.15s ease-in-out; 
+  position: relative;
+  overflow: hidden;
 }
+
+/* Hover effects adapted to match a digital/cyber style */
 .footer-cta:hover {
-  transform: translate(-2px,-2px);
-  box-shadow: 7px 7px 0 #e55c10;
+  transform: scale(1.03);
+  filter: brightness(1.2);
 }
 /* remove unused state classes */
 .footer-cta.state-normal,
@@ -2065,11 +2071,9 @@ section {
       Let's build<br><em>something.</em>
     </div>
    <div style="display:flex;justify-content:center;">
-  <div class="cta-scene">
-    <a class="footer-cta" id="cta-btn" href="mailto:dssram24067@gmail.com">
-      CONTACT ME
-    </a>
-  </div>
+ <div class="cta-scene">
+  <a href="mailto:dssram24067@gmail.com" class="footer-cta" id="cta-btn">CONTACT_NOW</a>
+</div>
 </div>
   </div>
   <div class="footer-links-col reveal" style="flex-direction:row;gap:2rem;justify-content:center;flex-wrap:wrap;">
@@ -2962,17 +2966,13 @@ document.getElementById('admin-pass').addEventListener('keydown', function(e) {
   if (e.key === 'Enter') adminLogin();
 });
 
-   //Contact me button
-const btn = document.getElementById("cta-btn");
-
+// Styles mapped
 const randomStyles = [
   // Frame 1: Terminal Style (CONTACT_NOW)
   {
     background: "#000000",
-    borderRadius: "0px", // Sharp, blocky edges
-    transform: "scale(1)",
-    boxShadow: "none",
-    color: "#00ff33", // Classic terminal green text
+    borderRadius: "0px",
+    color: "#00ff33",
     fontFamily: "'Courier New', Courier, monospace",
     border: "2px solid #00ff33",
     textTransform: "uppercase",
@@ -2980,13 +2980,11 @@ const randomStyles = [
   },
   // Frame 2: Windows Executable Style (CONTACT.EXE)
   {
-    background: "#1c1c1c", // Dark charcoal pill background
-    borderRadius: "50px", // Full pill shape
-    transform: "scale(1)",
-    boxShadow: "none",
-    color: "#ffffff", // Sharp white text
-    fontFamily: "'Arial Black', Gadget, sans-serif", // Thick, bold font
-    border: "none",
+    background: "#1c1c1c",
+    borderRadius: "50px", 
+    color: "#ffffff",
+    fontFamily: "'Arial Black', Gadget, sans-serif",
+    border: "2px solid transparent",
     textTransform: "uppercase",
     letterSpacing: "1px"
   },
@@ -2994,23 +2992,45 @@ const randomStyles = [
   {
     background: "#000000",
     borderRadius: "0px",
-    transform: "scale(1)",
-    boxShadow: "none",
-    color: "#00ff33", // Vibrant green text
-    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif", // Clean, modern sans-serif
-    borderBottom: "4px solid #00ff33", // Distinct thick green bottom border
-    textTransform: "none", // Mixed case "Connect"
+    color: "#00ff33",
+    fontFamily: "'Segoe UI', Tahoma, sans-serif",
+    // We clear standard borders and apply a thick bottom border
+    border: "2px solid transparent", 
+    borderBottom: "4px solid #00ff33",
+    textTransform: "none",
     letterSpacing: "1px"
   }
 ];
 
-function changeCTAStyle() {
-  const style =
-    randomStyles[Math.floor(Math.random() * randomStyles.length)];
+// Matching texts for each style index to mimic the exact video progression
+const styleTexts = [
+  "CONTACT_NOW",
+  "CONTACT.EXE",
+  "Connect"
+];
 
-  Object.assign(btn.style, style);
+// Grab the button element from the DOM
+const btn = document.getElementById("cta-btn");
+
+function changeCTAStyle() {
+  // Select a random index so styles and texts match up together
+  const randomIndex = Math.floor(Math.random() * randomStyles.length);
+  const selectedStyle = randomStyles[randomIndex];
+  const selectedText = styleTexts[randomIndex];
+
+  // 1. Reset any inline styles that might conflict between states 
+  // (e.g., clearing the bottom border when switching back to a full box border)
+  btn.style.border = "";
+  btn.style.borderBottom = "";
+
+  // 2. Apply the chosen video style state
+  Object.assign(btn.style, selectedStyle);
+  
+  // 3. Update the button text to match the frame
+  btn.textContent = selectedText;
 }
 
+// Automatically switch styles every 1000ms (1 second)
 setInterval(changeCTAStyle, 1000);
 // ============================================================
 // KEYBOARD SHORTCUTS
