@@ -634,16 +634,18 @@ nav {
   display: inline-block;
   margin-top: 1.5rem;
 }
-.footer-cta {
-  display: inline-flex; align-items: center; justify-content: center;
-  padding: .8rem 2rem;
-  border-radius: 4px; text-decoration: none;
-  font-family: 'Press Start 2P', monospace;
-  font-size: .58rem; border: 2px solid #e55c10;
-  background: #FF6B1A; color: #fff;
-  box-shadow: 5px 5px 0 #e55c10;
-  letter-spacing: .08em; text-transform: uppercase;
-  transition: transform .15s, box-shadow .15s;
+.footer-cta{
+  display:inline-block;
+  padding:14px 34px;
+  border-radius:14px;
+  text-decoration:none;
+  font-size:1rem;
+  font-weight:600;
+  color:white;
+  background:#ff6b1a;
+  transition:all .7s ease;
+  position:relative;
+  overflow:hidden;
 }
 .footer-cta:hover {
   transform: translate(-2px,-2px);
@@ -806,7 +808,7 @@ nav {
   opacity: 1;
 }
 .lb-card img {
-  width: 100%; border-radius: 12px; display: block;
+  width: 80%; border-radius: 12px; display: block;
   box-shadow: 0 0 0 2px rgba(255,107,26,.4);
 }
 .lb-card-label {
@@ -2062,11 +2064,13 @@ section {
     <div class="footer-big-text" style="text-align:center;">
       Let's build<br><em>something.</em>
     </div>
-    <div style="display:flex;justify-content:center;">
-      <div class="cta-scene">
-        <a class="footer-cta" id="cta-btn" href="mailto:dssram24067@gmail.com">CONTACT ME</a>
-      </div>
-    </div>
+   <div style="display:flex;justify-content:center;">
+  <div class="cta-scene">
+    <a class="footer-cta" id="cta-btn" href="mailto:dssram24067@gmail.com">
+      CONTACT ME
+    </a>
+  </div>
+</div>
   </div>
   <div class="footer-links-col reveal" style="flex-direction:row;gap:2rem;justify-content:center;flex-wrap:wrap;">
     <a class="footer-link" href="https://github.com/DssRam24">GitHub →</a>
@@ -2239,7 +2243,7 @@ section {
     </g>
   </svg>
 
-  <div class="footer-copy">© 2025 Shanmukha Sai Ram Donepudi — DSSRam ✦ Made with caffeine, spite &amp; FLAC audio</div>
+  <div class="footer-copy">© 2026 Shanmukha Sai Ram Donepudi — DSSRam ✦ Made with caffeine, spite &amp; FLAC audio</div>
 </footer>
 
 <!-- ============================================================
@@ -2958,6 +2962,48 @@ document.getElementById('admin-pass').addEventListener('keydown', function(e) {
   if (e.key === 'Enter') adminLogin();
 });
 
+   //Contact me button
+const btn = document.getElementById("cta-btn");
+
+const randomStyles = [
+  {
+    background: "linear-gradient(45deg,#ff6b1a,#ffb347)",
+    borderRadius: "14px",
+    transform: "scale(1.05) rotate(-2deg)",
+    boxShadow: "0 0 25px rgba(255,107,26,.6)",
+    letterSpacing: "2px"
+  },
+  {
+    background: "linear-gradient(45deg,#00c6ff,#0072ff)",
+    borderRadius: "40px",
+    transform: "scale(1.1)",
+    boxShadow: "0 0 30px rgba(0,198,255,.7)",
+    letterSpacing: "4px"
+  },
+  {
+    background: "linear-gradient(45deg,#ff0080,#7928ca)",
+    borderRadius: "8px",
+    transform: "skew(-8deg)",
+    boxShadow: "0 0 35px rgba(255,0,128,.7)",
+    letterSpacing: "1px"
+  },
+  {
+    background: "linear-gradient(45deg,#00ff99,#00b36b)",
+    borderRadius: "20px",
+    transform: "rotate(2deg) scale(1.08)",
+    boxShadow: "0 0 25px rgba(0,255,153,.6)",
+    letterSpacing: "3px"
+  }
+];
+
+function changeCTAStyle() {
+  const style =
+    randomStyles[Math.floor(Math.random() * randomStyles.length)];
+
+  Object.assign(btn.style, style);
+}
+
+setInterval(changeCTAStyle, 2200);
 // ============================================================
 // KEYBOARD SHORTCUTS
 // ============================================================
@@ -3145,7 +3191,7 @@ document.addEventListener('keydown', function(e) {
       <div style="font-family:'Space Mono',monospace;font-size:.58rem;color:#555;line-height:1.8;">
         <span style="color:#FF6B1A;">▸</span> Green = commits pushed<br>
         <span style="color:#FF6B1A;">▸</span> Darker = more activity<br>
-        <span style="color:#FF6B1A;">▸</span>
+        <span style="color:#FF6B1A;"></span>
       </div>
     </div>
   </div>
