@@ -2966,33 +2966,41 @@ document.getElementById('admin-pass').addEventListener('keydown', function(e) {
 const btn = document.getElementById("cta-btn");
 
 const randomStyles = [
+  // Frame 1: Terminal Style (CONTACT_NOW)
   {
-    background: "linear-gradient(45deg,#ff6b1a,#ffb347)",
-    borderRadius: "14px",
-    transform: "scale(1.05) rotate(-2deg)",
-    boxShadow: "0 0 25px rgba(255,107,26,.6)",
-    letterSpacing: "2px"
+    background: "#000000",
+    borderRadius: "0px", // Sharp, blocky edges
+    transform: "scale(1)",
+    boxShadow: "none",
+    color: "#00ff33", // Classic terminal green text
+    fontFamily: "'Courier New', Courier, monospace",
+    border: "2px solid #00ff33",
+    textTransform: "uppercase",
+    letterSpacing: "3px"
   },
+  // Frame 2: Windows Executable Style (CONTACT.EXE)
   {
-    background: "linear-gradient(45deg,#00c6ff,#0072ff)",
-    borderRadius: "40px",
-    transform: "scale(1.1)",
-    boxShadow: "0 0 30px rgba(0,198,255,.7)",
-    letterSpacing: "4px"
-  },
-  {
-    background: "linear-gradient(45deg,#ff0080,#7928ca)",
-    borderRadius: "8px",
-    transform: "skew(-8deg)",
-    boxShadow: "0 0 35px rgba(255,0,128,.7)",
+    background: "#1c1c1c", // Dark charcoal pill background
+    borderRadius: "50px", // Full pill shape
+    transform: "scale(1)",
+    boxShadow: "none",
+    color: "#ffffff", // Sharp white text
+    fontFamily: "'Arial Black', Gadget, sans-serif", // Thick, bold font
+    border: "none",
+    textTransform: "uppercase",
     letterSpacing: "1px"
   },
+  // Frame 3: Minimalist Cyberpunk Style (Connect)
   {
-    background: "linear-gradient(45deg,#00ff99,#00b36b)",
-    borderRadius: "20px",
-    transform: "rotate(2deg) scale(1.08)",
-    boxShadow: "0 0 25px rgba(0,255,153,.6)",
-    letterSpacing: "3px"
+    background: "#000000",
+    borderRadius: "0px",
+    transform: "scale(1)",
+    boxShadow: "none",
+    color: "#00ff33", // Vibrant green text
+    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif", // Clean, modern sans-serif
+    borderBottom: "4px solid #00ff33", // Distinct thick green bottom border
+    textTransform: "none", // Mixed case "Connect"
+    letterSpacing: "1px"
   }
 ];
 
@@ -3003,7 +3011,7 @@ function changeCTAStyle() {
   Object.assign(btn.style, style);
 }
 
-setInterval(changeCTAStyle, 2200);
+setInterval(changeCTAStyle, 1000);
 // ============================================================
 // KEYBOARD SHORTCUTS
 // ============================================================
