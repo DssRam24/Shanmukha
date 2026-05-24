@@ -635,21 +635,17 @@ nav {
   display: inline-block;
   margin-top: 1.5rem;
 }
-
 .footer-cta {
   display: inline-block;
   padding: 14px 34px;
-  border-radius: 0px; /* Start sharp like the video */
   text-decoration: none;
   font-size: 1.1rem;
   font-weight: 600;
-  color: #00ff33;      /* Start with terminal green */
-  background: #000000; /* Start with flat black */
-  
-  /* Faster transition works much better for glitchy, digital cuts */
-  transition: all 0.15s ease-in-out; 
   position: relative;
   overflow: hidden;
+  
+  /* Use a very fast transition so the text cuts like frames in a video */
+  transition: all 0.05s ease-in-out; 
 }
 
 /* Hover effects adapted to match a digital/cyber style */
@@ -1320,16 +1316,7 @@ section {
   transition: background .4s;
 }
 
-/* ============================================================
-   CTA BUTTON 3D
-============================================================ */
-.footer-cta {
-  transition: transform .2s var(--ease-bounce), box-shadow .2s;
-}
-.footer-cta:hover {
-  transform: translate(-3px,-3px);
-  box-shadow: 8px 8px 0 #e55c10;
-}
+
    /* ── HERO: fix whitespace, enlarge everything ── */
 #hero {
   gap: 1.2rem;
@@ -2968,7 +2955,7 @@ document.getElementById('admin-pass').addEventListener('keydown', function(e) {
 
 // Styles mapped
 const randomStyles = [
-  // Frame 1: Terminal Style (CONTACT_NOW)
+  // 1. Terminal Style (From Video)
   {
     background: "#000000",
     borderRadius: "0px",
@@ -2976,9 +2963,10 @@ const randomStyles = [
     fontFamily: "'Courier New', Courier, monospace",
     border: "2px solid #00ff33",
     textTransform: "uppercase",
-    letterSpacing: "3px"
+    letterSpacing: "3px",
+    boxShadow: "none"
   },
-  // Frame 2: Windows Executable Style (CONTACT.EXE)
+  // 2. Windows Executable Style (From Video)
   {
     background: "#1c1c1c",
     borderRadius: "50px", 
@@ -2986,51 +2974,115 @@ const randomStyles = [
     fontFamily: "'Arial Black', Gadget, sans-serif",
     border: "2px solid transparent",
     textTransform: "uppercase",
-    letterSpacing: "1px"
+    letterSpacing: "1px",
+    boxShadow: "none"
   },
-  // Frame 3: Minimalist Cyberpunk Style (Connect)
+  // 3. Minimalist Cyberpunk Style (From Video)
   {
     background: "#000000",
     borderRadius: "0px",
     color: "#00ff33",
     fontFamily: "'Segoe UI', Tahoma, sans-serif",
-    // We clear standard borders and apply a thick bottom border
     border: "2px solid transparent", 
     borderBottom: "4px solid #00ff33",
     textTransform: "none",
-    letterSpacing: "1px"
+    letterSpacing: "1px",
+    boxShadow: "none"
+  },
+  // 4. NEW: Amber CRT Monitor / Fall-out Style
+  {
+    background: "#1a0f00",
+    borderRadius: "4px",
+    color: "#ffb000", // Classic amber phosphor color
+    fontFamily: "'Courier New', monospace",
+    border: "1px solid #ffb000",
+    textTransform: "uppercase",
+    letterSpacing: "2px",
+    boxShadow: "0 0 10px rgba(255, 176, 0, 0.4)" // Soft amber glow
+  },
+  // 5. NEW: Classic Windows 95 3D Gray Button
+  {
+    background: "#c0c0c0",
+    borderRadius: "0px",
+    color: "#000000",
+    fontFamily: "'MS Sans Serif', Geneva, sans-serif",
+    borderTop: "2px solid #ffffff",
+    borderLeft: "2px solid #ffffff",
+    borderRight: "2px solid #808080",
+    borderBottom: "2px solid #808080",
+    textTransform: "none",
+    letterSpacing: "0px",
+    boxShadow: "none"
+  },
+  // 6. NEW: Matrix Code / Pure Green Glow
+  {
+    background: "#000000",
+    borderRadius: "0px",
+    color: "#00ff00",
+    fontFamily: "monospace",
+    border: "1px dashed #00ff00",
+    textTransform: "lowercase",
+    letterSpacing: "5px",
+    boxShadow: "inset 0 0 8px rgba(0, 255, 0, 0.5)"
+  },
+  // 7. NEW: Retro BIOS / System Alert Warning
+  {
+    background: "#aa0000", // Warning Red
+    borderRadius: "0px",
+    color: "#ffffff",
+    fontFamily: "Lucida Console, Monaco, monospace",
+    border: "3px double #ffffff", // Double white border common in old BIOS
+    textTransform: "uppercase",
+    letterSpacing: "2px",
+    boxShadow: "none"
+  },
+  // 8. NEW: Vaporwave / Early Web Blueprint
+  {
+    background: "#0000ff", // Pure blueprint blue
+    borderRadius: "0px",
+    color: "#00ffff", // Cyan text
+    fontFamily: "Impact, Haettenschweiler, sans-serif",
+    border: "2px solid #00ffff",
+    textTransform: "uppercase",
+    letterSpacing: "4px",
+    boxShadow: "none"
   }
 ];
 
-// Matching texts for each style index to mimic the exact video progression
+// Matching text tags for all 8 styles
 const styleTexts = [
-  "CONTACT_NOW",
-  "CONTACT.EXE",
-  "Connect"
+  "CONTACT_NOW",   // 1
+  "CONTACT.EXE",   // 2
+  "Connect",       // 3
+  "Get in Touch",// 4
+  "Click Here",    // 5 (Win 95 style)
+  "//initialize",  // 6
+  "SYS_ERROR_404", // 7
+  "LINK_START"     // 8
 ];
 
-// Grab the button element from the DOM
+// Grab the button element
 const btn = document.getElementById("cta-btn");
 
 function changeCTAStyle() {
-  // Select a random index so styles and texts match up together
   const randomIndex = Math.floor(Math.random() * randomStyles.length);
   const selectedStyle = randomStyles[randomIndex];
   const selectedText = styleTexts[randomIndex];
 
-  // 1. Reset any inline styles that might conflict between states 
-  // (e.g., clearing the bottom border when switching back to a full box border)
-  btn.style.border = "";
-  btn.style.borderBottom = "";
+  // Reset borders entirely before applying new ones to avoid layout bleed
+  btn.style.border = "none";
+  btn.style.borderTop = "none";
+  btn.style.borderLeft = "none";
+  btn.style.borderRight = "none";
+  btn.style.borderBottom = "none";
 
-  // 2. Apply the chosen video style state
+  // Apply the styles and text
   Object.assign(btn.style, selectedStyle);
-  
-  // 3. Update the button text to match the frame
   btn.textContent = selectedText;
 }
 
-// Automatically switch styles every 1000ms (1 second)
+// Keep it spinning every 1 second
+setInterval(changeCTAStyle, 1000);
 setInterval(changeCTAStyle, 1000);
 // ============================================================
 // KEYBOARD SHORTCUTS
