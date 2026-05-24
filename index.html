@@ -360,6 +360,19 @@
   </div>
 </section>
 
+   
+<section id="blogs" class="reveal">
+  <div class="blogs-container">
+    <span class="section-tag">Latest Writing</span>
+    <h2 class="section-title">From The <em>Notebook</em></h2>
+    
+    <div class="blogs-grid" id="blogger-posts-grid">
+      <div class="blog-loading">Initializing feed stream...</div>
+    </div>
+  </div>
+</section>
+
+   
 <!-- DESIGN — WINDOWS EXPLORER FLOATING -->
 <section id="design">
   <div class="section-tag reveal">002 — Design Works</div>
@@ -605,6 +618,7 @@
     <span style="font-size:.65rem;font-family:'Space Mono',monospace;color:#555;">ask me what 📖</span>
   </div>
 
+      <br>
 </div>
     </div>
     <!-- Suggest Panel -->
@@ -630,7 +644,7 @@
   <h2 class="section-title reveal">Through the <em>lens.</em></h2>
   <p style="font-family:'Space Mono',monospace;font-size:.68rem;color:#aaa;margin-top:-2rem;margin-bottom:2rem;">
     <!-- DEVELOPER NOTE: Replace each .photo-placeholder div below with <img src="YOUR_PHOTO.jpg"> -->
-    // replace placeholders with your actual photos below
+   
   </p>
   <div class="photos-masonry reveal">
     <!-- PHOTO SLOT 1 — replace with: <img src="photo1.jpg" style="width:100%;display:block;border-radius:12px;"> -->
@@ -1387,6 +1401,73 @@ setInterval(updateClock, 1000);
   }, 1800);
 })();
 
+   
+// Configuration for Blogger Fetch
+const BLOGGER_SUBDOMAIN = 'shanmukh144'; // <- Replace with your blog spot address name
+const POSTS_COUNT = 3; // Number of posts you want to pull into the layout
+
+function loadBloggerPosts() {
+  const gridContainer = document.getElementById('blogger-posts-grid');
+  
+  // Script endpoint pointing to Blogger's native JSON output
+  const feedUrl = `https://${BLOGGER_SUBDOMAIN}.blogspot.com/feeds/posts/default?alt=json-in-script&max-results=${POSTS_COUNT}&callback=renderBloggerData`;
+
+  // Create a dynamic JSONP script tag to avoid annoying Cross-Origin (CORS) blocks
+  const script = document.createElement('script');
+  script.src = feedUrl;
+  document.body.appendChild(script);
+}
+
+// Global Callback handler function explicitly declared for the Blogger payload response
+window.renderBloggerData = function(data) {
+  const gridContainer = document.getElementById('blogger-posts-grid');
+  gridContainer.innerHTML = ''; // Wipe out initialization message
+
+  const entries = data.feed.entry;
+
+  if (!entries || entries.length === 0) {
+    gridContainer.innerHTML = '<div class="blog-loading">No blog posts located.</div>';
+    return;
+  }
+
+  // Parse details out of the Blogger structure loop
+  entries.forEach(entry => {
+    const title = entry.title.$t;
+    
+    // Format timestamp smoothly
+    const rawDate = new Date(entry.published.$t);
+    const formattedDate = rawDate.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+
+    // Extract text snippet safely from content string
+    const content = entry.summary ? entry.summary.$t : (entry.content ? entry.content.$t : '');
+    const cleanSnippet = content.replace(/<[^>]*>/g, '').substring(0, 110) + '...';
+
+    // Find the explicit original outbound desktop alternate link
+    const originalLinkObj = entry.link.find(l => l.rel === 'alternate');
+    const targetUrl = originalLinkObj ? originalLinkObj.href : '#';
+
+    // Build the portfolio structure component item template
+    const cardMarkup = `
+      <div class="blog-card">
+        <div>
+          <span class="blog-date">${formattedDate}</span>
+          <h3 class="blog-title">${title}</h3>
+          <p class="blog-snippet">${cleanSnippet}</p>
+        </div>
+        <a href="${targetUrl}" target="_blank" class="blog-link">Read Entry ↗</a>
+      </div>
+    `;
+
+    gridContainer.innerHTML += cardMarkup;
+  });
+};
+
+// Initialize execution loop on setup loading checks
+document.addEventListener('DOMContentLoaded', loadBloggerPosts);
 // ============================================================
 // DOODLE CANVAS
 // ============================================================
