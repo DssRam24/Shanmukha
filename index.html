@@ -644,13 +644,12 @@ nav {
   position: relative;
   overflow: hidden;
   
-  /* Use a very fast transition so the text cuts like frames in a video */
-  transition: all 0.05s ease-in-out; 
+  /* Instantly snappy transitions prevent any calculation lag between loops */
+  transition: all 0.05s steps(2, end); 
 }
 
-/* Hover effects adapted to match a digital/cyber style */
+/* Hover scales out safely from whatever tilted position it's currently in */
 .footer-cta:hover {
-  transform: scale(1.03);
   filter: brightness(1.2);
 }
 /* remove unused state classes */
@@ -2964,6 +2963,7 @@ const randomStyles = [
     border: "2px solid #00ff33",
     textTransform: "uppercase",
     letterSpacing: "3px",
+    transform: "rotate(0deg) skew(0deg)",
     boxShadow: "none"
   },
   // 2. Windows Executable Style (From Video)
@@ -2975,32 +2975,35 @@ const randomStyles = [
     border: "2px solid transparent",
     textTransform: "uppercase",
     letterSpacing: "1px",
+    transform: "rotate(0deg)",
     boxShadow: "none"
   },
   // 3. Minimalist Cyberpunk Style (From Video)
   {
     background: "#000000",
-    borderRadius: "0px",
+    borderRadius: "8px",
     color: "#00ff33",
     fontFamily: "'Segoe UI', Tahoma, sans-serif",
-    border: "2px solid transparent", 
     borderBottom: "4px solid #00ff33",
     textTransform: "none",
     letterSpacing: "1px",
+    transform: "rotate(0deg)",
     boxShadow: "none"
   },
-  // 4. NEW: Amber CRT Monitor / Fall-out Style
+  // 4. NEW: Glitched & Tilted Amber CRT
   {
     background: "#1a0f00",
     borderRadius: "4px",
-    color: "#ffb000", // Classic amber phosphor color
+    color: "#ffb000",
     fontFamily: "'Courier New', monospace",
     border: "1px solid #ffb000",
     textTransform: "uppercase",
     letterSpacing: "2px",
-    boxShadow: "0 0 10px rgba(255, 176, 0, 0.4)" // Soft amber glow
+    // Aggressive analog skew
+    transform: "skewX(-7deg) rotate(-1deg)", 
+    boxShadow: "0 0 10px rgba(255, 176, 0, 0.4)"
   },
-  // 5. NEW: Classic Windows 95 3D Gray Button
+  // 5. Classic Windows 95
   {
     background: "#c0c0c0",
     borderRadius: "0px",
@@ -3012,9 +3015,10 @@ const randomStyles = [
     borderBottom: "2px solid #808080",
     textTransform: "none",
     letterSpacing: "0px",
+    transform: "rotate(0deg)",
     boxShadow: "none"
   },
-  // 6. NEW: Matrix Code / Pure Green Glow
+  // 6. NEW: Matrix Distortion
   {
     background: "#000000",
     borderRadius: "0px",
@@ -3023,45 +3027,36 @@ const randomStyles = [
     border: "1px dashed #00ff00",
     textTransform: "lowercase",
     letterSpacing: "5px",
+    // Subtle digital tilt
+    transform: "rotate(2deg)", 
     boxShadow: "inset 0 0 8px rgba(0, 255, 0, 0.5)"
   },
-  // 7. NEW: Retro BIOS / System Alert Warning
+  // 7. NEW: Hard Glitch Red Warning
+
+  // 8. Vaporwave Blueprint
   {
-    background: "#aa0000", // Warning Red
+    background: "#0000ff",
     borderRadius: "0px",
-    color: "#ffffff",
-    fontFamily: "Lucida Console, Monaco, monospace",
-    border: "3px double #ffffff", // Double white border common in old BIOS
-    textTransform: "uppercase",
-    letterSpacing: "2px",
-    boxShadow: "none"
-  },
-  // 8. NEW: Vaporwave / Early Web Blueprint
-  {
-    background: "#0000ff", // Pure blueprint blue
-    borderRadius: "0px",
-    color: "#00ffff", // Cyan text
-    fontFamily: "Impact, Haettenschweiler, sans-serif",
+    color: "#00ffff",
+    fontFamily: "Impact, sans-serif",
     border: "2px solid #00ffff",
     textTransform: "uppercase",
     letterSpacing: "4px",
+    transform: "rotate(0deg)",
     boxShadow: "none"
   }
 ];
 
-// Matching text tags for all 8 styles
 const styleTexts = [
-  "CONTACT_NOW",   // 1
-  "CONTACT.EXE",   // 2
-  "Connect",       // 3
-  "Get in Touch",// 4
-  "Click Here",    // 5 (Win 95 style)
-  "//initialize",  // 6
-  "SYS_ERROR_404", // 7
-  "LINK_START"     // 8
+  "CONTACT_NOW",   
+  "CONTACT.EXE",   
+  "Connect",       
+  "Get in Touch",
+  "Click Here",    
+  "//initialize",   
+  "LINK_START"     
 ];
 
-// Grab the button element
 const btn = document.getElementById("cta-btn");
 
 function changeCTAStyle() {
@@ -3069,21 +3064,18 @@ function changeCTAStyle() {
   const selectedStyle = randomStyles[randomIndex];
   const selectedText = styleTexts[randomIndex];
 
-  // Reset borders entirely before applying new ones to avoid layout bleed
-  btn.style.border = "none";
-  btn.style.borderTop = "none";
-  btn.style.borderLeft = "none";
-  btn.style.borderRight = "none";
-  btn.style.borderBottom = "none";
+  // CRITICAL FIX FOR TIMING DELAY: 
+  // We completely strip previous specific properties out of the DOM before injection.
+  // This keeps the loop instant and responsive without lag styles carrying over.
+  btn.removeAttribute("style");
 
-  // Apply the styles and text
+  // Apply the styles and text smoothly
   Object.assign(btn.style, selectedStyle);
   btn.textContent = selectedText;
 }
 
-// Keep it spinning every 1 second
-setInterval(changeCTAStyle, 1000);
-setInterval(changeCTAStyle, 1000);
+// Loop instantly every 800ms for a tighter, more energetic pacing
+setInterval(changeCTAStyle, 800);
 // ============================================================
 // KEYBOARD SHORTCUTS
 // ============================================================
