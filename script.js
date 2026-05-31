@@ -26,10 +26,9 @@ document.querySelectorAll(
 (function initPhotoDrag() {
   const el = document.getElementById('photo-drag');
   if (!el) return;
-  let dragging = false, startX = 0, startY = 0,
-      tx = 0, ty = 0, lastTx = 0, lastTy = 0;
-
+  let dragging = false, startX, startY, tx = 0, ty = 0, lastTx = 0, lastTy = 0;
   el.addEventListener('mousedown', e => {
+    // don't initiate drag if clicking a corner decoration
     dragging = true;
     startX = e.clientX - lastTx;
     startY = e.clientY - lastTy;
@@ -37,7 +36,6 @@ document.querySelectorAll(
     el.style.transition = 'none';
     e.preventDefault();
   });
-
   el.addEventListener('touchstart', e => {
     dragging = true;
     startX = e.touches[0].clientX - lastTx;
@@ -45,21 +43,18 @@ document.querySelectorAll(
     el.classList.add('dragging');
     el.style.transition = 'none';
   }, { passive: true });
-
   document.addEventListener('mousemove', e => {
     if (!dragging) return;
     tx = e.clientX - startX;
     ty = e.clientY - startY;
-    el.style.transform = 'translate(' + tx + 'px,' + ty + 'px)';
+    el.style.transform = `translate(${tx}px,${ty}px)`;
   });
-
   document.addEventListener('touchmove', e => {
     if (!dragging) return;
     tx = e.touches[0].clientX - startX;
     ty = e.touches[0].clientY - startY;
-    el.style.transform = 'translate(' + tx + 'px,' + ty + 'px)';
+    el.style.transform = `translate(${tx}px,${ty}px)`;
   }, { passive: true });
-
   function stopDrag() {
     if (!dragging) return;
     dragging = false;
@@ -67,13 +62,13 @@ document.querySelectorAll(
     el.classList.remove('dragging');
     el.style.transition = 'transform .25s cubic-bezier(.23,1,.32,1)';
   }
-  document.addEventListener('mouseup',  stopDrag);
+  document.addEventListener('mouseup', stopDrag);
   document.addEventListener('touchend', stopDrag);
-
+  // Double-click to snap back
   el.addEventListener('dblclick', () => {
     tx = 0; ty = 0; lastTx = 0; lastTy = 0;
     el.style.transition = 'transform .5s cubic-bezier(.23,1,.32,1)';
-    el.style.transform  = 'translate(0,0)';
+    el.style.transform = 'translate(0,0)';
   });
 })();
 // ============================================================
