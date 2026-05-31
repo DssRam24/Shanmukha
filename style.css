@@ -671,3 +671,20 @@ section:hover .section-title { letter-spacing: -.01em; }
   text-align: center;
   padding: 3rem 0;
 }
+
+/* ============================================================
+   PHOTO DRAG
+============================================================ */
+.photo-universe {
+  cursor: grab;
+}
+.photo-universe.dragging {
+  cursor: grabbing;
+  filter: drop-shadow(0 20px 50px rgba(255,107,26,.4));
+}
+.photo-drag-hint {
+  position: absolute; bottom: -1.6rem; left: 50%; transform: translateX(-50%);
+  font-family: 'Space Mono', monospace; font-size: .48rem;
+  color: rgba(255,107,26,.45); white-space: nowrap; letter-spacing: .08em;
+  pointer-events: none;
+}
