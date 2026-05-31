@@ -20,20 +20,6 @@ document.querySelectorAll(
   el.addEventListener('mouseenter', () => curEl.classList.add('hover'));
   el.addEventListener('mouseleave', () => curEl.classList.remove('hover'));
 });
-
-// ============================================================
-// MULTILANGUAGE GREETING ROTATOR
-// ============================================================
-(function initGreeting() {
-  const words = document.querySelectorAll('.greeting-word');
-  let cur = 0;
-  setInterval(() => {
-    words[cur].classList.remove('active');
-    cur = (cur + 1) % words.length;
-    words[cur].classList.add('active');
-  }, 2200);
-})();
-
 // ============================================================
 // DRAGGABLE PHOTO
 // ============================================================
@@ -90,6 +76,19 @@ document.querySelectorAll(
     el.style.transform  = 'translate(0,0)';
   });
 })();
+// ============================================================
+// MULTILANGUAGE GREETING ROTATOR
+// ============================================================
+(function initGreeting() {
+  const words = document.querySelectorAll('.greeting-word');
+  let cur = 0;
+  setInterval(() => {
+    words[cur].classList.remove('active');
+    cur = (cur + 1) % words.length;
+    words[cur].classList.add('active');
+  }, 2200);
+})();
+
 
 // ============================================================
 // IMAGE LIGHTBOX
