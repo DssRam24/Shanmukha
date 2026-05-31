@@ -851,7 +851,7 @@ document.addEventListener('keydown', function(e) {
   if (document.getElementById('admin-modal').classList.contains('open')) closeAdmin();
 });
 
-// ============================================================
+
 // NIGHT SKY CANVAS (stars + meteors on dark sections)
 // ============================================================
 (function initNightSky() {
