@@ -217,23 +217,68 @@ nav:hover { box-shadow: 0 8px 40px rgba(0,0,0,.12), 0 1px 0 rgba(255,107,26,.2);
 /* ============================================================
    ARCHIVES & COMMONS
 ============================================================ */
-.rchives-wrapper { display: flex; align-items: center; justify-content: center; gap: 15px; width: 100%; margin: 40px 0; }
-.line { flex: 1; height: 1px; background: rgba(255,255,255,0.3); max-width: 180px; }
-.rchives-container { display: flex; justify-content: center; align-items: center; width: 100%; }
-.rchives-logo { font-size: 38px; font-style: italic; font-family: "Times New Roman", serif; color: #d96b5f; text-decoration: none; letter-spacing: 1px; }
-.rchives-logo span { color: orange; }
+/* ============================================================
+   ARCHIVES STANDALONE NEON MARQUEE (From image_445a2f.png)
+============================================================ */
+.rchives-marquee-container {
+  width: 100%;
+  background: #0a0a0a; /* Matches the solid dark background */
+  border-top: 2px solid #FF6B1A; /* Crisp orange top line */
+  border-bottom: 2px solid #FF6B1A; /* Crisp orange bottom line */
+  padding: 1.2rem 0;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  /* Subtly baked-in dark grid background background overlay */
+  background-image: 
+    linear-gradient(rgba(255, 107, 26, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 107, 26, 0.02) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
 
-.section-tag { font-family: 'Space Mono', monospace; font-size: .6rem; color: #FF6B1A; letter-spacing: .2em; text-transform: uppercase; margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem; }
-.section-tag::after { content: ''; flex: 1; height: 1px; background: #FF6B1A; opacity: .3; }
-.section-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3.8rem); line-height: 1.1; margin-bottom: 2.5rem; font-weight: 700; text-shadow: 2px 4px 12px rgba(0,0,0,.08); transition: letter-spacing .4s var(--ease-smooth); }
-.section-title em { font-style: italic; color: #FF6B1A; }
-section:hover .section-title { letter-spacing: -.01em; }
+.rchives-marquee-track {
+  display: flex;
+  white-space: nowrap;
+  animation: rchivesSingleScroll 20s linear infinite;
+  will-change: transform;
+}
 
-/* 3D Entry Animation classes */
-.reveal { opacity: 0; transform: translateY(50px) rotateX(12deg) scale(.97); transition: opacity .9s var(--ease-smooth), transform .9s var(--ease-smooth); transform-origin: center bottom; }
-.reveal.visible { opacity: 1; transform: none; }
-.reveal-l { opacity: 0; transform: translateX(-60px); transition: opacity .8s var(--ease-smooth), transform .8s var(--ease-smooth); }
-.reveal-l.visible { opacity: 1; transform: none; }
+.rchives-item-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  min-width: 100%; /* Spans full horizontal bounds before repeating */
+}
+
+.rchives-logo-link {
+  font-family: 'Caveat', 'Patrick Hand', cursive; /* The handwritten font styling */
+  font-size: clamp(1.6rem, 2.8vw, 2.4rem);
+  color: #FF6B1A;
+  text-decoration: none;
+  padding: 0 3rem;
+  transition: color 0.25s ease, transform 0.25s ease;
+  display: inline-block;
+}
+
+/* Hover effects matching your interactive theme */
+.rchives-logo-link:hover {
+  color: #FFFAF2;
+  transform: scale(1.08) rotate(-1deg);
+  text-shadow: 0 0 15px rgba(255, 107, 26, 0.8);
+}
+
+.rchives-separator {
+  color: #444444; /* Clean dark-gray diamond stars */
+  font-size: 1.1rem;
+  user-select: none;
+}
+
+/* Linear loop translation logic */
+@keyframes rchivesSingleScroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
+}
 
 /* ============================================================
    MARQUEE
