@@ -218,66 +218,72 @@ nav:hover { box-shadow: 0 8px 40px rgba(0,0,0,.12), 0 1px 0 rgba(255,107,26,.2);
    ARCHIVES & COMMONS
 ============================================================ */
 /* ============================================================
-   ARCHIVES STANDALONE NEON MARQUEE (From image_445a2f.png)
+   RCHIVES INDIVIDUAL BUTTON DIVIDER (From image_445a2f.png)
 ============================================================ */
-.rchives-marquee-container {
+.rchives-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
   width: 100%;
-  background: #0a0a0a; /* Matches the solid dark background */
-  border-top: 2px solid #FF6B1A; /* Crisp orange top line */
-  border-bottom: 2px solid #FF6B1A; /* Crisp orange bottom line */
-  padding: 1.2rem 0;
-  overflow: hidden;
+  margin: 50px 0;
+  padding: 1.5rem 2rem;
+  background: #0a0a0a; /* Deep matte black background from image */
+  border-top: 2px solid #FF6B1A; /* Sharp orange top border line */
+  border-bottom: 2px solid #FF6B1A; /* Sharp orange bottom border line */
   position: relative;
-  display: flex;
-  align-items: center;
-  /* Subtly baked-in dark grid background background overlay */
+  
+  /* Delicate background grid pattern matching image_445a2f.png */
   background-image: 
-    linear-gradient(rgba(255, 107, 26, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 107, 26, 0.02) 1px, transparent 1px);
-  background-size: 20px 20px;
+    linear-gradient(rgba(255, 107, 26, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 107, 26, 0.03) 1px, transparent 1px);
+  background-size: 16px 16px;
 }
 
-.rchives-marquee-track {
-  display: flex;
-  white-space: nowrap;
-  animation: rchivesSingleScroll 20s linear infinite;
-  will-change: transform;
+/* Redesigning the accent lines to fade into the dark grid background */
+.line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 107, 26, 0.4));
+  max-width: 220px;
 }
 
-.rchives-item-group {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  min-width: 100%; /* Spans full horizontal bounds before repeating */
+/* Mirroring the line for the right side to keep it perfectly centered */
+.rchives-wrapper::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255, 107, 26, 0.4), transparent);
+  max-width: 220px;
 }
 
-.rchives-logo-link {
-  font-family: 'Caveat', 'Patrick Hand', cursive; /* The handwritten font styling */
-  font-size: clamp(1.6rem, 2.8vw, 2.4rem);
-  color: #FF6B1A;
+/* Stylizing the standalone link button element */
+.rchives-logo {
+  font-family: 'Caveat', 'Playfair Display', cursive, serif; /* Cursive handwriting styling */
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  font-weight: 600;
+  color: #FF6B1A; /* Fiery theme orange */
   text-decoration: none;
-  padding: 0 3rem;
-  transition: color 0.25s ease, transform 0.25s ease;
-  display: inline-block;
+  letter-spacing: 1px;
+  transition: transform 0.3s var(--ease-bounce), text-shadow 0.3s, color 0.3s;
+  padding: 0 10px;
 }
 
-/* Hover effects matching your interactive theme */
-.rchives-logo-link:hover {
-  color: #FFFAF2;
-  transform: scale(1.08) rotate(-1deg);
+/* Keeping the orange uniform or giving it a neon pop on hover */
+.rchives-logo span {
+  color: #FF6B1A; 
+  transition: color 0.3s;
+}
+
+/* Clean, interactive hover pop */
+.rchives-logo:hover {
+  color: #FFFAF2; /* Turns crisp white/cream on focus */
+  transform: scale(1.1) rotate(-1deg);
   text-shadow: 0 0 15px rgba(255, 107, 26, 0.8);
 }
 
-.rchives-separator {
-  color: #444444; /* Clean dark-gray diamond stars */
-  font-size: 1.1rem;
-  user-select: none;
-}
-
-/* Linear loop translation logic */
-@keyframes rchivesSingleScroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-100%); }
+.rchives-logo:hover span {
+  color: #FFFAF2;
 }
 
 /* ============================================================
