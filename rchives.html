@@ -252,6 +252,7 @@ body::after{
 
 /* grid */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(262px,1fr));gap:13px;margin-bottom:48px}
+#grid-books{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
 
 /* card */
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:0;transition:all .22s;position:relative;overflow:hidden;display:flex;flex-direction:column}
@@ -260,7 +261,8 @@ body::after{
 .card:hover::before{height:100%}
 
 /* youtube thumbnail */
-.card-thumb{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:var(--surface3)}
+..card-thumb{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:var(--surface3)}
+.card-thumb.book-cover{aspect-ratio:2/3;object-fit:cover;object-position:top}
 .card-thumb-wrap{position:relative;overflow:hidden}
 .card-thumb-wrap::after{content:'▶';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:1.8rem;color:#fff;opacity:0;background:rgba(0,0,0,0.45);transition:opacity .22s}
 .card-thumb-wrap:hover::after{opacity:1}
@@ -807,9 +809,9 @@ if (vid) {
     <img class="card-thumb" src="${thumbSrc}" alt="${esc(item.title)}" loading="lazy"
       onerror="this.style.display='none';this.parentElement.style.display='none'">
   </div>`;
-} else if (item.type === 'book' && item.coverurl) {
-  thumbHtml = `<div class="card-thumb-wrap" style="aspect-ratio:3/4;max-height:180px">
-    <img class="card-thumb" src="${esc(item.coverurl)}" alt="${esc(item.title)}" loading="lazy" style="object-position:top"
+}} else if (item.type === 'book' && item.coverurl) {
+  thumbHtml = `<div class="card-thumb-wrap">
+    <img class="card-thumb book-cover" src="${esc(item.coverurl)}" alt="${esc(item.title)}" loading="lazy"
       onerror="this.style.display='none';this.parentElement.style.display='none'">
   </div>`;
 }
