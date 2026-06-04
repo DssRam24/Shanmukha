@@ -666,7 +666,7 @@ function closeGhModal() {
 var _atc   = 0;
 var _atimer;
 var _AU    = 'ZHNzcmFtMjQ=';    // dssram24
-var _AP    = 'Q2hhbnRpMTIzKg=='; // Chanti123*
+var _AP    = 'Q2hhbnRpMTIzKg=='; 
 
 function adminTriggerClick() {
   _atc++;
