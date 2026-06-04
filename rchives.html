@@ -652,6 +652,18 @@ select option{background:var(--surface2)}
       <input type="url" id="e-yturl" placeholder="https://youtube.com/watch?v=…" oninput="previewThumb(this.value)">
       <img id="thumb-prev" class="thumb-preview" alt="thumbnail preview">
     </div>
+    <div class="aitool-extra" id="aitool-extra" style="display:none;margin-bottom:17px">
+  <label style="display:block;font-size:.66rem;letter-spacing:.13em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;font-weight:500">Tool URL</label>
+  <input type="url" id="e-toolurl" placeholder="https://tool.com">
+</div>
+
+<div class="book-extra" id="book-extra" style="display:none;margin-bottom:17px">
+  <label style="display:block;font-size:.66rem;letter-spacing:.13em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;font-weight:500">Book Cover Image URL</label>
+  <input type="url" id="e-coverurl" placeholder="https://covers.openlibrary.org/...">
+  <img id="cover-prev" style="width:80px;margin-top:8px;border-radius:6px;display:none;border:1px solid var(--border)" alt="cover">
+  <label style="display:block;font-size:.66rem;letter-spacing:.13em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;font-weight:500;margin-top:12px">Buy Link (Amazon / Flipkart etc.)</label>
+  <input type="url" id="e-buyurl" placeholder="https://amazon.in/...">
+</div>
 
     <div class="fg">
       <label>Tags <span style="color:var(--text-dim);font-weight:300">(comma separated)</span></label>
@@ -789,21 +801,26 @@ function makeCard(item, showDel=false) {
   const vid = item.type==='video' ? ytIdFromUrl(item.yturl||'') : null;
 
   let thumbHtml = '';
-  if (vid) {
-    const thumbSrc = ytThumb(vid);
-    thumbHtml = `<div class="card-thumb-wrap">
-        <img class="card-thumb" src="${thumbSrc}" alt="${esc(item.title)}" loading="lazy"
-          onerror="this.style.display='none';this.parentElement.style.display='none'">
-    </div>`;
-  }
-
+if (vid) {
+  const thumbSrc = ytThumb(vid);
+  thumbHtml = `<div class="card-thumb-wrap">
+    <img class="card-thumb" src="${thumbSrc}" alt="${esc(item.title)}" loading="lazy"
+      onerror="this.style.display='none';this.parentElement.style.display='none'">
+  </div>`;
+} else if (item.type === 'book' && item.coverurl) {
+  thumbHtml = `<div class="card-thumb-wrap" style="aspect-ratio:3/4;max-height:180px">
+    <img class="card-thumb" src="${esc(item.coverurl)}" alt="${esc(item.title)}" loading="lazy" style="object-position:top"
+      onerror="this.style.display='none';this.parentElement.style.display='none'">
+  </div>`;
+}
   const titleInner = (vid && item.yturl)
     ? `<a href="${esc(item.yturl)}" target="_blank" rel="noopener">${esc(item.title)}</a>`
     : esc(item.title);
 
-  const isVideo = item.type === 'video' && item.yturl;
-  const cardClick = isVideo ? `onclick="if(!event.target.classList.contains('card-del'))window.open('${esc(item.yturl)}','_blank')"` : '';
-  const cardCursor = isVideo ? 'cursor:pointer' : '';
+const isVideo = item.type === 'video' && item.yturl;
+const isBook  = item.type === 'book'  && item.buyurl;
+ const cardClick = isVideo ? `onclick="if(!event.target.classList.contains('card-del'))window.open('${esc(item.yturl)}','_blank')"` : '';
+const cardCursor = isVideo ? 'cursor:pointer' : '';
 
   return `<div class="card" data-id="${item.id}" ${cardClick} style="${cardCursor}">
     ${delBtn}
@@ -814,7 +831,9 @@ function makeCard(item, showDel=false) {
       ${author ? `<div class="card-author">— ${author}</div>` : ''}
       ${item.notes ? `<div class="card-note">${esc(item.notes)}</div>` : ''}
       ${tags ? `<div class="chips">${tags}</div>` : ''}
-      ${item.date ? `<div class="card-date">${esc(item.date)}</div>` : ''}
+     ${item.date ? `<div class="card-date">${esc(item.date)}</div>` : ''}
+${item.buyurl ? `<a href="${esc(item.buyurl)}" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="display:inline-flex;align-items:center;gap:4px;margin-top:8px;font-size:0.62rem;color:var(--salmon);border:1px solid var(--border-salmon);border-radius:50px;padding:3px 10px;text-decoration:none;font-family:'DM Mono',monospace;transition:all .18s" onmouseover="this.style.background='var(--salmon-glow)'" onmouseout="this.style.background='transparent'">⊙ Buy</a>` : ''}
+${item.toolurl ? `<a href="${esc(item.toolurl)}" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="display:inline-flex;align-items:center;gap:4px;margin-top:8px;font-size:0.62rem;color:var(--salmon);border:1px solid var(--border-salmon);border-radius:50px;padding:3px 10px;text-decoration:none;font-family:'DM Mono',monospace;transition:all .18s" onmouseover="this.style.background='var(--salmon-glow)'" onmouseout="this.style.background='transparent'">◬ Open Tool</a>` : ''}
     </div>
   </div>`;
 }
@@ -1071,7 +1090,7 @@ function openModal() {
 function bgClose(e) { if (e.target===document.getElementById('modal-bg')) closeModal(); }
 function closeModal() {
   document.getElementById('modal-bg').classList.remove('open');
-  ['e-title','e-author','e-yturl','e-tags','e-notes'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+ ['e-title','e-author','e-yturl','e-tags','e-notes','e-toolurl','e-coverurl','e-buyurl'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
   const tp=document.getElementById('thumb-prev'); if(tp){tp.classList.remove('show');tp.src='';}
   document.getElementById('yt-extra').classList.remove('show');
 }
@@ -1089,7 +1108,15 @@ function pickType(type, el, auto=false) {
   }
   const labels = {video:'Channel / Creator',book:'Author',podcast:'Host / Show',knowledge:'Source',philosophy:'Source / Philosopher',aitool:'Made by / Category','dsa-note':'Source / Topic'};
   document.getElementById('e-author-lbl').textContent = labels[type]||'Author';
-  document.getElementById('yt-extra').classList.toggle('show', type==='video');
+  document.getElementById('yt-extra').style.display = type==='video' ? 'block' : 'none';
+document.getElementById('aitool-extra').style.display = type==='aitool' ? 'block' : 'none';
+document.getElementById('book-extra').style.display = type==='book' ? 'block' : 'none';
+  const coverInp = document.getElementById('e-coverurl');
+coverInp.oninput = function() {
+  const img = document.getElementById('cover-prev');
+  img.src = this.value;
+  img.style.display = this.value ? 'block' : 'none';
+};
 }
 
 function fmtDate() {
@@ -1106,7 +1133,10 @@ function saveEntry() {
     title,
     author: document.getElementById('e-author').value.trim(),
     source: curType==='philosophy' ? document.getElementById('e-author').value.trim() : '',
-    yturl: document.getElementById('e-yturl')?.value.trim() || '',
+   yturl:     document.getElementById('e-yturl')?.value.trim()    || '',
+toolurl:   document.getElementById('e-toolurl')?.value.trim()  || '',
+coverurl:  document.getElementById('e-coverurl')?.value.trim() || '',
+buyurl:    document.getElementById('e-buyurl')?.value.trim()   || '',
     tags: document.getElementById('e-tags').value.split(',').map(t=>t.trim()).filter(Boolean),
     notes: document.getElementById('e-notes').value.trim(),
     date: fmtDate(),
