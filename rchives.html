@@ -168,9 +168,67 @@ body::after{
 }
 .auth-close-x:hover{border-color:var(--border-salmon);color:var(--salmon)}
 
+/* ── HOME SECTION BLOCKS ── */
+.home-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:22px;
+  padding:38px 44px 80px;
+}
+.sec-block{
+  border-radius:24px;
+  overflow:hidden;
+  cursor:pointer;
+  transition:transform .25s ease, box-shadow .25s ease;
+  position:relative;
+  aspect-ratio:4/3;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  border:1px solid rgba(255,255,255,0.06);
+}
+.sec-block:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 24px 60px rgba(0,0,0,0.5)}
+.sec-block-art{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:5rem;
+  transition:transform .3s ease;
+}
+.sec-block:hover .sec-block-art{transform:scale(1.08)}
+.sec-block-footer{
+  position:relative;z-index:2;
+  padding:18px 22px 20px;
+  background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,transparent 100%);
+}
+.sec-block-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.3rem;font-weight:400;
+  color:#fff;letter-spacing:-0.01em;margin-bottom:3px;
+}
+.sec-block-count{
+  font-size:0.62rem;font-family:'DM Mono',monospace;
+  color:rgba(255,255,255,0.5);letter-spacing:0.08em;text-transform:uppercase;
+}
+/* colour palettes per section — matching the colourful illustration style */
+.sb-videos  {background:linear-gradient(135deg,#f4a05a 0%,#e8783c 100%)}
+.sb-books   {background:linear-gradient(135deg,#b8aef5 0%,#8c7fe8 100%)}
+.sb-podcasts{background:linear-gradient(135deg,#f5a8c8 0%,#d87ab0 100%)}
+.sb-knowledge{background:linear-gradient(135deg,#8ee4c8 0%,#5ac4a0 100%)}
+.sb-philosophy{background:linear-gradient(135deg,#ffd580 0%,#f0b840 100%)}
+.sb-dsa     {background:linear-gradient(135deg,#8ecdf5 0%,#5aaae0 100%)}
+.sb-aitools  {background:linear-gradient(135deg,#c8f5e0 0%,#5ae0b0 100%)}
+
+@media(max-width:860px){
+  .home-grid{grid-template-columns:repeat(2,1fr);padding:20px 18px 60px;gap:14px}
+  .sec-block-art{font-size:3.5rem}
+  .sec-block-name{font-size:1.1rem}
+}
+@media(max-width:540px){
+  .home-grid{grid-template-columns:1fr 1fr}
+}
+
 /* ── PAGES ── */
 .page{display:none;padding:42px 44px 80px;animation:appear .28s ease both}
 .page.active{display:block}
+.page#page-home{padding:0}
 @keyframes appear{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
 /* hero */
@@ -315,7 +373,40 @@ select option{background:var(--surface2)}
 .manage-btn:hover{border-color:var(--border-salmon);color:var(--text)}
 .manage-btn.on{background:rgba(255,80,80,.08);border-color:rgba(255,80,80,.25);color:#ff6060}
 
-/* scrollbar */
+/* ── BACK BUTTON ── */
+.back-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:8px 16px;
+  background:transparent;
+  border:1px solid var(--border);border-radius:50px;
+  color:var(--text-muted);font-size:0.72rem;font-family:'Syne',sans-serif;
+  cursor:pointer;transition:all .2s;letter-spacing:0.04em;
+  margin-bottom:28px;
+}
+.back-btn:hover{border-color:var(--border-salmon);color:var(--salmon);background:var(--salmon-glow)}
+.back-btn .ba{font-size:0.85rem;transition:transform .2s}
+.back-btn:hover .ba{transform:translateX(-3px)}
+
+/* ── FOOTER ── */
+.site-footer{
+  margin-left:var(--sidebar);
+  padding:20px 44px;
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;gap:9px;
+  background:var(--surface);
+  position:relative;z-index:1;
+}
+.footer-text{font-size:0.65rem;color:var(--text-dim);font-family:'DM Mono',monospace;letter-spacing:0.06em}
+.footer-link{
+  font-size:0.65rem;font-family:'DM Mono',monospace;
+  color:var(--salmon);text-decoration:none;letter-spacing:0.06em;
+  border-bottom:1px dashed var(--border-salmon);padding-bottom:1px;
+  transition:all .18s;
+}
+.footer-link:hover{color:var(--text);border-color:var(--text-muted)}
+.footer-dot{color:var(--text-dim);font-size:0.65rem;opacity:0.5}
+@media(max-width:860px){.site-footer{margin-left:0;padding:16px 20px}}
+
 ::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:4px}
@@ -363,6 +454,7 @@ select option{background:var(--surface2)}
     <div class="nav-item" onclick="goto('podcasts',this)"><span class="ni">◉</span> Podcasts <span class="nbadge" id="b-podcasts">0</span></div>
     <div class="nav-item" onclick="goto('knowledge',this)"><span class="ni">✦</span> Knowledge <span class="nbadge" id="b-knowledge">0</span></div>
     <div class="nav-item" onclick="goto('philosophy',this)"><span class="ni">∿</span> Philosophy <span class="nbadge" id="b-philosophy">0</span></div>
+    <div class="nav-item" onclick="goto('aitools',this)"><span class="ni">◬</span> AI Tools <span class="nbadge" id="b-aitools">0</span></div>
 
     <div class="nav-lbl">My Journey</div>
     <div class="nav-item" onclick="goto('dsa',this)"><span class="ni">⟨⟩</span> DSA</div>
@@ -383,7 +475,7 @@ select option{background:var(--surface2)}
       <button class="manage-btn" id="manage-btn" onclick="toggleManage()" title="Edit / delete entries">✏ Manage</button>
       <button class="add-btn" id="add-btn" onclick="openModal()"><span class="ab-icon">＋</span> Add Entry</button>
       <button class="lock-btn" id="lock-btn" onclick="handleLock()" title="Admin login">
-        <span class="lock-icon" id="lock-icon">🔒</span>
+        <span class="lock-icon" id="lock-icon">⊠</span>
         <span id="lock-label">Admin</span>
       </button>
     </div>
@@ -391,53 +483,56 @@ select option{background:var(--surface2)}
 
   <!-- HOME -->
   <section class="page active" id="page-home">
-    <div class="hero">
-      <div class="hero-eyebrow">Public Knowledge Library</div>
-      <div class="hero-title">Everything I <em>read,</em><br>watch &amp; absorb.</div>
-      <div class="hero-body">This is my open archive — a living record of the books, videos, podcasts, ideas and philosophies that have shaped how I think. Browse freely.</div>
+    <div class="home-grid" id="home-grid">
+      <!-- rendered by JS -->
     </div>
-    <div class="stats-row" id="stats-row"></div>
-    <div class="sec"><div class="sec-title">Recently Added</div><div class="sec-count" id="recent-count"></div></div>
-    <div class="grid" id="recent-grid"></div>
   </section>
 
   <!-- YOUTUBE -->
   <section class="page" id="page-videos">
+    <button class="back-btn" onclick="goHome()"><span class="ba">←</span> Back</button>
     <div class="sec"><div class="sec-title">YouTube ▷</div><div class="sec-count" id="cnt-videos"></div></div>
     <div class="grid" id="grid-videos"></div>
   </section>
 
   <!-- BOOKS -->
   <section class="page" id="page-books">
+    <button class="back-btn" onclick="goHome()"><span class="ba">←</span> Back</button>
     <div class="sec"><div class="sec-title">Books ◎</div><div class="sec-count" id="cnt-books"></div></div>
     <div class="grid" id="grid-books"></div>
   </section>
 
   <!-- PODCASTS -->
   <section class="page" id="page-podcasts">
+    <button class="back-btn" onclick="goHome()"><span class="ba">←</span> Back</button>
     <div class="sec"><div class="sec-title">Podcasts ◉</div><div class="sec-count" id="cnt-podcasts"></div></div>
     <div class="grid" id="grid-podcasts"></div>
   </section>
 
   <!-- KNOWLEDGE -->
   <section class="page" id="page-knowledge">
+    <button class="back-btn" onclick="goHome()"><span class="ba">←</span> Back</button>
     <div class="sec"><div class="sec-title">Knowledge ✦</div><div class="sec-count" id="cnt-knowledge"></div></div>
     <div class="grid" id="grid-knowledge"></div>
   </section>
 
   <!-- PHILOSOPHY -->
   <section class="page" id="page-philosophy">
+    <button class="back-btn" onclick="goHome()"><span class="ba">←</span> Back</button>
     <div class="sec"><div class="sec-title">Life Philosophies ∿</div><div class="sec-count" id="cnt-philosophy"></div></div>
     <div id="grid-philosophy"></div>
   </section>
 
+  <!-- AI TOOLS -->
+  <section class="page" id="page-aitools">
+    <button class="back-btn" onclick="goHome()"><span class="ba">←</span> Back</button>
+    <div class="sec"><div class="sec-title">AI Tools ◬</div><div class="sec-count" id="cnt-aitools"></div></div>
+    <div class="grid" id="grid-aitools"></div>
+  </section>
+
   <!-- DSA -->
   <section class="page" id="page-dsa">
-    <div class="hero" style="margin-bottom:34px">
-      <div class="hero-eyebrow">Self-Improvement</div>
-      <div class="hero-title" style="font-size:2.4rem">DSA <em>Progress</em></div>
-      <div class="hero-body">Topics I'm working through. Consistency over speed.</div>
-    </div>
+    <button class="back-btn" onclick="goHome()"><span class="ba">←</span> Back</button>
     <div class="sec"><div class="sec-title">Core Topics</div><div class="sec-count" id="dsa-count"></div></div>
     <div class="dsa-grid" id="dsa-grid"></div>
     <div class="divider"></div>
@@ -452,11 +547,7 @@ select option{background:var(--surface2)}
 
   <!-- CERTS -->
   <section class="page" id="page-certs">
-    <div class="hero" style="margin-bottom:34px">
-      <div class="hero-eyebrow">Credential Roadmap</div>
-      <div class="hero-title" style="font-size:2.4rem">Certifications <em>⬡</em></div>
-      <div class="hero-body">Planned, in-progress, and completed credentials.</div>
-    </div>
+    <button class="back-btn" onclick="goHome()"><span class="ba">←</span> Back</button>
     <div class="sec"><div class="sec-title">All Certifications</div></div>
     <div class="cert-row" id="cert-row"></div>
     <div class="divider"></div>
@@ -479,10 +570,7 @@ select option{background:var(--surface2)}
 
   <!-- ABOUT -->
   <section class="page" id="page-about">
-    <div class="hero" style="margin-bottom:34px">
-      <div class="hero-eyebrow">Behind Rchives</div>
-      <div class="hero-title" style="font-size:2.4rem">About <em>this library</em></div>
-    </div>
+    <button class="back-btn" onclick="goHome()"><span class="ba">←</span> Back</button>
     <div class="about-panel">
       <div>
         <div class="about-label">What is Rchives?</div>
@@ -506,14 +594,21 @@ select option{background:var(--surface2)}
         </div>
       </div>
     </div>
-  </section>
+  </section>  <!-- FOOTER -->
+  <footer class="site-footer">
+    <span class="footer-text">Built by</span>
+    <a class="footer-link" href="https://shanmukha-delta.vercel.app/" target="_blank" rel="noopener">Shanmukha Donepudi</a>
+    <span class="footer-dot">·</span>
+    <span class="footer-text">Rchives</span>
+  </footer>
+
 </main>
 
 <!-- ═══════════════ AUTH MODAL ═══════════════ -->
 <div class="auth-bg" id="auth-bg" onclick="authBgClose(event)">
   <div class="auth-box">
     <button class="auth-close-x" onclick="closeAuth()">✕</button>
-    <span class="auth-emblem">🔒</span>
+    <span class="auth-emblem">⊠</span>
     <div class="auth-title">Admin Access</div>
     <div class="auth-sub">Rchives — Restricted</div>
     <input class="auth-field" type="text" id="auth-user" placeholder="Username" autocomplete="off" spellcheck="false">
@@ -537,6 +632,7 @@ select option{background:var(--surface2)}
         <div class="type-opt" onclick="pickType('podcast',this)"><span class="ti">◉</span>Podcast</div>
         <div class="type-opt" onclick="pickType('knowledge',this)"><span class="ti">✦</span>Knowledge</div>
         <div class="type-opt" onclick="pickType('philosophy',this)"><span class="ti">∿</span>Philosophy</div>
+        <div class="type-opt" onclick="pickType('aitool',this)"><span class="ti">◬</span>AI Tool</div>
         <div class="type-opt" onclick="pickType('dsa-note',this)"><span class="ti">⟨⟩</span>DSA Note</div>
       </div>
     </div>
@@ -651,6 +747,7 @@ const T = {
   podcast:  {label:'Podcast',    icon:'◉', page:'podcasts'},
   knowledge:{label:'Note',       icon:'✦', page:'knowledge'},
   philosophy:{label:'Philosophy',icon:'∿', page:'philosophy'},
+  aitool:   {label:'AI Tool',    icon:'◬', page:'aitools'},
   'dsa-note':{label:'DSA Note',  icon:'⟨⟩',page:'knowledge'},
 };
 
@@ -694,12 +791,9 @@ function makeCard(item, showDel=false) {
   let thumbHtml = '';
   if (vid) {
     const thumbSrc = ytThumb(vid);
-    const linkUrl = item.yturl || `https://youtube.com/watch?v=${vid}`;
     thumbHtml = `<div class="card-thumb-wrap">
-      <a class="card-thumb-link" href="${esc(linkUrl)}" target="_blank" rel="noopener">
         <img class="card-thumb" src="${thumbSrc}" alt="${esc(item.title)}" loading="lazy"
-          onerror="this.style.display='none';this.parentElement.parentElement.style.display='none'">
-      </a>
+          onerror="this.style.display='none';this.parentElement.style.display='none'">
     </div>`;
   }
 
@@ -707,12 +801,16 @@ function makeCard(item, showDel=false) {
     ? `<a href="${esc(item.yturl)}" target="_blank" rel="noopener">${esc(item.title)}</a>`
     : esc(item.title);
 
-  return `<div class="card" data-id="${item.id}">
+  const isVideo = item.type === 'video' && item.yturl;
+  const cardClick = isVideo ? `onclick="if(!event.target.classList.contains('card-del'))window.open('${esc(item.yturl)}','_blank')"` : '';
+  const cardCursor = isVideo ? 'cursor:pointer' : '';
+
+  return `<div class="card" data-id="${item.id}" ${cardClick} style="${cardCursor}">
     ${delBtn}
     ${thumbHtml}
     <div class="card-body">
       <div class="card-pill">${meta.icon} ${meta.label}</div>
-      <div class="card-title">${titleInner}</div>
+      <div class="card-title">${esc(item.title)}</div>
       ${author ? `<div class="card-author">— ${author}</div>` : ''}
       ${item.notes ? `<div class="card-note">${esc(item.notes)}</div>` : ''}
       ${tags ? `<div class="chips">${tags}</div>` : ''}
@@ -765,6 +863,8 @@ function renderAll() {
   const philosophy = byType('philosophy');
   const total = LIB.length;
 
+  const aitools = LIB.filter(i => i.type === 'aitool');
+
   // badges
   setText('b-home', total||'—');
   setText('b-videos', videos.length);
@@ -772,20 +872,26 @@ function renderAll() {
   setText('b-podcasts', podcasts.length);
   setText('b-knowledge', knowledge.length);
   setText('b-philosophy', philosophy.length);
+  setText('b-aitools', aitools.length);
 
-  // stats row
-  document.getElementById('stats-row').innerHTML = [
-    {num:videos.length,lbl:'Videos'},{num:books.length,lbl:'Books'},
-    {num:podcasts.length,lbl:'Podcasts'},{num:knowledge.length,lbl:'Notes'},
-    {num:philosophy.length,lbl:'Philosophies'},{num:total,lbl:'Total'},
-  ].map(s=>`<div class="stat"><div class="stat-num">${s.num}</div><div class="stat-lbl">${s.lbl}</div></div>`).join('');
-
-  // recent
-  const recent = [...LIB].reverse().slice(0,6);
-  setText('recent-count', total+(total===1?' entry':' entries'));
-  document.getElementById('recent-grid').innerHTML = recent.length
-    ? recent.map(i=>makeCard(i, manageMode)).join('')
-    : `<div class="empty"><div class="empty-ico">◌</div><div class="empty-title">Your library is empty</div><div class="empty-sub">Click "Add Entry" to begin building your archive</div></div>`;
+  // HOME — section blocks
+  const sections = [
+    { key:'videos',     label:'YouTube',    icon:'▷',  cls:'sb-videos',     page:'videos',    count: videos.length,     unit:'videos'     },
+    { key:'books',      label:'Books',      icon:'◎',  cls:'sb-books',      page:'books',     count: books.length,      unit:'books'      },
+    { key:'podcasts',   label:'Podcasts',   icon:'◉',  cls:'sb-podcasts',   page:'podcasts',  count: podcasts.length,   unit:'episodes'   },
+    { key:'knowledge',  label:'Knowledge',  icon:'✦',  cls:'sb-knowledge',  page:'knowledge', count: knowledge.length,  unit:'notes'      },
+    { key:'philosophy', label:'Philosophy', icon:'∿',  cls:'sb-philosophy', page:'philosophy',count: philosophy.length, unit:'principles' },
+    { key:'aitools',    label:'AI Tools',   icon:'◬',  cls:'sb-aitools',    page:'aitools',   count: aitools.length,    unit:'tools'      },
+    { key:'dsa',        label:'DSA',        icon:'⟨⟩', cls:'sb-dsa',        page:'dsa',       count: DSA.filter(t=>t.done).length+' / '+DSA.length, unit:'done' },
+  ];
+  document.getElementById('home-grid').innerHTML = sections.map(s => `
+    <div class="sec-block ${s.cls}" onclick="gotoFromHome('${s.page}')">
+      <div class="sec-block-art">${s.icon}</div>
+      <div class="sec-block-footer">
+        <div class="sec-block-name">${s.label}</div>
+        <div class="sec-block-count">${s.count} ${s.unit}</div>
+      </div>
+    </div>`).join('');
 
   // page grids
   fillGrid('grid-videos', [...videos].reverse(), manageMode);
@@ -803,6 +909,10 @@ function renderAll() {
   ph.innerHTML = philosophy.length
     ? [...philosophy].reverse().map(i=>makeQuote(i, manageMode)).join('')
     : `<div class="empty"><div class="empty-ico">∿</div><div class="empty-title">Nothing yet</div></div>`;
+
+  // ai tools
+  fillGrid('grid-aitools', [...aitools].reverse(), manageMode);
+  setText('cnt-aitools', aitools.length + ' tools');
 
   // DSA
   const dsaDone = DSA.filter(t=>t.done).length;
@@ -872,13 +982,13 @@ function applyAuthState() {
     addBtn.classList.add('visible');
     manageBtn.classList.add('visible');
     lockBtn.classList.add('authed');
-    lockIcon.textContent = '🔓';
+    lockIcon.textContent = '⊡';
     lockLabel.textContent = 'Logout';
   } else {
     addBtn.classList.remove('visible');
     manageBtn.classList.remove('visible');
     lockBtn.classList.remove('authed');
-    lockIcon.textContent = '🔒';
+    lockIcon.textContent = '⊠';
     lockLabel.textContent = 'Admin';
     // kill manage mode if logged out mid-session
     if (manageMode) { manageMode = false; renderAll(); }
@@ -977,7 +1087,7 @@ function pickType(type, el, auto=false) {
     document.querySelectorAll('.type-opt').forEach(o=>o.classList.remove('sel'));
     if (el) el.classList.add('sel');
   }
-  const labels = {video:'Channel / Creator',book:'Author',podcast:'Host / Show',knowledge:'Source',philosophy:'Source / Philosopher','dsa-note':'Source / Topic'};
+  const labels = {video:'Channel / Creator',book:'Author',podcast:'Host / Show',knowledge:'Source',philosophy:'Source / Philosopher',aitool:'Made by / Category','dsa-note':'Source / Topic'};
   document.getElementById('e-author-lbl').textContent = labels[type]||'Author';
   document.getElementById('yt-extra').classList.toggle('show', type==='video');
 }
@@ -1031,8 +1141,19 @@ function deleteEntry(id, e) {
 const PAGE_TITLES = {
   home:'<em>Rchives</em> — Home', videos:'YouTube ▷', books:'Books ◎',
   podcasts:'Podcasts ◉', knowledge:'Knowledge ✦', philosophy:'Life Philosophies ∿',
+  aitools:'AI Tools ◬',
   dsa:'DSA Progress ⟨⟩', certs:'Certifications ⬡', about:'About',
 };
+
+function goHome() {
+  const homeNav = document.querySelector(".nav-item[onclick*=\"goto('home'\"]");
+  goto('home', homeNav);
+}
+
+function gotoFromHome(page) {
+  const navItem = document.querySelector(`.nav-item[onclick*="goto('${page}'"]`);
+  goto(page, navItem);
+}
 
 function goto(page, el) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -1056,6 +1177,16 @@ function closeSidebar() {
 /* boot */
 renderAll();
 applyAuthState();
+
+// Esc key — return home from any section, or close modals
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  // close modals first
+  if (document.getElementById('auth-bg').classList.contains('open')) { closeAuth(); return; }
+  if (document.getElementById('modal-bg').classList.contains('open')) { closeModal(); return; }
+  // go home if on a section page
+  if (curPage !== 'home') goHome();
+});
 </script>
 </body>
 </html>
