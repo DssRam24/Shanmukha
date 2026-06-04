@@ -809,7 +809,7 @@ if (vid) {
     <img class="card-thumb" src="${thumbSrc}" alt="${esc(item.title)}" loading="lazy"
       onerror="this.style.display='none';this.parentElement.style.display='none'">
   </div>`;
-}} else if (item.type === 'book' && item.coverurl) {
+} else if (item.type === 'book' && item.coverurl) {
   thumbHtml = `<div class="card-thumb-wrap">
     <img class="card-thumb book-cover" src="${esc(item.coverurl)}" alt="${esc(item.title)}" loading="lazy"
       onerror="this.style.display='none';this.parentElement.style.display='none'">
@@ -830,7 +830,7 @@ const cardCursor = isVideo ? 'cursor:pointer' : '';
     ${thumbHtml}
     <div class="card-body">
       <div class="card-pill">${meta.icon} ${meta.label}</div>
-      <div class="card-title">${esc(item.title)}</div>
+     <div class="card-title">${titleInner}</div>
       ${author ? `<div class="card-author">— ${author}</div>` : ''}
       ${item.notes ? `<div class="card-note">${esc(item.notes)}</div>` : ''}
       ${tags ? `<div class="chips">${tags}</div>` : ''}
