@@ -107,12 +107,6 @@ body::after{
 .add-btn:hover{background:rgba(224,112,96,0.2);box-shadow:0 0 18px rgba(224,112,96,0.15)}
 .add-btn .ab-icon{font-size:1rem;font-weight:300}
 
-/* manage button — hidden until authed */
-.manage-btn{display:none;align-items:center;gap:6px;padding:7px 15px;background:var(--surface);border:1px solid var(--border);border-radius:50px;color:var(--text-muted);font-size:.72rem;font-family:'Syne',sans-serif;cursor:pointer;transition:all .18s;white-space:nowrap}
-.manage-btn.visible{display:flex}
-.manage-btn:hover{border-color:var(--border-salmon);color:var(--text)}
-.manage-btn.on{background:rgba(255,80,80,.08);border-color:rgba(255,80,80,.25);color:#ff6060}
-
 /* lock / auth button — always visible */
 .lock-btn{
   display:flex;align-items:center;gap:6px;
@@ -207,14 +201,14 @@ body::after{
   font-size:0.62rem;font-family:'DM Mono',monospace;
   color:rgba(255,255,255,0.5);letter-spacing:0.08em;text-transform:uppercase;
 }
-/* colour palettes per section — matching the colourful illustration style */
+/* color palettes per section */
 .sb-videos  {background:linear-gradient(135deg,#f4a05a 0%,#e8783c 100%)}
 .sb-books   {background:linear-gradient(135deg,#b8aef5 0%,#8c7fe8 100%)}
 .sb-podcasts{background:linear-gradient(135deg,#f5a8c8 0%,#d87ab0 100%)}
 .sb-knowledge{background:linear-gradient(135deg,#8ee4c8 0%,#5ac4a0 100%)}
 .sb-philosophy{background:linear-gradient(135deg,#ffd580 0%,#f0b840 100%)}
 .sb-dsa     {background:linear-gradient(135deg,#8ecdf5 0%,#5aaae0 100%)}
-.sb-aitools  {background:linear-gradient(135deg,#c8f5e0 0%,#5ae0b0 100%)}
+.sb-aitools {background:linear-gradient(135deg,#c8f5e0 0%,#5ae0b0 100%)}
 
 @media(max-width:860px){
   .home-grid{grid-template-columns:repeat(2,1fr);padding:20px 18px 60px;gap:14px}
@@ -260,19 +254,16 @@ body::after{
 .card:hover{border-color:var(--border-salmon);transform:translateY(-2px);box-shadow:0 12px 38px rgba(0,0,0,0.35),0 0 22px rgba(224,112,96,0.06)}
 .card:hover::before{height:100%}
 
-/* youtube thumbnail */
+/* thumbnails */
 .card-thumb{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:var(--surface3)}
 .card-thumb.book-cover{aspect-ratio:2/3;object-fit:cover;object-position:top}
 .card-thumb-wrap{position:relative;overflow:hidden}
 .card-thumb-wrap::after{content:'▶';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:1.8rem;color:#fff;opacity:0;background:rgba(0,0,0,0.45);transition:opacity .22s}
 .card-thumb-wrap:hover::after{opacity:1}
-.card-thumb-link{display:block;text-decoration:none}
 
 .card-body{padding:18px 20px;flex:1;display:flex;flex-direction:column}
 .card-pill{display:inline-flex;align-items:center;gap:5px;font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--salmon);background:var(--salmon-glow);border:1px solid var(--border-salmon);padding:3px 9px;border-radius:50px;margin-bottom:12px;font-weight:600}
 .card-title{font-family:'Cormorant Garamond',serif;font-size:1.13rem;font-weight:400;line-height:1.35;margin-bottom:6px;color:var(--text)}
-.card-title a{color:inherit;text-decoration:none;transition:color .18s}
-.card-title a:hover{color:var(--salmon)}
 .card-author{font-size:0.67rem;color:var(--text-muted);font-family:'DM Mono',monospace;margin-bottom:9px;letter-spacing:0.03em}
 .card-note{font-size:0.77rem;color:var(--text-muted);line-height:1.65;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:10px}
 .chips{display:flex;flex-wrap:wrap;gap:5px}
@@ -289,7 +280,7 @@ body::after{
 /* dsa */
 .dsa-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:9px;margin-bottom:34px}
 .dsa-chip{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 10px;text-align:center;transition:all .18s}
-.dsa-chip.done{border-color:var(--border-salmon);background:var(--salmon-glow)}
+.dsa-chip.done {border-color:var(--border-salmon);background:var(--salmon-glow)}
 .dsa-chip:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,0.28)}
 .dsa-ico{font-size:1.3rem;margin-bottom:5px}
 .dsa-name{font-size:0.67rem;color:var(--text-muted)}
@@ -323,7 +314,7 @@ body::after{
 .mantra::before{content:'"';position:absolute;left:0;top:11px;color:var(--salmon);font-size:1.4rem;opacity:0.4;line-height:1}
 .mantra:last-child{border-bottom:none}
 
-/* empty */
+/* empty statement state */
 .empty{grid-column:1/-1;padding:48px 20px;text-align:center;border:1px dashed var(--border);border-radius:var(--radius-lg)}
 .empty-ico{font-size:1.9rem;opacity:0.18;margin-bottom:9px}
 .empty-title{font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--text-dim);font-weight:300}
@@ -347,7 +338,6 @@ body::after{
 .fg input,.fg select,.fg textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 13px;color:var(--text);font-size:0.82rem;font-family:'Syne',sans-serif;outline:none;transition:all .18s;appearance:none}
 .fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--border-salmon);box-shadow:0 0 0 3px var(--salmon-glow)}
 .fg textarea{resize:vertical;min-height:80px;line-height:1.6}
-select option{background:var(--surface2)}
 
 .type-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:17px}
 .type-opt{padding:10px 6px;border:1px solid var(--border);border-radius:var(--radius-sm);text-align:center;cursor:pointer;font-size:0.69rem;color:var(--text-muted);transition:all .17s;letter-spacing:.04em;user-select:none}
@@ -355,23 +345,21 @@ select option{background:var(--surface2)}
 .type-opt.sel{border-color:var(--salmon);color:var(--salmon);background:var(--salmon-glow)}
 .type-opt .ti{font-size:1.2rem;display:block;margin-bottom:3px}
 .yt-extra{display:none;margin-bottom:17px}
-.yt-extra.show{display:block}
 
-/* thumb preview */
+/* thumbnail preview window */
 .thumb-preview{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:var(--radius-sm);border:1px solid var(--border);margin-top:8px;display:none;background:var(--surface3)}
 .thumb-preview.show{display:block}
 
 .save-btn{width:100%;padding:12px;background:linear-gradient(135deg,var(--salmon-soft),var(--salmon));border:none;border-radius:50px;color:#fff;font-size:0.82rem;font-family:'Syne',sans-serif;font-weight:600;cursor:pointer;letter-spacing:.05em;transition:all .22s;margin-top:4px}
 .save-btn:hover{box-shadow:0 8px 26px rgba(224,112,96,.3);transform:translateY(-1px)}
 
-/* delete button (only shows in manage mode) */
+/* delete engine assets */
 .card-del{position:absolute;top:10px;right:10px;width:24px;height:24px;border-radius:50%;border:1px solid var(--border);background:rgba(11,11,13,.8);color:var(--text-dim);font-size:.68rem;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;transition:all .18s;z-index:2;backdrop-filter:blur(4px)}
 .card:hover .card-del{opacity:1}
 .card-del:hover{background:rgba(224,112,96,.15);color:var(--salmon);border-color:var(--border-salmon)}
-.manage-mode .card-del{opacity:1}
 
-/* manage toggle */
-.manage-btn{display:flex;align-items:center;gap:6px;padding:7px 15px;background:var(--surface);border:1px solid var(--border);border-radius:50px;color:var(--text-muted);font-size:.72rem;font-family:'Syne',sans-serif;cursor:pointer;transition:all .18s;white-space:nowrap}
+.manage-btn{display:none;align-items:center;gap:6px;padding:7px 15px;background:var(--surface);border:1px solid var(--border);border-radius:50px;color:var(--text-muted);font-size:.72rem;font-family:'Syne',sans-serif;cursor:pointer;transition:all .18s;white-space:nowrap}
+.manage-btn.visible{display:flex}
 .manage-btn:hover{border-color:var(--border-salmon);color:var(--text)}
 .manage-btn.on{background:rgba(255,80,80,.08);border-color:rgba(255,80,80,.25);color:#ff6060}
 
@@ -391,7 +379,7 @@ select option{background:var(--surface2)}
 
 /* ── FOOTER ── */
 .site-footer{
-  margin:var(--sidebar);
+  margin-left:var(--sidebar);
   padding:20px 44px;
   border-top:1px solid var(--border);
   display:flex;align-items:center;gap:9px;
@@ -413,7 +401,7 @@ select option{background:var(--surface2)}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:4px}
 
-/* mobile */
+/* mobile layer layout */
 .mob-btn{display:none;position:fixed;top:13px;left:13px;z-index:200;width:34px;height:34px;background:var(--surface);border:1px solid var(--border);border-radius:10px;align-items:center;justify-content:center;cursor:pointer;font-size:.95rem;color:var(--text-muted)}
 .mob-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:99}
 .mob-ov.open{display:block}
@@ -440,7 +428,6 @@ select option{background:var(--surface2)}
 <div class="mob-ov" id="ov" onclick="closeSidebar()"></div>
 <button class="mob-btn" onclick="toggleSidebar()">☰</button>
 
-<!-- ═══════════════ SIDEBAR ═══════════════ -->
 <aside class="sidebar" id="sidebar">
   <div class="logo-wrap">
     <div class="logo"><span>R</span>chives</div>
@@ -468,7 +455,6 @@ select option{background:var(--surface2)}
   </div>
 </aside>
 
-<!-- ═══════════════ MAIN ═══════════════ -->
 <main class="main" id="main-el">
   <div class="topbar">
     <div class="topbar-title" id="topbar-title"><em>Rchives</em> — Home</div>
@@ -483,56 +469,47 @@ select option{background:var(--surface2)}
     </div>
   </div>
 
-  <!-- HOME -->
   <section class="page active" id="page-home">
     <div class="home-grid" id="home-grid">
-      <!-- rendered by JS -->
-    </div>
+      </div>
   </section>
 
-  <!-- YOUTUBE -->
   <section class="page" id="page-videos">
     <button class="back-btn" onclick="goHome()"><span class="ba">←</span> Back</button>
     <div class="sec"><div class="sec-title">YouTube ▷</div><div class="sec-count" id="cnt-videos"></div></div>
     <div class="grid" id="grid-videos"></div>
   </section>
 
-  <!-- BOOKS -->
   <section class="page" id="page-books">
     <button class="back-btn" onclick="goHome()"><span class="ba">←</span> Back</button>
     <div class="sec"><div class="sec-title">Books ◎</div><div class="sec-count" id="cnt-books"></div></div>
     <div class="grid" id="grid-books"></div>
   </section>
 
-  <!-- PODCASTS -->
   <section class="page" id="page-podcasts">
     <button class="back-btn" onclick="goHome()"><span class="ba">←</span> Back</button>
     <div class="sec"><div class="sec-title">Podcasts ◉</div><div class="sec-count" id="cnt-podcasts"></div></div>
     <div class="grid" id="grid-podcasts"></div>
   </section>
 
-  <!-- KNOWLEDGE -->
   <section class="page" id="page-knowledge">
     <button class="back-btn" onclick="goHome()"><span class="ba">←</span> Back</button>
     <div class="sec"><div class="sec-title">Knowledge ✦</div><div class="sec-count" id="cnt-knowledge"></div></div>
     <div class="grid" id="grid-knowledge"></div>
   </section>
 
-  <!-- PHILOSOPHY -->
   <section class="page" id="page-philosophy">
     <button class="back-btn" onclick="goHome()"><span class="ba">←</span> Back</button>
     <div class="sec"><div class="sec-title">Life Philosophies ∿</div><div class="sec-count" id="cnt-philosophy"></div></div>
     <div id="grid-philosophy"></div>
   </section>
 
-  <!-- AI TOOLS -->
   <section class="page" id="page-aitools">
     <button class="back-btn" onclick="goHome()"><span class="ba">←</span> Back</button>
     <div class="sec"><div class="sec-title">AI Tools ◬</div><div class="sec-count" id="cnt-aitools"></div></div>
     <div class="grid" id="grid-aitools"></div>
   </section>
 
-  <!-- DSA -->
   <section class="page" id="page-dsa">
     <button class="back-btn" onclick="goHome()"><span class="ba">←</span> Back</button>
     <div class="sec"><div class="sec-title">Core Topics</div><div class="sec-count" id="dsa-count"></div></div>
@@ -547,7 +524,6 @@ select option{background:var(--surface2)}
     </div>
   </section>
 
-  <!-- CERTS -->
   <section class="page" id="page-certs">
     <button class="back-btn" onclick="goHome()"><span class="ba">←</span> Back</button>
     <div class="sec"><div class="sec-title">All Certifications</div></div>
@@ -570,7 +546,6 @@ select option{background:var(--surface2)}
     </div>
   </section>
 
-  <!-- ABOUT -->
   <section class="page" id="page-about">
     <button class="back-btn" onclick="goHome()"><span class="ba">←</span> Back</button>
     <div class="about-panel">
@@ -596,17 +571,16 @@ select option{background:var(--surface2)}
         </div>
       </div>
     </div>
-  </section>  <!-- FOOTER -->
+  </section>
+
   <footer class="site-footer">
     <span class="footer-text">Built by</span>
     <a class="footer-link" href="https://shanmukha-delta.vercel.app/" target="_blank" rel="noopener">Shanmukha Donepudi</a>
     <span class="footer-dot">·</span>
     <span class="footer-text">Rchives</span>
   </footer>
-
 </main>
 
-<!-- ═══════════════ AUTH MODAL ═══════════════ -->
 <div class="auth-bg" id="auth-bg" onclick="authBgClose(event)">
   <div class="auth-box">
     <button class="auth-close-x" onclick="closeAuth()">✕</button>
@@ -620,7 +594,6 @@ select option{background:var(--surface2)}
   </div>
 </div>
 
-<!-- ═══════════════ ADD ENTRY MODAL ═══════════════ -->
 <div class="modal-bg" id="modal-bg" onclick="bgClose(event)">
   <div class="modal">
     <div class="modal-title">Add to <em>Rchives</em></div>
@@ -648,32 +621,33 @@ select option{background:var(--surface2)}
       <input type="text" id="e-author" placeholder="By whom?">
     </div>
 
-    <!-- YouTube-specific -->
     <div class="yt-extra" id="yt-extra">
-      <label style="display:block;font-size:.66rem;letter-spacing:.13em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;font-weight:500">YouTube URL <span style="color:var(--text-dim);font-weight:300">(paste link to auto-fetch thumbnail)</span></label>
+      <label style="display:block;font-size:.66rem;letter-spacing:.13em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;font-weight:500">YouTube URL <span style="color:var(--text-dim);font-weight:300">(auto-fetches thumbnail)</span></label>
       <input type="url" id="e-yturl" placeholder="https://youtube.com/watch?v=…" oninput="previewThumb(this.value)">
       <img id="thumb-prev" class="thumb-preview" alt="thumbnail preview">
     </div>
-    <div class="aitool-extra" id="aitool-extra" style="display:none;margin-bottom:17px">
-  <label style="display:block;font-size:.66rem;letter-spacing:.13em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;font-weight:500">Tool URL</label>
-  <input type="url" id="e-toolurl" placeholder="https://tool.com">
-</div>
 
-<div class="book-extra" id="book-extra" style="display:none;margin-bottom:17px">
-  <label style="display:block;font-size:.66rem;letter-spacing:.13em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;font-weight:500">Book Cover Image URL</label>
-  <input type="url" id="e-coverurl" placeholder="https://covers.openlibrary.org/...">
-  <img id="cover-prev" style="width:80px;margin-top:8px;border-radius:6px;display:none;border:1px solid var(--border)" alt="cover">
-  <label style="display:block;font-size:.66rem;letter-spacing:.13em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;font-weight:500;margin-top:12px">Buy Link (Amazon / Flipkart etc.)</label>
-  <input type="url" id="e-buyurl" placeholder="https://amazon.in/...">
-</div>
+    <div class="aitool-extra" id="aitool-extra" style="display:none;margin-bottom:17px">
+      <label style="display:block;font-size:.66rem;letter-spacing:.13em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;font-weight:500">Tool URL</label>
+      <input type="url" id="e-toolurl" placeholder="https://tool.com">
+    </div>
+
+    <div class="book-extra" id="book-extra" style="display:none;margin-bottom:17px">
+      <label style="display:block;font-size:.66rem;letter-spacing:.13em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;font-weight:500">Book Cover Image URL</label>
+      <input type="url" id="e-coverurl" placeholder="https://covers.openlibrary.org/..." oninput="previewCover(this.value)">
+      <img id="cover-prev" style="width:80px;margin-top:8px;border-radius:6px;display:none;border:1px solid var(--border)" alt="cover">
+      
+      <label style="display:block;font-size:.66rem;letter-spacing:.13em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;font-weight:500;margin-top:12px">Buy Link</label>
+      <input type="url" id="e-buyurl" placeholder="https://amazon.in/...">
+    </div>
 
     <div class="fg">
       <label>Tags <span style="color:var(--text-dim);font-weight:300">(comma separated)</span></label>
-      <input type="text" id="e-tags" placeholder="e.g. philosophy, dsa, habits">
+      <input type="text" id="e-tags" placeholder="philosophy, dsa, java, branding">
     </div>
     <div class="fg">
       <label>Notes / Takeaway</label>
-      <textarea id="e-notes" placeholder="Key ideas, quotes, what you learned…"></textarea>
+      <textarea id="e-notes" placeholder="Key ideas, quotes, or learnings..."></textarea>
     </div>
 
     <button class="save-btn" onclick="saveEntry()">Add to Library →</button>
@@ -682,7 +656,7 @@ select option{background:var(--surface2)}
 
 <script>
 /* ═══════════════════════════════════════
-   STATIC DATA (DSA + Certs — edit here)
+   STATIC JOURNEY MAPPERS
 ═══════════════════════════════════════ */
 const DSA_TOPICS = [
   {id:'arrays',    name:'Arrays',      icon:'▦', done:false},
@@ -716,31 +690,23 @@ const CERTS_DEFAULT = [
 ];
 
 /* ═══════════════════════════════════════
-   STATE (localStorage)
+   STORAGE STATES
 ═══════════════════════════════════════ */
 const KEY = 'rchives_lib_v1';
 const DSA_KEY = 'rchives_dsa_v1';
 const CERT_KEY = 'rchives_certs_v1';
 
-function loadLib() {
-  try { return JSON.parse(localStorage.getItem(KEY) || '[]'); } catch { return []; }
-}
+function loadLib() { try { return JSON.parse(localStorage.getItem(KEY) || '[]'); } catch { return []; } }
 function saveLib(lib) { localStorage.setItem(KEY, JSON.stringify(lib)); }
 
 function loadDSA() {
-  try {
-    const saved = JSON.parse(localStorage.getItem(DSA_KEY));
-    if (saved) return saved;
-  } catch {}
+  try { const saved = JSON.parse(localStorage.getItem(DSA_KEY)); if (saved) return saved; } catch {}
   return DSA_TOPICS.map(t => ({...t}));
 }
 function saveDSA(arr) { localStorage.setItem(DSA_KEY, JSON.stringify(arr)); }
 
 function loadCerts() {
-  try {
-    const saved = JSON.parse(localStorage.getItem(CERT_KEY));
-    if (saved) return saved;
-  } catch {}
+  try { const saved = JSON.parse(localStorage.getItem(CERT_KEY)); if (saved) return saved; } catch {}
   return CERTS_DEFAULT.map(c => ({...c}));
 }
 function saveCerts(arr) { localStorage.setItem(CERT_KEY, JSON.stringify(arr)); }
@@ -752,9 +718,6 @@ let manageMode = false;
 let curType = 'video';
 let curPage = 'home';
 
-/* ═══════════════════════════════════════
-   TYPE META
-═══════════════════════════════════════ */
 const T = {
   video:    {label:'YouTube',    icon:'▷', page:'videos'},
   book:     {label:'Book',       icon:'◎', page:'books'},
@@ -766,7 +729,7 @@ const T = {
 };
 
 /* ═══════════════════════════════════════
-   YOUTUBE UTILS
+   MEDIA PARSERS
 ═══════════════════════════════════════ */
 function ytIdFromUrl(url) {
   if (!url) return null;
@@ -780,9 +743,8 @@ function ytIdFromUrl(url) {
   }
   return null;
 }
-function ytThumb(videoId) {
-  return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-}
+function ytThumb(videoId) { return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`; }
+
 function previewThumb(url) {
   const vid = ytIdFromUrl(url);
   const img = document.getElementById('thumb-prev');
@@ -790,8 +752,14 @@ function previewThumb(url) {
   else { img.classList.remove('show'); img.src=''; }
 }
 
+function previewCover(url) {
+  const img = document.getElementById('cover-prev');
+  if (url) { img.src = url; img.style.display = 'block'; }
+  else { img.style.display = 'none'; img.src = ''; }
+}
+
 /* ═══════════════════════════════════════
-   CARD BUILDER
+   DOM VIEW RENDERING
 ═══════════════════════════════════════ */
 function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
@@ -803,40 +771,28 @@ function makeCard(item, showDel=false) {
   const vid = item.type==='video' ? ytIdFromUrl(item.yturl||'') : null;
 
   let thumbHtml = '';
-if (vid) {
-  const thumbSrc = ytThumb(vid);
-  thumbHtml = `<div class="card-thumb-wrap">
-    <img class="card-thumb" src="${thumbSrc}" alt="${esc(item.title)}" loading="lazy"
-      onerror="this.style.display='none';this.parentElement.style.display='none'">
-  </div>`;
-} else if (item.type === 'book' && item.coverurl) {
-  thumbHtml = `<div class="card-thumb-wrap">
-    <img class="card-thumb book-cover" src="${esc(item.coverurl)}" alt="${esc(item.title)}" loading="lazy"
-      onerror="this.style.display='none';this.parentElement.style.display='none'">
-  </div>`;
-}
-}
-  const titleInner = (vid && item.yturl)
-    ? `<a href="${esc(item.yturl)}" target="_blank" rel="noopener">${esc(item.title)}</a>`
-    : esc(item.title);
+  if (vid) {
+    thumbHtml = `<div class="card-thumb-wrap"><img class="card-thumb" src="${ytThumb(vid)}" alt="${esc(item.title)}" loading="lazy"></div>`;
+  } else if (item.type === 'book' && item.coverurl) {
+    thumbHtml = `<div class="card-thumb-wrap"><img class="card-thumb book-cover" src="${esc(item.coverurl)}" alt="${esc(item.title)}" loading="lazy"></div>`;
+  }
 
-const isVideo = item.type === 'video' && item.yturl;
-const isBook  = item.type === 'book'  && item.buyurl;
- const cardClick = isVideo ? `onclick="if(!event.target.classList.contains('card-del'))window.open('${esc(item.yturl)}','_blank')"` : '';
-const cardCursor = isVideo ? 'cursor:pointer' : '';
+  const destinationUrl = item.type==='video' ? item.yturl : (item.type==='book' ? item.buyurl : item.toolurl);
+  const clickAttr = destinationUrl ? `onclick="if(!event.target.classList.contains('card-del'))window.open('${esc(destinationUrl)}','_blank')"` : '';
+  const cursorStyle = destinationUrl ? 'cursor:pointer' : '';
 
-  return `<div class="card" data-id="${item.id}" ${cardClick} style="${cardCursor}">
+  return `<div class="card" data-id="${item.id}" ${clickAttr} style="${cursorStyle}">
     ${delBtn}
     ${thumbHtml}
     <div class="card-body">
       <div class="card-pill">${meta.icon} ${meta.label}</div>
-     <div class="card-title">${titleInner}</div>
+      <div class="card-title">${esc(item.title)}</div>
       ${author ? `<div class="card-author">— ${author}</div>` : ''}
       ${item.notes ? `<div class="card-note">${esc(item.notes)}</div>` : ''}
       ${tags ? `<div class="chips">${tags}</div>` : ''}
-     ${item.date ? `<div class="card-date">${esc(item.date)}</div>` : ''}
-${item.buyurl ? `<a href="${esc(item.buyurl)}" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="display:inline-flex;align-items:center;gap:4px;margin-top:8px;font-size:0.62rem;color:var(--salmon);border:1px solid var(--border-salmon);border-radius:50px;padding:3px 10px;text-decoration:none;font-family:'DM Mono',monospace;transition:all .18s" onmouseover="this.style.background='var(--salmon-glow)'" onmouseout="this.style.background='transparent'">⊙ Buy</a>` : ''}
-${item.toolurl ? `<a href="${esc(item.toolurl)}" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="display:inline-flex;align-items:center;gap:4px;margin-top:8px;font-size:0.62rem;color:var(--salmon);border:1px solid var(--border-salmon);border-radius:50px;padding:3px 10px;text-decoration:none;font-family:'DM Mono',monospace;transition:all .18s" onmouseover="this.style.background='var(--salmon-glow)'" onmouseout="this.style.background='transparent'">◬ Open Tool</a>` : ''}
+      ${item.date ? `<div class="card-date">${esc(item.date)}</div>` : ''}
+      ${item.buyurl ? `<a href="${esc(item.buyurl)}" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="display:inline-flex;align-items:center;gap:4px;margin-top:8px;font-size:0.62rem;color:var(--salmon);border:1px solid var(--border-salmon);border-radius:50px;padding:3px 10px;text-decoration:none;font-family:'DM Mono',monospace;transition:all .18s" onmouseover="this.style.background='var(--salmon-glow)'" onmouseout="this.style.background='transparent'">⊙ Buy</a>` : ''}
+      ${item.toolurl ? `<a href="${esc(item.toolurl)}" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="display:inline-flex;align-items:center;gap:4px;margin-top:8px;font-size:0.62rem;color:var(--salmon);border:1px solid var(--border-salmon);border-radius:50px;padding:3px 10px;text-decoration:none;font-family:'DM Mono',monospace;transition:all .18s" onmouseover="this.style.background='var(--salmon-glow)'" onmouseout="this.style.background='transparent'">◬ Open Tool</a>` : ''}
     </div>
   </div>`;
 }
@@ -853,26 +809,22 @@ function makeQuote(item, showDel=false) {
   </div>`;
 }
 
-/* ═══════════════════════════════════════
-   RENDER
-═══════════════════════════════════════ */
 function fillGrid(elId, items, showDel=false) {
   const el = document.getElementById(elId);
   if (!el) return;
   if (!items.length) {
-    el.innerHTML = `<div class="empty"><div class="empty-ico">◌</div><div class="empty-title">Nothing here yet</div><div class="empty-sub">Click "Add Entry" to get started</div></div>`;
+    el.innerHTML = `<div class="empty"><div class="empty-ico">◌</div><div class="empty-title">Nothing here yet</div><div class="empty-sub">Click "Add Entry" to balance the workspace</div></div>`;
     return;
   }
   el.innerHTML = items.map(i => makeCard(i, showDel)).join('');
 }
 
 function setBar(fId, pId, val) {
-  const f=document.getElementById(fId),p=document.getElementById(pId);
-  if(f) f.style.width=val+'%';
-  if(p) p.textContent=val+'%';
+  const f=document.getElementById(fId), p=document.getElementById(pId);
+  if(f) f.style.width=val+'%'; if(p) p.textContent=val+'%';
 }
-function setText(id,v){ const e=document.getElementById(id);if(e)e.textContent=v; }
-function setHTML(id,v){ const e=document.getElementById(id);if(e)e.innerHTML=v; }
+function setText(id,v){ const e=document.getElementById(id); if(e) e.textContent=v; }
+function setHTML(id,v){ const e=document.getElementById(id); if(e) e.innerHTML=v; }
 
 function renderAll() {
   const now = new Date();
@@ -880,14 +832,10 @@ function renderAll() {
   setText('topbar-meta', now.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'}).toUpperCase());
 
   const byType = t => LIB.filter(i => i.type===t);
-  const videos = byType('video'), books = byType('book'), podcasts = byType('podcast');
+  const videos = byType('video'), books = byType('book'), podcasts = byType('podcast'), philosophy = byType('philosophy'), aitools = byType('aitool');
   const knowledge = LIB.filter(i=>i.type==='knowledge'||i.type==='dsa-note');
-  const philosophy = byType('philosophy');
   const total = LIB.length;
 
-  const aitools = LIB.filter(i => i.type === 'aitool');
-
-  // badges
   setText('b-home', total||'—');
   setText('b-videos', videos.length);
   setText('b-books', books.length);
@@ -896,16 +844,16 @@ function renderAll() {
   setText('b-philosophy', philosophy.length);
   setText('b-aitools', aitools.length);
 
-  // HOME — section blocks
   const sections = [
-    { key:'videos',     label:'YouTube',    icon:'▷',  cls:'sb-videos',     page:'videos',    count: videos.length,     unit:'videos'     },
-    { key:'books',      label:'Books',      icon:'◎',  cls:'sb-books',      page:'books',     count: books.length,      unit:'books'      },
-    { key:'podcasts',   label:'Podcasts',   icon:'◉',  cls:'sb-podcasts',   page:'podcasts',  count: podcasts.length,   unit:'episodes'   },
-    { key:'knowledge',  label:'Knowledge',  icon:'✦',  cls:'sb-knowledge',  page:'knowledge', count: knowledge.length,  unit:'notes'      },
+    { key:'videos',     label:'YouTube',    icon:'▷',  cls:'sb-videos',     page:'videos',    count: videos.length,    unit:'videos'     },
+    { key:'books',      label:'Books',      icon:'◎',  cls:'sb-books',      page:'books',     count: books.length,     unit:'books'      },
+    { key:'podcasts',   label:'Podcasts',   icon:'◉',  cls:'sb-podcasts',   page:'podcasts',  count: podcasts.length,  unit:'episodes'   },
+    { key:'knowledge',  label:'Knowledge',  icon:'✦',  cls:'sb-knowledge',  page:'knowledge', count: knowledge.length, unit:'notes'      },
     { key:'philosophy', label:'Philosophy', icon:'∿',  cls:'sb-philosophy', page:'philosophy',count: philosophy.length, unit:'principles' },
-    { key:'aitools',    label:'AI Tools',   icon:'◬',  cls:'sb-aitools',    page:'aitools',   count: aitools.length,    unit:'tools'      },
+    { key:'aitools',    label:'AI Tools',   icon:'◬',  cls:'sb-aitools',    page:'aitools',   count: aitools.length,   unit:'tools'      },
     { key:'dsa',        label:'DSA',        icon:'⟨⟩', cls:'sb-dsa',        page:'dsa',       count: DSA.filter(t=>t.done).length+' / '+DSA.length, unit:'done' },
   ];
+  
   document.getElementById('home-grid').innerHTML = sections.map(s => `
     <div class="sec-block ${s.cls}" onclick="gotoFromHome('${s.page}')">
       <div class="sec-block-art">${s.icon}</div>
@@ -915,31 +863,28 @@ function renderAll() {
       </div>
     </div>`).join('');
 
-  // page grids
   fillGrid('grid-videos', [...videos].reverse(), manageMode);
   fillGrid('grid-books', [...books].reverse(), manageMode);
   fillGrid('grid-podcasts', [...podcasts].reverse(), manageMode);
   fillGrid('grid-knowledge', [...knowledge].reverse(), manageMode);
+  fillGrid('grid-aitools', [...aitools].reverse(), manageMode);
+
   setText('cnt-videos', videos.length+' saved');
   setText('cnt-books', books.length+' archived');
   setText('cnt-podcasts', podcasts.length+' listened');
   setText('cnt-knowledge', knowledge.length+' notes');
-
-  // philosophy
+  setText('cnt-aitools', aitools.length + ' tools');
   setText('cnt-philosophy', philosophy.length+' principles');
+
   const ph = document.getElementById('grid-philosophy');
   ph.innerHTML = philosophy.length
     ? [...philosophy].reverse().map(i=>makeQuote(i, manageMode)).join('')
     : `<div class="empty"><div class="empty-ico">∿</div><div class="empty-title">Nothing yet</div></div>`;
 
-  // ai tools
-  fillGrid('grid-aitools', [...aitools].reverse(), manageMode);
-  setText('cnt-aitools', aitools.length + ' tools');
-
-  // DSA
   const dsaDone = DSA.filter(t=>t.done).length;
   const dsaPct = Math.round((dsaDone/DSA.length)*100);
   setText('dsa-count', `${dsaDone} / ${DSA.length} complete`);
+  
   document.getElementById('dsa-grid').innerHTML = DSA.map(t=>`
     <div class="dsa-chip ${t.done?'done':''}" onclick="toggleDSA('${t.id}',this)" title="${isAuthed?'Click to toggle':'View only'}" style="cursor:${isAuthed?'pointer':'default'}">
       <div class="dsa-ico">${t.icon}</div>
@@ -948,24 +893,22 @@ function renderAll() {
     </div>`).join('');
   setBar('pf-dsa','pp-dsa',dsaPct);
 
-  // Certs
   const certDone = CERTS.filter(c=>c.status==='done').length;
   const certPct = CERTS.length ? Math.round((certDone/CERTS.length)*100) : 0;
   const sMap = {planned:'Planned','in-progress':'In Progress',done:'Completed'};
+  
   document.getElementById('cert-row').innerHTML = CERTS.map(c=>`
     <div class="cert-tag ${c.status==='done'?'done':c.status==='in-progress'?'inprog':''}">
       <span class="cert-dot"></span>
       ${esc(c.name)}
       <span class="cert-status">${sMap[c.status]||c.status}</span>
     </div>`).join('');
+    
   setBar('pf-cert','pp-cert',certPct);
   setBar('pf-cert-dsa','pp-cert-dsa',dsaPct);
   setBar('pf-content','pp-content',Math.min(Math.round((total/50)*100),100));
 }
 
-/* ═══════════════════════════════════════
-   DSA TOGGLE
-═══════════════════════════════════════ */
 function toggleDSA(id, el) {
   if (!isAuthed) return;
   const topic = DSA.find(t=>t.id===id);
@@ -977,21 +920,26 @@ function toggleDSA(id, el) {
   if (topic.done && !check) {
     const d=document.createElement('div'); d.className='dsa-check'; d.textContent='✓ done'; el.appendChild(d);
   } else if (!topic.done && check) { check.remove(); }
-  // update count
   const done = DSA.filter(t=>t.done).length;
   setText('dsa-count', `${done} / ${DSA.length} complete`);
   setBar('pf-dsa','pp-dsa',Math.round((done/DSA.length)*100));
 }
 
 /* ═══════════════════════════════════════
-   AUTH
+   ADMIN SECURITY HANDLERS
 ═══════════════════════════════════════ */
-// Credentials — change here to update
-const AUTH_USER_HASH = 'fc0464fb4f430b31ade7788719c827cfa46fbeda2c0ef5213404e89873d872a2';
-const AUTH_PASS_HASH = '8629b4cf048df59d4bf953fa28b538bd6238721d2edcc57f7e2b8a7f60593a85';
+const AUTH_USER_HASH = 'fc0464fb4f430b31ade7788719c827cfa46fbeda2c0ef5213404e89873d872a2'; 
+const AUTH_PASS_HASH = '8629b4cf048df59d4bf953fa28b538bd6238721d2edcc57f7e2b8a7f60593a85'; 
 const SESSION_KEY = 'rchives_auth';
 
 let isAuthed = sessionStorage.getItem(SESSION_KEY) === '1';
+
+// Native Crypto API utility to compute SHA-256 matching your hashes
+async function sha256(str) {
+  const buf = new TextEncoder().encode(str);
+  const hashBuf = await crypto.subtle.digest('SHA-256', buf);
+  return Array.from(new Uint8Array(hashBuf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
 
 function applyAuthState() {
   const addBtn    = document.getElementById('add-btn');
@@ -1004,7 +952,7 @@ function applyAuthState() {
     addBtn.classList.add('visible');
     manageBtn.classList.add('visible');
     lockBtn.classList.add('authed');
-    lockIcon.textContent = '⊡';
+    lockIcon.textContent = '¼';
     lockLabel.textContent = 'Logout';
   } else {
     addBtn.classList.remove('visible');
@@ -1012,17 +960,16 @@ function applyAuthState() {
     lockBtn.classList.remove('authed');
     lockIcon.textContent = '⊠';
     lockLabel.textContent = 'Admin';
-    // kill manage mode if logged out mid-session
     if (manageMode) { manageMode = false; renderAll(); }
   }
 }
 
 function handleLock() {
   if (isAuthed) {
-    // logout
     isAuthed = false;
     sessionStorage.removeItem(SESSION_KEY);
     applyAuthState();
+    renderAll();
   } else {
     openAuth();
   }
@@ -1036,28 +983,23 @@ function openAuth() {
   setTimeout(() => document.getElementById('auth-user').focus(), 80);
 }
 
-function closeAuth() {
-  document.getElementById('auth-bg').classList.remove('open');
-}
+function closeAuth() { document.getElementById('auth-bg').classList.remove('open'); }
+function authBgClose(e) { if (e.target === document.getElementById('auth-bg')) closeAuth(); }
 
-function authBgClose(e) {
-  if (e.target === document.getElementById('auth-bg')) closeAuth();
-}
-
-function submitAuth() {
+async function submitAuth() {
   const u = document.getElementById('auth-user').value.trim();
   const p = document.getElementById('auth-pass').value;
   const err = document.getElementById('auth-err');
 
-  if (u === AUTH_USER && p === AUTH_PASS) {
+  const uHash = await sha256(u);
+  const pHash = await sha256(p);
+
+  if (uHash === AUTH_USER_HASH && pHash === AUTH_PASS_HASH) {
     isAuthed = true;
     sessionStorage.setItem(SESSION_KEY, '1');
     closeAuth();
     applyAuthState();
-    // brief flash on lock button
-    const lb = document.getElementById('lock-btn');
-    lb.style.transition = 'all .4s';
-    setTimeout(() => lb.style.transition = '', 500);
+    renderAll();
   } else {
     err.textContent = '⚠ Incorrect credentials.';
     document.getElementById('auth-pass').value = '';
@@ -1070,9 +1012,6 @@ function submitAuth() {
   }
 }
 
-/* ═══════════════════════════════════════
-   MANAGE MODE
-═══════════════════════════════════════ */
 function toggleManage() {
   if (!isAuthed) return;
   manageMode = !manageMode;
@@ -1083,7 +1022,7 @@ function toggleManage() {
 }
 
 /* ═══════════════════════════════════════
-   MODAL
+   CREATION MODAL HANDLERS
 ═══════════════════════════════════════ */
 function openModal() {
   if (!isAuthed) { openAuth(); return; }
@@ -1091,11 +1030,12 @@ function openModal() {
   pickType('video', null, true);
 }
 function bgClose(e) { if (e.target===document.getElementById('modal-bg')) closeModal(); }
+
 function closeModal() {
   document.getElementById('modal-bg').classList.remove('open');
- ['e-title','e-author','e-yturl','e-tags','e-notes','e-toolurl','e-coverurl','e-buyurl'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  ['e-title','e-author','e-yturl','e-tags','e-notes','e-toolurl','e-coverurl','e-buyurl'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
   const tp=document.getElementById('thumb-prev'); if(tp){tp.classList.remove('show');tp.src='';}
-  document.getElementById('yt-extra').classList.remove('show');
+  const cp=document.getElementById('cover-prev'); if(cp){cp.style.display='none';cp.src='';}
 }
 
 function pickType(type, el, auto=false) {
@@ -1112,18 +1052,8 @@ function pickType(type, el, auto=false) {
   const labels = {video:'Channel / Creator',book:'Author',podcast:'Host / Show',knowledge:'Source',philosophy:'Source / Philosopher',aitool:'Made by / Category','dsa-note':'Source / Topic'};
   document.getElementById('e-author-lbl').textContent = labels[type]||'Author';
   document.getElementById('yt-extra').style.display = type==='video' ? 'block' : 'none';
-document.getElementById('aitool-extra').style.display = type==='aitool' ? 'block' : 'none';
-document.getElementById('book-extra').style.display = type==='book' ? 'block' : 'none';
-  const coverInp = document.getElementById('e-coverurl');
-coverInp.oninput = function() {
-  const img = document.getElementById('cover-prev');
-  img.src = this.value;
-  img.style.display = this.value ? 'block' : 'none';
-};
-}
-
-function fmtDate() {
-  return new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+  document.getElementById('aitool-extra').style.display = type==='aitool' ? 'block' : 'none';
+  document.getElementById('book-extra').style.display = type==='book' ? 'block' : 'none';
 }
 
 function saveEntry() {
@@ -1136,20 +1066,20 @@ function saveEntry() {
     title,
     author: document.getElementById('e-author').value.trim(),
     source: curType==='philosophy' ? document.getElementById('e-author').value.trim() : '',
-   yturl:     document.getElementById('e-yturl')?.value.trim()    || '',
-toolurl:   document.getElementById('e-toolurl')?.value.trim()  || '',
-coverurl:  document.getElementById('e-coverurl')?.value.trim() || '',
-buyurl:    document.getElementById('e-buyurl')?.value.trim()   || '',
+    yturl:     document.getElementById('e-yturl')?.value.trim()    || '',
+    toolurl:   document.getElementById('e-toolurl')?.value.trim()  || '',
+    coverurl:  document.getElementById('e-coverurl')?.value.trim() || '',
+    buyurl:    document.getElementById('e-buyurl')?.value.trim()   || '',
     tags: document.getElementById('e-tags').value.split(',').map(t=>t.trim()).filter(Boolean),
     notes: document.getElementById('e-notes').value.trim(),
-    date: fmtDate(),
+    date: new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}),
   };
 
   LIB.push(entry);
   saveLib(LIB);
   closeModal();
   renderAll();
-  // jump to relevant page if not on home
+
   if (curPage !== 'home') {
     const targetPage = T[curType]?.page || 'home';
     if (targetPage !== curPage) {
@@ -1160,7 +1090,7 @@ buyurl:    document.getElementById('e-buyurl')?.value.trim()   || '',
 }
 
 function deleteEntry(id, e) {
-  if (e) { e.stopPropagation(); }
+  if (e) e.stopPropagation();
   if (!isAuthed) return;
   if (!confirm('Remove this entry from your library?')) return;
   LIB = LIB.filter(i=>i.id!==id);
@@ -1169,30 +1099,25 @@ function deleteEntry(id, e) {
 }
 
 /* ═══════════════════════════════════════
-   NAVIGATION
+   APP ROUTING INTERNALS
 ═══════════════════════════════════════ */
 const PAGE_TITLES = {
   home:'<em>Rchives</em> — Home', videos:'YouTube ▷', books:'Books ◎',
   podcasts:'Podcasts ◉', knowledge:'Knowledge ✦', philosophy:'Life Philosophies ∿',
-  aitools:'AI Tools ◬',
-  dsa:'DSA Progress ⟨⟩', certs:'Certifications ⬡', about:'About',
+  aitools:'AI Tools ◬', dsa:'DSA Progress ⟨⟩', certs:'Certifications ⬡', about:'About',
 };
 
-function goHome() {
-  const homeNav = document.querySelector(".nav-item[onclick*=\"goto('home'\"]");
-  goto('home', homeNav);
-}
-
-function gotoFromHome(page) {
-  const navItem = document.querySelector(`.nav-item[onclick*="goto('${page}'"]`);
-  goto(page, navItem);
-}
+function goHome() { goto('home', document.querySelector(".nav-item[onclick*=\"goto('home'\"]")); }
+function gotoFromHome(page) { goto(page, document.querySelector(`.nav-item[onclick*="goto('${page}'"]`)); }
 
 function goto(page, el) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  document.getElementById('page-'+page).classList.add('active');
+  
+  const targetPageElement = document.getElementById('page-'+page);
+  if (targetPageElement) targetPageElement.classList.add('active');
   if (el) el.classList.add('active');
+  
   curPage = page;
   setHTML('topbar-title', PAGE_TITLES[page]||page);
   if (window.innerWidth < 860) closeSidebar();
@@ -1207,19 +1132,17 @@ function closeSidebar() {
   document.getElementById('ov').classList.remove('open');
 }
 
-/* boot */
-renderAll();
-applyAuthState();
-
-// Esc key — return home from any section, or close modals
+// Global System Watchers
 document.addEventListener('keydown', e => {
   if (e.key !== 'Escape') return;
-  // close modals first
   if (document.getElementById('auth-bg').classList.contains('open')) { closeAuth(); return; }
   if (document.getElementById('modal-bg').classList.contains('open')) { closeModal(); return; }
-  // go home if on a section page
   if (curPage !== 'home') goHome();
 });
+
+// Boot Shell
+renderAll();
+applyAuthState();
 </script>
 </body>
 </html>
