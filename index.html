@@ -802,98 +802,69 @@
   </div>
 
   <!-- CRAYON MOUNTAINS (SVG — rough, hand-drawn feel) -->
-  <svg class="mountains-svg" viewBox="0 0 1440 340" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-    <!-- Far hazy mountains (light, sketchy) -->
-    <path d="M0,340 C30,310 55,295 80,280 C102,265 118,275 135,258
-             C155,240 170,250 192,232 C215,213 232,225 258,208
-             C280,192 300,205 325,188 C352,170 375,183 400,166
-             C422,150 445,163 470,148 C495,132 520,146 545,130
-             C570,115 595,128 620,112 C645,97 670,110 700,95
-             C730,80 755,93 785,80 C815,67 845,78 875,65
-             C905,52 935,63 965,52 C995,40 1020,50 1050,40
-             C1080,30 1110,40 1140,30 C1170,20 1200,30 1230,22
-             C1260,14 1295,22 1325,15 C1360,8 1400,14 1440,10
-             L1440,340 Z"
-      fill="rgba(255,180,100,0.15)" stroke="rgba(200,120,60,0.3)" stroke-width="2.5"
-      stroke-linecap="round" stroke-linejoin="round"/>
+ <svg class="city-svg" viewBox="0 0 1440 400" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      
+      <circle cx="950" cy="220" r="190" fill="var(--sun-color)" opacity="0.85" />
+      
+      <g fill="var(--layer-back)">
+        <rect x="100" y="210" width="90" height="190" />
+        <rect x="260" y="170" width="140" height="230" />
+        <rect x="560" y="158" width="130" height="242" />
+        <path d="M 560 158 Q 625 130 690 158 Z" /> <rect x="800" y="165" width="110" height="235" />
+        <rect x="1030" y="105" width="170" height="295" />
+        <rect x="1015" y="130" width="15" height="15" />
+        <rect x="1015" y="180" width="15" height="15" />
+        <rect x="1015" y="230" width="15" height="15" />
+        <rect x="1220" y="138" width="140" height="262" />
+        <rect x="1380" y="110" width="60" height="290" />
+      </g>
 
-    <!-- Mid crayon mountains (warm orange strokes) -->
-    <path d="M0,340 C10,325 28,308 52,290 C78,270 92,285 115,265
-             C140,243 155,258 180,238 C205,217 220,232 248,215
-             C272,200 288,214 310,196 C335,176 352,192 378,175
-             C400,160 418,174 442,158 C466,142 485,156 508,140
-             C530,125 550,138 574,123 C596,109 617,122 640,108
-             C665,93 685,106 710,92 C735,78 755,90 780,78
-             C805,65 828,76 855,63 C878,52 900,63 925,51
-             C950,38 975,50 1000,38 C1025,25 1050,38 1075,26
-             C1100,14 1125,25 1152,14 C1178,3 1205,14 1235,5
-             C1265,-4 1295,6 1325,0 C1360,-6 1400,2 1440,-2
-             L1440,340 Z"
-      fill="rgba(255,130,60,0.18)" stroke="rgba(220,90,30,0.45)" stroke-width="3"
-      stroke-linecap="round" stroke-linejoin="round"/>
+      <g fill="var(--mist-color)">
+        <circle cx="200" cy="260" r="80" />
+        <circle cx="350" cy="250" r="90" />
+        <circle cx="700" cy="240" r="100" />
+        <circle cx="1150" cy="230" r="110" />
+      </g>
 
-    <!-- Foreground crayon mountains (bold, dark) -->
-    <path d="M0,340 C8,332 22,318 42,302 C58,288 74,300 95,282
-             C115,264 130,278 152,261 C175,243 192,255 215,238
-             C240,219 258,232 282,215 C306,197 325,210 350,195
-             C375,178 395,192 420,177 C445,161 465,174 488,160
-             C510,146 530,158 554,144 C576,131 596,143 620,130
-             C644,116 664,128 688,116 C712,103 732,115 756,103
-             C782,90 802,102 828,90 C854,77 876,89 900,78
-             C924,66 945,78 970,67 C995,55 1018,67 1042,56
-             C1066,45 1090,56 1115,45 C1140,34 1162,45 1188,35
-             C1212,25 1236,35 1262,26 C1288,17 1312,26 1340,18
-             C1370,10 1405,16 1440,12
-             L1440,340 Z"
-      fill="rgba(80,30,10,0.22)" stroke="rgba(140,60,20,0.7)" stroke-width="3.5"
-      stroke-linecap="round" stroke-linejoin="round"/>
+      <g fill="var(--layer-mid)">
+        <rect x="0" y="215" width="90" height="185" />
+        <rect x="160" y="255" width="140" height="145" />
+        <rect x="425" y="235" width="130" height="165" />
+        <rect x="730" y="225" width="115" height="175" />
+        <rect x="915" y="240" width="120" height="160" />
+        <rect x="1210" y="220" width="135" height="180" />
+      </g>
 
-    <!-- Crayon sun (wobbly, imperfect circle - hand drawn) -->
-    <circle cx="200" cy="80" r="42" fill="rgba(255,220,80,0.7)" stroke="rgba(255,160,30,0.8)" stroke-width="3" stroke-dasharray="6 3"/>
-    <!-- Sun rays (crayon style) -->
-    <g stroke="rgba(255,200,60,0.6)" stroke-width="2.5" stroke-linecap="round">
-      <line x1="200" y1="28" x2="200" y2="16"/>
-      <line x1="230" y1="38" x2="238" y2="28"/>
-      <line x1="244" y1="68" x2="255" y2="65"/>
-      <line x1="238" y1="100" x2="248" y2="106"/>
-      <line x1="210" y1="118" x2="215" y2="130"/>
-      <line x1="175" y1="118" x2="170" y2="130"/>
-      <line x1="155" y1="100" x2="144" y2="106"/>
-      <line x1="152" y1="68" x2="140" y2="63"/>
-      <line x1="165" y1="38" x2="156" y2="29"/>
-    </g>
+      <g fill="var(--mist-color)" opacity="0.7">
+        <circle cx="100" cy="310" r="70" />
+        <circle cx="500" cy="290" r="85" />
+        <circle cx="900" cy="300" r="80" />
+        <circle cx="1350" cy="290" r="90" />
+      </g>
 
-    <!-- Eagle silhouettes -->
-    <g fill="rgba(0,0,0,0.22)">
-      <!-- Eagle 1 -->
-      <path d="M380,65 C366,59 358,61 354,66 C360,64 368,61 380,68 C392,61 400,64 406,66 C402,61 394,59 380,65Z"/>
-      <line x1="380" y1="68" x2="380" y2="75" stroke="rgba(0,0,0,0.22)" stroke-width="1.8" stroke-linecap="round"/>
-      <line x1="376" y1="75" x2="384" y2="75" stroke="rgba(0,0,0,0.22)" stroke-width="1.5" stroke-linecap="round"/>
-      <!-- Eagle 2 -->
-      <path d="M750,45 C730,37 718,40 713,46 C720,43 730,40 750,48 C770,40 780,43 787,46 C782,40 770,37 750,45Z"/>
-      <line x1="750" y1="48" x2="750" y2="56" stroke="rgba(0,0,0,0.22)" stroke-width="2" stroke-linecap="round"/>
-      <line x1="745" y1="56" x2="755" y2="56" stroke="rgba(0,0,0,0.22)" stroke-width="1.5" stroke-linecap="round"/>
-      <!-- Eagle 3 (large) -->
-      <path d="M1100,35 C1074,26 1058,29 1051,37 C1060,33 1074,29 1100,40 C1126,29 1140,33 1149,37 C1142,29 1126,26 1100,35Z"/>
-      <line x1="1100" y1="40" x2="1100" y2="50" stroke="rgba(0,0,0,0.22)" stroke-width="2.2" stroke-linecap="round"/>
-      <line x1="1094" y1="50" x2="1106" y2="50" stroke="rgba(0,0,0,0.22)" stroke-width="1.6" stroke-linecap="round"/>
-      <!-- Eagle 4 small -->
-      <path d="M560,88 C552,84 547,86 544,89 C548,87 552,85 560,91 C568,85 572,87 576,89 C573,86 568,84 560,88Z"/>
-      <!-- Eagle 5 -->
-      <path d="M930,55 C918,49 912,51 909,55 C914,53 919,50 930,57 C941,50 946,53 951,55 C948,51 942,49 930,55Z"/>
-      <line x1="930" y1="57" x2="930" y2="64" stroke="rgba(0,0,0,0.2)" stroke-width="1.8" stroke-linecap="round"/>
-    </g>
+      <g fill="var(--layer-fore)">
+        <rect x="55" y="280" width="110" height="120" />
+        <rect x="215" y="250" width="180" height="150" />
+        <rect x="605" y="215" width="12" height="185" />
+        <rect x="555" y="255" width="115" height="145" />
+        <rect x="750" y="248" width="140" height="152" />
+        <rect x="1165" y="295" width="155" height="105" />
+        <rect x="1295" y="335" width="12" height="65" />
+      </g>
 
-    <!-- Pine tree sketches -->
-    <g stroke="rgba(60,30,10,0.4)" stroke-width="1.5" stroke-linecap="round" fill="none">
-      <line x1="80" y1="302" x2="80" y2="316"/><polyline points="71,316 80,298 89,316"/><polyline points="73,310 80,296 87,310"/>
-      <line x1="248" y1="261" x2="248" y2="275"/><polyline points="239,275 248,258 257,275"/><polyline points="241,269 248,256 255,269"/>
-      <line x1="488" y1="238" x2="488" y2="252"/><polyline points="479,252 488,235 497,252"/><polyline points="481,246 488,233 495,246"/>
-      <line x1="756" y1="215" x2="756" y2="229"/><polyline points="747,229 756,212 765,229"/><polyline points="749,223 756,210 763,223"/>
-      <line x1="1000" y1="200" x2="1000" y2="214"/><polyline points="991,214 1000,197 1009,214"/><polyline points="993,208 1000,195 1007,208"/>
-      <line x1="1262" y1="188" x2="1262" y2="202"/><polyline points="1253,202 1262,185 1271,202"/><polyline points="1255,196 1262,183 1269,196"/>
-    </g>
-  </svg>
+      <g fill="var(--layer-frontmost)">
+        <rect x="0" y="325" width="75" height="75" />
+        <rect x="115" y="340" width="95" height="60" />
+        <rect x="190" y="320" width="110" height="80" />
+        <rect x="330" y="350" width="130" height="50" />
+        <path d="M 450 400 Q 550 340 650 400 Z" fill="var(--layer-frontmost)" /> <rect x="680" y="345" width="140" height="55" />
+        <rect x="875" y="340" width="160" height="60" />
+        <rect x="1090" y="335" width="105" height="65" />
+        <path d="M 1250 400 Q 1350 350 1440 400 Z" fill="var(--layer-frontmost)" />
+      </g>
+
+      <rect x="0" y="380" width="1440" height="20" fill="var(--layer-frontmost)" />
+    </svg>
 
   <div class="footer-copy">© 2026 Shanmukha Sai Ram Donepudi — DSSRam ✦ Made with caffeine, spite &amp; FLAC audio</div>
 </footer>
