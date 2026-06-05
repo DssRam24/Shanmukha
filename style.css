@@ -31,39 +31,71 @@ body::before {
 }
 
 /* ============================================================
-   RGB PIXEL CURSOR
+    RGB 3D PIXEL CURSOR (Vaporwave / Retro Style)
 ============================================================ */
+
+/* Hide the default operating system cursor everywhere */
+html, body, a, button, select, input {
+  cursor: none !important;
+}
+
 #px-cursor {
   position: fixed;
   pointer-events: none;
   z-index: 99999;
-  width: 12px; height: 12px;
-  background: #FF6B1A;
-  border: 2px solid #0a0a0a;
-  box-shadow: 2px 2px 0 #0a0a0a;
+  
+  /* Sized to match the visual footprint of the image */
+  width: 32px; 
+  height: 32px;
+  
+  /* Sharp pixel rendering technique */
   image-rendering: pixelated;
-  top: 0; left: 0;
-  transition: width .12s, height .12s, border-radius .12s, background .12s;
+  image-rendering: crisp-edges;
+  
+  /* 1. DEFAULT STATE: Isometric Pink Arrow Pointer */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M2,2 L18,14 L12,15 L18,25 L14,27 L8,17 L4,20 Z' fill='%23ff7bf0' stroke='%230a0a0a' stroke-width='1.5' stroke-linejoin='round'/%3E%3Cpath d='M2,2 L18,14 L12,15 L4,20 Z' fill='%23ffe3fd'/%3E%3Cpath d='M12,15 L18,25 L14,27 L8,17 Z' fill='%23f954b4'/%3E%3Cpath d='M2,4 L2,2 L4,2' stroke='%2336e4ff' stroke-width='1' fill='none'/%3E%3Cpath d='M14,27 L18,25' stroke='%23ffb834' stroke-width='1' fill='none'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  
+  /* Offset adjustments so the tip of the arrow acts as the click point */
+  top: 0; 
+  left: 0;
+  transform: translate(0, 0);
+  
+  transition: transform 0.1s ease-out;
 }
+
 #px-cursor.hover {
-  width: 20px; height: 20px;
-  background: #0a0a0a;
-  border-color: #FF6B1A;
-  box-shadow: 3px 3px 0 #FF6B1A;
-  border-radius: 2px;
+  /* 2. HOVER STATE: Isometric Pink Hand Pointer */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M8,4 L12,0 L16,4 L16,10 L24,10 L28,14 L28,24 L20,28 L12,28 L8,20 Z' fill='%23ff7bf0' stroke='%230a0a0a' stroke-width='1.5' stroke-linejoin='round'/%3E%3Cpath d='M8,4 L12,0 L16,4 L16,10 L12,12 Z' fill='%23ffe3fd'/%3E%3Cpath d='M16,10 L24,10 L28,14 L28,24 L20,28 L12,28' fill='%23f954b4' fill-opacity='0.4'/%3E%3Cpath d='M8,6 L8,20 L12,16' stroke='%2336e4ff' stroke-width='1' fill='none'/%3E%3Cpath d='M20,28 L28,24' stroke='%23ffb834' stroke-width='1' fill='none'/%3E%3C/svg%3E");
+  
+  /* Shift slightly on hover so the index finger aligns with the previous arrow tip position */
+  transform: translate(-6px, -2px);
+  
+  /* Reset layout traits from the old block cursor styling */
+  width: 32px;
+  height: 32px;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }
+
+/* Optional Custom Trail altered to match the neon pink/cyan palette */
 #px-trail {
   position: fixed;
   pointer-events: none;
   z-index: 99998;
-  width: 6px; height: 6px;
-  background: rgba(255,107,26,0.35);
-  border: 1px solid rgba(255,107,26,0.5);
+  width: 6px; 
+  height: 6px;
+  background: rgba(54, 228, 255, 0.4); /* Cyan trail glow */
+  border: 1px solid rgba(255, 123, 240, 0.6); /* Pink border accent */
+  border-radius: 1px;
   image-rendering: pixelated;
-  top: 0; left: 0;
-  transition: left .12s linear, top .12s linear;
+  top: 0; 
+  left: 0;
+  transform: translate(6px, 6px); /* offsets it safely behind the pointer */
+  transition: left 0.08s linear, top 0.08s linear;
 }
-
 /* ============================================================
    NAV
 ============================================================ */
