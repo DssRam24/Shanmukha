@@ -8,288 +8,154 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Syne:wght@300;400;500;600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0b0b0d;
-  --surface: #111115;
-  --surface2: #17171d;
-  --surface3: #1d1d25;
-  --salmon: #e07060;
-  --salmon-glow: rgba(224,112,96,0.11);
-  --salmon-soft: #c9604e;
-  --text: #e8e4df;
-  --text-muted: #7a7570;
-  --text-dim: #3e3c3a;
-  --border: rgba(255,255,255,0.055);
-  --border-salmon: rgba(224,112,96,0.22);
-  --radius: 20px;
-  --radius-sm: 12px;
-  --radius-lg: 32px;
-  --sidebar: 230px;
+  --bg:#0b0b0d; --surface:#111115; --surface2:#17171d; --surface3:#1d1d25;
+  --salmon:#e07060; --salmon-glow:rgba(224,112,96,0.11); --salmon-soft:#c9604e;
+  --text:#e8e4df; --text-muted:#7a7570; --text-dim:#3e3c3a;
+  --border:rgba(255,255,255,0.055); --border-salmon:rgba(224,112,96,0.22);
+  --glass:rgba(255,255,255,0.03); --glass-border:rgba(255,255,255,0.09);
+  --radius:20px; --radius-sm:12px; --radius-lg:32px; --sidebar:230px;
 }
-
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
-
-/* grain */
-body::after{
-  content:'';position:fixed;inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events:none;z-index:9999;
-}
-
-/* ambient blobs */
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;}
 .blob{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(70px)}
 .blob-1{width:520px;height:520px;background:radial-gradient(circle,rgba(224,112,96,0.08) 0%,transparent 70%);top:-200px;right:-150px;animation:d1 14s ease-in-out infinite alternate}
 .blob-2{width:360px;height:360px;background:radial-gradient(circle,rgba(224,112,96,0.05) 0%,transparent 70%);bottom:-80px;left:-80px;animation:d2 18s ease-in-out infinite alternate}
 @keyframes d1{to{transform:translate(30px,40px)}}
 @keyframes d2{to{transform:translate(-20px,-30px)}}
 
-/* ── SIDEBAR ── */
-.sidebar{
-  position:fixed;left:0;top:0;bottom:0;width:var(--sidebar);
-  background:rgba(17,17,21,0.97);backdrop-filter:blur(24px);
-  border-right:1px solid var(--border);
-  display:flex;flex-direction:column;z-index:100;
-  transition:transform .3s ease;
-}
+/* SIDEBAR */
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:var(--sidebar);background:rgba(11,11,13,0.55);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border-right:1px solid var(--glass-border);display:flex;flex-direction:column;z-index:100;transition:transform .3s ease;}
 .logo-wrap{padding:30px 26px 24px;border-bottom:1px solid var(--border)}
 .logo{font-family:'Cormorant Garamond',serif;font-size:1.95rem;font-weight:300;letter-spacing:-0.02em;line-height:1}
 .logo span{color:var(--salmon)}
 .logo-tag{font-size:0.6rem;color:var(--text-dim);letter-spacing:0.18em;text-transform:uppercase;margin-top:5px}
-
 .nav{flex:1;padding:16px 12px;overflow-y:auto}
 .nav-lbl{font-size:0.57rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-dim);padding:0 10px;margin:14px 0 4px}
-.nav-item{
-  display:flex;align-items:center;gap:9px;
-  padding:8px 10px;border-radius:var(--radius-sm);
-  cursor:pointer;font-size:0.79rem;color:var(--text-muted);
-  font-weight:400;transition:all .18s;border:1px solid transparent;
-  letter-spacing:0.01em;user-select:none;
-}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:var(--radius-sm);cursor:pointer;font-size:0.79rem;color:var(--text-muted);font-weight:400;transition:all .18s;border:1px solid transparent;letter-spacing:0.01em;user-select:none;}
 .nav-item:hover{color:var(--text);background:var(--surface2)}
 .nav-item.active{color:var(--salmon);background:var(--salmon-glow);border-color:var(--border-salmon)}
 .ni{font-size:0.87rem;width:16px;text-align:center}
-.nbadge{
-  margin-left:auto;font-size:0.57rem;font-family:'DM Mono',monospace;
-  color:var(--text-dim);background:var(--surface3);padding:2px 7px;border-radius:50px;
-}
+.nbadge{margin-left:auto;font-size:0.57rem;font-family:'DM Mono',monospace;color:var(--text-dim);background:var(--surface3);padding:2px 7px;border-radius:50px;}
 .nav-item.active .nbadge{color:var(--salmon);background:rgba(224,112,96,0.1)}
-
 .sidebar-foot{padding:14px 26px;border-top:1px solid var(--border)}
 .foot-date{font-family:'DM Mono',monospace;font-size:0.63rem;color:var(--text-dim);letter-spacing:0.05em}
 .foot-dot{width:5px;height:5px;border-radius:50%;background:var(--salmon);display:inline-block;margin-right:5px;box-shadow:0 0 5px rgba(224,112,96,0.5);animation:blink 2.4s ease infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
 
-/* ── MAIN ── */
+/* MAIN + TOPBAR */
 .main{margin-left:var(--sidebar);min-height:100vh;position:relative;z-index:1}
-
-.topbar{
-  position:sticky;top:0;
-  padding:18px 44px;display:flex;align-items:center;justify-content:space-between;gap:16px;
-  border-bottom:1px solid var(--border);
-  background:rgba(11,11,13,0.88);backdrop-filter:blur(24px);z-index:50;
-}
+.topbar{position:sticky;top:0;padding:18px 44px;display:flex;align-items:center;justify-content:space-between;gap:16px;border-bottom:1px solid var(--border);background:rgba(11,11,13,0.4);backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);z-index:50;}
 .topbar-title{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:300;letter-spacing:-0.01em}
 .topbar-title em{color:var(--salmon);font-style:italic}
 .topbar-right{display:flex;align-items:center;gap:10px}
 .topbar-meta{font-size:0.64rem;font-family:'DM Mono',monospace;color:var(--text-dim);letter-spacing:0.07em}
 
-/* add button — hidden until authed */
-.add-btn{
-  display:none;align-items:center;gap:7px;
-  padding:8px 18px;background:var(--salmon-glow);
-  border:1px solid var(--border-salmon);border-radius:50px;
-  color:var(--salmon);font-size:0.75rem;font-family:'Syne',sans-serif;
-  font-weight:600;cursor:pointer;transition:all .22s;letter-spacing:0.05em;
-  white-space:nowrap;
-}
+/* BUTTONS */
+.add-btn{display:none;align-items:center;gap:7px;padding:8px 18px;background:var(--salmon-glow);border:1px solid var(--border-salmon);border-radius:50px;color:var(--salmon);font-size:0.75rem;font-family:'Syne',sans-serif;font-weight:600;cursor:pointer;transition:all .22s;letter-spacing:0.05em;white-space:nowrap;}
 .add-btn.visible{display:flex}
 .add-btn:hover{background:rgba(224,112,96,0.2);box-shadow:0 0 18px rgba(224,112,96,0.15)}
-.add-btn .ab-icon{font-size:1rem;font-weight:300}
-
-/* lock / auth button — always visible */
-.lock-btn{
-  display:flex;align-items:center;gap:6px;
-  padding:7px 15px;
-  background:transparent;
-  border:1px solid var(--border);border-radius:50px;
-  color:var(--text-dim);font-size:.72rem;font-family:'Syne',sans-serif;
-  cursor:pointer;transition:all .22s;letter-spacing:0.04em;white-space:nowrap;
-}
+.manage-btn{display:none;align-items:center;gap:6px;padding:7px 15px;background:var(--glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--glass-border);border-radius:50px;color:var(--text-muted);font-size:.72rem;font-family:'Syne',sans-serif;cursor:pointer;transition:all .18s;white-space:nowrap;}
+.manage-btn.visible{display:flex}
+.manage-btn:hover{border-color:var(--border-salmon);color:var(--text)}
+.manage-btn.on{background:rgba(255,80,80,.08);border-color:rgba(255,80,80,.25);color:#ff6060}
+.lock-btn{display:flex;align-items:center;gap:6px;padding:7px 15px;background:transparent;border:1px solid var(--border);border-radius:50px;color:var(--text-dim);font-size:.72rem;font-family:'Syne',sans-serif;cursor:pointer;transition:all .22s;letter-spacing:0.04em;white-space:nowrap;}
 .lock-btn:hover{border-color:var(--border-salmon);color:var(--text-muted)}
 .lock-btn.authed{border-color:rgba(74,222,128,.28);color:#4ade80;background:rgba(74,222,128,.05)}
 .lock-btn.authed:hover{background:rgba(74,222,128,.1)}
 .lock-icon{font-size:.85rem;display:inline-block;transition:transform .3s}
 .lock-btn:hover .lock-icon{transform:rotate(-12deg)}
 
-/* auth overlay */
-.auth-bg{
-  position:fixed;inset:0;background:rgba(0,0,0,.84);
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  z-index:2000;display:none;align-items:center;justify-content:center;
-}
+/* AUTH OVERLAY */
+.auth-bg{position:fixed;inset:0;background:rgba(0,0,0,.84);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);z-index:2000;display:none;align-items:center;justify-content:center;}
 .auth-bg.open{display:flex;animation:mfade .2s ease}
 .auth-box{width:320px;text-align:center;position:relative;animation:mslide .3s cubic-bezier(.34,1.56,.64,1)}
 .auth-emblem{font-size:2.8rem;margin-bottom:16px;display:block;animation:lockbob 3s ease-in-out infinite;filter:drop-shadow(0 0 14px rgba(224,112,96,.4))}
 @keyframes lockbob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 .auth-title{font-family:'Cormorant Garamond',serif;font-size:1.65rem;font-weight:300;color:var(--text);margin-bottom:3px}
 .auth-sub{font-size:.59rem;color:var(--text-dim);letter-spacing:.18em;text-transform:uppercase;margin-bottom:26px}
-.auth-field{
-  width:100%;background:rgba(255,255,255,.04);
-  border:1px solid var(--border);border-radius:var(--radius-sm);
-  padding:11px 14px;color:var(--text);
-  font-size:.82rem;font-family:'DM Mono',monospace;
-  outline:none;text-align:center;letter-spacing:.07em;
-  margin-bottom:9px;transition:all .2s;
-}
+.auth-field{width:100%;background:rgba(255,255,255,.06);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:11px 14px;color:var(--text);font-size:.82rem;font-family:'DM Mono',monospace;outline:none;text-align:center;letter-spacing:.07em;margin-bottom:9px;transition:all .2s;}
 .auth-field:focus{border-color:var(--border-salmon);box-shadow:0 0 0 3px var(--salmon-glow)}
 .auth-field::placeholder{color:var(--text-dim);letter-spacing:.03em;font-family:'Syne',sans-serif}
-.auth-go{
-  width:100%;padding:12px;margin-top:4px;
-  background:linear-gradient(135deg,var(--salmon-soft),var(--salmon));
-  border:none;border-radius:50px;color:#fff;
-  font-size:.78rem;font-family:'Syne',sans-serif;font-weight:700;
-  cursor:pointer;letter-spacing:.09em;text-transform:uppercase;transition:all .22s;
-}
+.auth-go{width:100%;padding:12px;margin-top:4px;background:linear-gradient(135deg,var(--salmon-soft),var(--salmon));border:none;border-radius:50px;color:#fff;font-size:.78rem;font-family:'Syne',sans-serif;font-weight:700;cursor:pointer;letter-spacing:.09em;text-transform:uppercase;transition:all .22s;}
 .auth-go:hover{box-shadow:0 8px 24px rgba(224,112,96,.3);transform:translateY(-1px)}
 .auth-err{font-size:.66rem;color:#ff6060;min-height:15px;margin-top:8px;font-family:'DM Mono',monospace}
-.auth-close-x{
-  position:absolute;top:-40px;right:0;
-  width:30px;height:30px;border-radius:50%;
-  border:1px solid var(--border);background:transparent;
-  color:var(--text-dim);cursor:pointer;font-size:.82rem;
-  display:flex;align-items:center;justify-content:center;transition:all .18s;
-}
+.auth-close-x{position:absolute;top:-40px;right:0;width:30px;height:30px;border-radius:50%;border:1px solid var(--border);background:transparent;color:var(--text-dim);cursor:pointer;font-size:.82rem;display:flex;align-items:center;justify-content:center;transition:all .18s;}
 .auth-close-x:hover{border-color:var(--border-salmon);color:var(--salmon)}
 
-/* ── HOME SECTION BLOCKS ── */
-.home-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:22px;
-  padding:38px 44px 80px;
-}
-.sec-block{
-  border-radius:24px;
-  overflow:hidden;
-  cursor:pointer;
-  transition:transform .25s ease, box-shadow .25s ease;
-  position:relative;
-  aspect-ratio:4/3;
-  display:flex;flex-direction:column;justify-content:flex-end;
-  border:1px solid rgba(255,255,255,0.06);
-}
+/* HOME GRID */
+.home-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;padding:38px 44px 80px;}
+.sec-block{border-radius:24px;overflow:hidden;cursor:pointer;transition:transform .25s ease,box-shadow .25s ease;position:relative;aspect-ratio:4/3;display:flex;flex-direction:column;justify-content:flex-end;border:1px solid rgba(255,255,255,0.12);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 8px 32px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.08);}
 .sec-block:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 24px 60px rgba(0,0,0,0.5)}
-.sec-block-art{
-  position:absolute;inset:0;
-  display:flex;align-items:center;justify-content:center;
-  font-size:5rem;
-  transition:transform .3s ease;
-}
+.sec-block-art{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:5rem;transition:transform .3s ease;}
 .sec-block:hover .sec-block-art{transform:scale(1.08)}
-.sec-block-footer{
-  position:relative;z-index:2;
-  padding:18px 22px 20px;
-  background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,transparent 100%);
-}
-.sec-block-name{
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.3rem;font-weight:400;
-  color:#fff;letter-spacing:-0.01em;margin-bottom:3px;
-}
-.sec-block-count{
-  font-size:0.62rem;font-family:'DM Mono',monospace;
-  color:rgba(255,255,255,0.5);letter-spacing:0.08em;text-transform:uppercase;
-}
-/* color palettes per section */
-.sb-videos  {background:linear-gradient(135deg,#f4a05a 0%,#e8783c 100%)}
-.sb-books   {background:linear-gradient(135deg,#b8aef5 0%,#8c7fe8 100%)}
-.sb-podcasts{background:linear-gradient(135deg,#f5a8c8 0%,#d87ab0 100%)}
+.sec-block-footer{position:relative;z-index:2;padding:18px 22px 20px;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,transparent 100%);}
+.sec-block-name{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:400;color:#fff;letter-spacing:-0.01em;margin-bottom:3px}
+.sec-block-count{font-size:0.62rem;font-family:'DM Mono',monospace;color:rgba(255,255,255,0.5);letter-spacing:0.08em;text-transform:uppercase}
+.sb-videos   {background:linear-gradient(135deg,#f4a05a 0%,#e8783c 100%)}
+.sb-books    {background:linear-gradient(135deg,#b8aef5 0%,#8c7fe8 100%)}
+.sb-podcasts {background:linear-gradient(135deg,#f5a8c8 0%,#d87ab0 100%)}
 .sb-knowledge{background:linear-gradient(135deg,#8ee4c8 0%,#5ac4a0 100%)}
 .sb-philosophy{background:linear-gradient(135deg,#ffd580 0%,#f0b840 100%)}
-.sb-dsa     {background:linear-gradient(135deg,#8ecdf5 0%,#5aaae0 100%)}
-.sb-aitools {background:linear-gradient(135deg,#c8f5e0 0%,#5ae0b0 100%)}
+.sb-dsa      {background:linear-gradient(135deg,#8ecdf5 0%,#5aaae0 100%)}
+.sb-aitools  {background:linear-gradient(135deg,#c8f5e0 0%,#5ae0b0 100%)}
 
-@media(max-width:860px){
-  .home-grid{grid-template-columns:repeat(2,1fr);padding:20px 18px 60px;gap:14px}
-  .sec-block-art{font-size:3.5rem}
-  .sec-block-name{font-size:1.1rem}
-}
-@media(max-width:540px){
-  .home-grid{grid-template-columns:1fr 1fr}
-}
-
-/* ── PAGES ── */
+/* PAGES */
 .page{display:none;padding:42px 44px 80px;animation:appear .28s ease both}
 .page.active{display:block}
 .page#page-home{padding:0}
 @keyframes appear{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
-/* hero */
-.hero{margin-bottom:44px}
-.hero-eyebrow{font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px;font-family:'DM Mono',monospace}
-.hero-title{font-family:'Cormorant Garamond',serif;font-size:3.3rem;font-weight:300;line-height:1.1;letter-spacing:-0.03em;margin-bottom:16px}
-.hero-title em{color:var(--salmon);font-style:italic}
-.hero-body{font-size:0.85rem;color:var(--text-muted);line-height:1.85;max-width:490px;font-weight:300}
-
-/* stats */
-.stats-row{display:flex;gap:13px;margin-bottom:48px;flex-wrap:wrap}
-.stat{flex:1;min-width:96px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;transition:all .22s}
-.stat:hover{border-color:var(--border-salmon);transform:translateY(-2px);box-shadow:0 0 24px rgba(224,112,96,0.07)}
-.stat-num{font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:300;line-height:1;color:var(--salmon);margin-bottom:3px}
-.stat-lbl{font-size:0.65rem;color:var(--text-muted);letter-spacing:0.1em;text-transform:uppercase}
-
-/* section header */
+/* SECTION HEADER */
 .sec{display:flex;align-items:baseline;gap:11px;margin-bottom:18px}
 .sec-title{font-family:'Cormorant Garamond',serif;font-size:1.38rem;font-weight:400;letter-spacing:-0.01em}
 .sec-count{font-size:0.63rem;font-family:'DM Mono',monospace;color:var(--text-dim);letter-spacing:0.05em}
 
-/* grid */
+/* GRID + CARDS */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(262px,1fr));gap:13px;margin-bottom:48px}
 #grid-books{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
-
-/* card */
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:0;transition:all .22s;position:relative;overflow:hidden;display:flex;flex-direction:column}
+.card{background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--glass-border);border-radius:var(--radius);padding:0;transition:all .22s;position:relative;overflow:hidden;display:flex;flex-direction:column;}
 .card::before{content:'';position:absolute;top:0;left:0;width:2px;height:0;background:linear-gradient(180deg,var(--salmon),transparent);transition:height .3s;border-radius:2px;z-index:1}
 .card:hover{border-color:var(--border-salmon);transform:translateY(-2px);box-shadow:0 12px 38px rgba(0,0,0,0.35),0 0 22px rgba(224,112,96,0.06)}
 .card:hover::before{height:100%}
-
-/* thumbnails */
+.card-thumb-wrap{width:100%;overflow:hidden}
 .card-thumb{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:var(--surface3)}
 .card-thumb.book-cover{aspect-ratio:2/3;object-fit:cover;object-position:top}
-.card-thumb-wrap{position:relative;overflow:hidden}
-.card-thumb-wrap::after{content:'▶';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:1.8rem;color:#fff;opacity:0;background:rgba(0,0,0,0.45);transition:opacity .22s}
-.card-thumb-wrap:hover::after{opacity:1}
-
 .card-body{padding:18px 20px;flex:1;display:flex;flex-direction:column}
 .card-pill{display:inline-flex;align-items:center;gap:5px;font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--salmon);background:var(--salmon-glow);border:1px solid var(--border-salmon);padding:3px 9px;border-radius:50px;margin-bottom:12px;font-weight:600}
 .card-title{font-family:'Cormorant Garamond',serif;font-size:1.13rem;font-weight:400;line-height:1.35;margin-bottom:6px;color:var(--text)}
+.card-title a{color:inherit;text-decoration:none;transition:color .18s}
+.card-title a:hover{color:var(--salmon)}
 .card-author{font-size:0.67rem;color:var(--text-muted);font-family:'DM Mono',monospace;margin-bottom:9px;letter-spacing:0.03em}
 .card-note{font-size:0.77rem;color:var(--text-muted);line-height:1.65;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:10px}
 .chips{display:flex;flex-wrap:wrap;gap:5px}
 .chip{padding:2px 8px;border:1px solid var(--border);border-radius:50px;font-size:0.59rem;color:var(--text-dim);letter-spacing:0.07em;text-transform:uppercase}
 .card-date{margin-top:auto;padding-top:10px;font-size:0.6rem;color:var(--text-dim);font-family:'DM Mono',monospace;letter-spacing:0.04em}
+.card-del{position:absolute;top:10px;right:10px;width:24px;height:24px;border-radius:50%;border:1px solid var(--border);background:rgba(11,11,13,.8);color:var(--text-dim);font-size:.68rem;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;transition:all .18s;z-index:2;backdrop-filter:blur(4px)}
+.card:hover .card-del{opacity:1}
+.card-del:hover{background:rgba(224,112,96,.15);color:var(--salmon);border-color:var(--border-salmon)}
 
-/* philosophy */
-.quote-block{background:var(--surface);border:1px solid var(--border);border-left:2px solid var(--salmon);border-radius:0 var(--radius) var(--radius) 0;padding:22px 26px;margin-bottom:11px;transition:all .2s;position:relative}
+/* PHILOSOPHY */
+.quote-block{background:var(--glass);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--glass-border);border-left:2px solid var(--salmon);border-radius:0 var(--radius) var(--radius) 0;padding:22px 26px;margin-bottom:11px;transition:all .2s;position:relative}
 .quote-block:hover{border-left-width:3px;transform:translateX(4px);box-shadow:0 4px 26px rgba(224,112,96,0.07)}
 .quote-text{font-family:'Cormorant Garamond',serif;font-size:1.28rem;font-weight:300;font-style:italic;line-height:1.6;color:var(--text);margin-bottom:9px}
 .quote-source{font-size:0.66rem;color:var(--text-muted);letter-spacing:0.1em;text-transform:uppercase;font-family:'DM Mono',monospace}
 .quote-note{font-size:0.77rem;color:var(--text-muted);line-height:1.65;margin-top:9px}
 
-/* dsa */
+/* DSA */
 .dsa-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:9px;margin-bottom:34px}
-.dsa-chip{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 10px;text-align:center;transition:all .18s}
-.dsa-chip.done {border-color:var(--border-salmon);background:var(--salmon-glow)}
+.dsa-chip{background:var(--glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:14px 10px;text-align:center;transition:all .18s}
+.dsa-chip.done{border-color:var(--border-salmon);background:var(--salmon-glow)}
 .dsa-chip:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,0.28)}
 .dsa-ico{font-size:1.3rem;margin-bottom:5px}
 .dsa-name{font-size:0.67rem;color:var(--text-muted)}
 .dsa-chip.done .dsa-name{color:var(--salmon)}
 .dsa-check{font-size:0.52rem;color:var(--salmon);margin-top:3px;letter-spacing:0.06em;text-transform:uppercase}
 
-/* certs */
+/* CERTS */
 .cert-row{display:flex;flex-wrap:wrap;gap:9px}
-.cert-tag{display:inline-flex;align-items:center;gap:7px;padding:9px 15px;background:var(--surface);border:1px solid var(--border);border-radius:50px;font-size:0.74rem;color:var(--text-muted);transition:all .18s}
+.cert-tag{display:inline-flex;align-items:center;gap:7px;padding:9px 15px;background:var(--glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--glass-border);border-radius:50px;font-size:0.74rem;color:var(--text-muted);transition:all .18s}
 .cert-tag:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,0.28)}
 .cert-tag.done{border-color:var(--border-salmon);color:var(--salmon);background:var(--salmon-glow)}
 .cert-tag.inprog{border-color:rgba(212,168,67,0.3);color:#d4a843;background:rgba(212,168,67,0.08)}
@@ -298,7 +164,7 @@ body::after{
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.35}}
 .cert-status{font-size:0.57rem;opacity:0.6;letter-spacing:0.06em;text-transform:uppercase;font-family:'DM Mono',monospace}
 
-/* progress */
+/* PROGRESS */
 .prog-item{margin-bottom:18px}
 .prog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
 .prog-label{font-size:0.76rem;color:var(--text-muted)}
@@ -306,103 +172,68 @@ body::after{
 .prog-bar{height:3px;background:var(--surface3);border-radius:50px;overflow:hidden}
 .prog-fill{height:100%;background:linear-gradient(90deg,var(--salmon-soft),var(--salmon));border-radius:50px;box-shadow:0 0 5px rgba(224,112,96,0.3);transition:width .9s cubic-bezier(.4,0,.2,1)}
 
-/* about */
-.about-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:34px 38px;margin-bottom:26px;display:grid;grid-template-columns:1fr 1fr;gap:34px}
+/* ABOUT */
+.about-panel{background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--glass-border);border-radius:var(--radius-lg);padding:34px 38px;margin-bottom:26px;display:grid;grid-template-columns:1fr 1fr;gap:34px}
 .about-label{font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-dim);margin-bottom:9px}
 .about-val{font-family:'Cormorant Garamond',serif;font-size:1.02rem;font-weight:300;color:var(--text-muted);line-height:1.8}
 .mantra{font-family:'Cormorant Garamond',serif;font-size:0.97rem;font-style:italic;color:var(--text-muted);line-height:1.7;padding:12px 0 12px 17px;border-bottom:1px solid var(--border);position:relative}
 .mantra::before{content:'"';position:absolute;left:0;top:11px;color:var(--salmon);font-size:1.4rem;opacity:0.4;line-height:1}
 .mantra:last-child{border-bottom:none}
 
-/* empty statement state */
+/* EMPTY */
 .empty{grid-column:1/-1;padding:48px 20px;text-align:center;border:1px dashed var(--border);border-radius:var(--radius-lg)}
 .empty-ico{font-size:1.9rem;opacity:0.18;margin-bottom:9px}
 .empty-title{font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--text-dim);font-weight:300}
 .empty-sub{font-size:0.72rem;color:var(--text-dim);margin-top:5px;opacity:.7}
-
 .divider{height:1px;background:var(--border);margin:38px 0}
 
-/* ── MODAL ── */
+/* MODAL */
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(12px);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px}
 .modal-bg.open{display:flex;animation:mfade .18s ease}
 @keyframes mfade{from{opacity:0}to{opacity:1}}
-.modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:36px;width:500px;max-width:100%;max-height:88vh;overflow-y:auto;animation:mslide .26s cubic-bezier(.34,1.56,.64,1);position:relative}
+.modal{background:rgba(17,17,21,0.5);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border:1px solid var(--glass-border);border-radius:var(--radius-lg);padding:36px;width:500px;max-width:100%;max-height:88vh;overflow-y:auto;animation:mslide .26s cubic-bezier(.34,1.56,.64,1);position:relative}
 @keyframes mslide{from{opacity:0;transform:translateY(24px) scale(.97)}to{opacity:1;transform:none}}
 .modal-title{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:300;margin-bottom:24px;letter-spacing:-.01em}
 .modal-title em{color:var(--salmon);font-style:italic}
 .modal-x{position:absolute;top:18px;right:18px;width:30px;height:30px;border-radius:50%;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer;font-size:.88rem;display:flex;align-items:center;justify-content:center;transition:all .18s}
 .modal-x:hover{border-color:var(--border-salmon);color:var(--salmon)}
-
 .fg{margin-bottom:17px}
 .fg label{display:block;font-size:0.66rem;letter-spacing:0.13em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;font-weight:500}
 .fg input,.fg select,.fg textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 13px;color:var(--text);font-size:0.82rem;font-family:'Syne',sans-serif;outline:none;transition:all .18s;appearance:none}
 .fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--border-salmon);box-shadow:0 0 0 3px var(--salmon-glow)}
 .fg textarea{resize:vertical;min-height:80px;line-height:1.6}
-
+select option{background:var(--surface2)}
 .type-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:17px}
 .type-opt{padding:10px 6px;border:1px solid var(--border);border-radius:var(--radius-sm);text-align:center;cursor:pointer;font-size:0.69rem;color:var(--text-muted);transition:all .17s;letter-spacing:.04em;user-select:none}
 .type-opt:hover{border-color:var(--border-salmon);color:var(--text)}
 .type-opt.sel{border-color:var(--salmon);color:var(--salmon);background:var(--salmon-glow)}
 .type-opt .ti{font-size:1.2rem;display:block;margin-bottom:3px}
-.yt-extra{display:none;margin-bottom:17px}
-
-/* thumbnail preview window */
+.yt-extra,.aitool-extra,.book-extra{display:none;margin-bottom:17px}
 .thumb-preview{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:var(--radius-sm);border:1px solid var(--border);margin-top:8px;display:none;background:var(--surface3)}
 .thumb-preview.show{display:block}
-
+.cover-preview{width:80px;border-radius:6px;border:1px solid var(--border);margin-top:8px;display:none}
+.cover-preview.show{display:block}
 .save-btn{width:100%;padding:12px;background:linear-gradient(135deg,var(--salmon-soft),var(--salmon));border:none;border-radius:50px;color:#fff;font-size:0.82rem;font-family:'Syne',sans-serif;font-weight:600;cursor:pointer;letter-spacing:.05em;transition:all .22s;margin-top:4px}
 .save-btn:hover{box-shadow:0 8px 26px rgba(224,112,96,.3);transform:translateY(-1px)}
 
-/* delete engine assets */
-.card-del{position:absolute;top:10px;right:10px;width:24px;height:24px;border-radius:50%;border:1px solid var(--border);background:rgba(11,11,13,.8);color:var(--text-dim);font-size:.68rem;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;transition:all .18s;z-index:2;backdrop-filter:blur(4px)}
-.card:hover .card-del{opacity:1}
-.card-del:hover{background:rgba(224,112,96,.15);color:var(--salmon);border-color:var(--border-salmon)}
-
-.manage-btn{display:none;align-items:center;gap:6px;padding:7px 15px;background:var(--surface);border:1px solid var(--border);border-radius:50px;color:var(--text-muted);font-size:.72rem;font-family:'Syne',sans-serif;cursor:pointer;transition:all .18s;white-space:nowrap}
-.manage-btn.visible{display:flex}
-.manage-btn:hover{border-color:var(--border-salmon);color:var(--text)}
-.manage-btn.on{background:rgba(255,80,80,.08);border-color:rgba(255,80,80,.25);color:#ff6060}
-
-/* ── BACK BUTTON ── */
-.back-btn{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:8px 16px;
-  background:transparent;
-  border:1px solid var(--border);border-radius:50px;
-  color:var(--text-muted);font-size:0.72rem;font-family:'Syne',sans-serif;
-  cursor:pointer;transition:all .2s;letter-spacing:0.04em;
-  margin-bottom:28px;
-}
+/* BACK BUTTON */
+.back-btn{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;background:transparent;border:1px solid var(--border);border-radius:50px;color:var(--text-muted);font-size:0.72rem;font-family:'Syne',sans-serif;cursor:pointer;transition:all .2s;letter-spacing:0.04em;margin-bottom:28px;}
 .back-btn:hover{border-color:var(--border-salmon);color:var(--salmon);background:var(--salmon-glow)}
 .back-btn .ba{font-size:0.85rem;transition:transform .2s}
 .back-btn:hover .ba{transform:translateX(-3px)}
 
-/* ── FOOTER ── */
-.site-footer{
-  margin-left:var(--sidebar);
-  padding:20px 44px;
-  border-top:1px solid var(--border);
-  display:flex;align-items:center;gap:9px;
-  background:var(--surface);
-  position:relative;z-index:1;
-}
+/* FOOTER */
+.site-footer{margin-left:var(--sidebar);padding:20px 44px;border-top:1px solid var(--glass-border);display:flex;align-items:center;gap:9px;background:rgba(11,11,13,0.35);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);position:relative;z-index:1;}
 .footer-text{font-size:0.65rem;color:var(--text-dim);font-family:'DM Mono',monospace;letter-spacing:0.06em}
-.footer-link{
-  font-size:0.65rem;font-family:'DM Mono',monospace;
-  color:var(--salmon);text-decoration:none;letter-spacing:0.06em;
-  border-bottom:1px dashed var(--border-salmon);padding-bottom:1px;
-  transition:all .18s;
-}
+.footer-link{font-size:0.65rem;font-family:'DM Mono',monospace;color:var(--salmon);text-decoration:none;letter-spacing:0.06em;border-bottom:1px dashed var(--border-salmon);padding-bottom:1px;transition:all .18s;}
 .footer-link:hover{color:var(--text);border-color:var(--text-muted)}
 .footer-dot{color:var(--text-dim);font-size:0.65rem;opacity:0.5}
-@media(max-width:860px){.site-footer{margin-left:0;padding:16px 20px}}
 
 ::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:4px}
 
-/* mobile layer layout */
-.mob-btn{display:none;position:fixed;top:13px;left:13px;z-index:200;width:34px;height:34px;background:var(--surface);border:1px solid var(--border);border-radius:10px;align-items:center;justify-content:center;cursor:pointer;font-size:.95rem;color:var(--text-muted)}
+.mob-btn{display:none;position:fixed;top:13px;left:13px;z-index:200;width:34px;height:34px;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--glass-border);border-radius:10px;align-items:center;justify-content:center;cursor:pointer;font-size:.95rem;color:var(--text-muted)}
 .mob-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:99}
 .mob-ov.open{display:block}
 
@@ -411,13 +242,19 @@ body::after{
   .sidebar.open{transform:none}
   .main{margin-left:0}
   .page{padding:26px 18px 60px}
+  .page#page-home{padding:0}
   .topbar{padding:15px 18px 15px 58px}
-  .hero-title{font-size:2.2rem}
-  .stats-row{gap:9px}
   .about-panel{grid-template-columns:1fr;gap:22px}
   .mob-btn{display:flex}
   .topbar-meta{display:none}
   .type-grid{grid-template-columns:repeat(2,1fr)}
+  .home-grid{grid-template-columns:repeat(2,1fr);padding:20px 18px 60px;gap:14px}
+  .sec-block-art{font-size:3.5rem}
+  .sec-block-name{font-size:1.1rem}
+  .site-footer{margin-left:0;padding:16px 20px}
+}
+@media(max-width:540px){
+  .home-grid{grid-template-columns:1fr 1fr}
 }
 </style>
 </head>
@@ -436,7 +273,6 @@ body::after{
   <nav class="nav">
     <div class="nav-lbl">Explore</div>
     <div class="nav-item active" onclick="goto('home',this)"><span class="ni">⌂</span> Home <span class="nbadge" id="b-home">—</span></div>
-
     <div class="nav-lbl">Content</div>
     <div class="nav-item" onclick="goto('videos',this)"><span class="ni">▷</span> YouTube <span class="nbadge" id="b-videos">0</span></div>
     <div class="nav-item" onclick="goto('books',this)"><span class="ni">◎</span> Books <span class="nbadge" id="b-books">0</span></div>
@@ -444,7 +280,6 @@ body::after{
     <div class="nav-item" onclick="goto('knowledge',this)"><span class="ni">✦</span> Knowledge <span class="nbadge" id="b-knowledge">0</span></div>
     <div class="nav-item" onclick="goto('philosophy',this)"><span class="ni">∿</span> Philosophy <span class="nbadge" id="b-philosophy">0</span></div>
     <div class="nav-item" onclick="goto('aitools',this)"><span class="ni">◬</span> AI Tools <span class="nbadge" id="b-aitools">0</span></div>
-
     <div class="nav-lbl">My Journey</div>
     <div class="nav-item" onclick="goto('dsa',this)"><span class="ni">⟨⟩</span> DSA</div>
     <div class="nav-item" onclick="goto('certs',this)"><span class="ni">⬡</span> Certs</div>
@@ -455,14 +290,14 @@ body::after{
   </div>
 </aside>
 
-<main class="main" id="main-el">
+<main class="main">
   <div class="topbar">
     <div class="topbar-title" id="topbar-title"><em>Rchives</em> — Home</div>
     <div class="topbar-right">
       <span class="topbar-meta" id="topbar-meta"></span>
-      <button class="manage-btn" id="manage-btn" onclick="toggleManage()" title="Edit / delete entries">✏ Manage</button>
-      <button class="add-btn" id="add-btn" onclick="openModal()"><span class="ab-icon">＋</span> Add Entry</button>
-      <button class="lock-btn" id="lock-btn" onclick="handleLock()" title="Admin login">
+      <button class="manage-btn" id="manage-btn" onclick="toggleManage()">✏ Manage</button>
+      <button class="add-btn" id="add-btn" onclick="openModal()"><span>＋</span> Add Entry</button>
+      <button class="lock-btn" id="lock-btn" onclick="handleLock()">
         <span class="lock-icon" id="lock-icon">⊠</span>
         <span id="lock-label">Admin</span>
       </button>
@@ -470,8 +305,7 @@ body::after{
   </div>
 
   <section class="page active" id="page-home">
-    <div class="home-grid" id="home-grid">
-      </div>
+    <div class="home-grid" id="home-grid"></div>
   </section>
 
   <section class="page" id="page-videos">
@@ -551,7 +385,7 @@ body::after{
     <div class="about-panel">
       <div>
         <div class="about-label">What is Rchives?</div>
-        <div class="about-val">A public archive of everything I consume and learn — books, videos, ideas, philosophies, and knowledge worth preserving. Think of it as a second brain, open to the world.</div>
+        <div class="about-val">A public archive of everything I consume and learn — books, videos, ideas, philosophies, and knowledge worth preserving. A second brain, open to the world.</div>
       </div>
       <div>
         <div class="about-label">Why public?</div>
@@ -581,6 +415,7 @@ body::after{
   </footer>
 </main>
 
+<!-- AUTH MODAL -->
 <div class="auth-bg" id="auth-bg" onclick="authBgClose(event)">
   <div class="auth-box">
     <button class="auth-close-x" onclick="closeAuth()">✕</button>
@@ -594,14 +429,14 @@ body::after{
   </div>
 </div>
 
+<!-- ADD ENTRY MODAL -->
 <div class="modal-bg" id="modal-bg" onclick="bgClose(event)">
   <div class="modal">
     <div class="modal-title">Add to <em>Rchives</em></div>
     <button class="modal-x" onclick="closeModal()">✕</button>
-
     <div style="margin-bottom:17px">
       <label style="display:block;font-size:.66rem;letter-spacing:.13em;text-transform:uppercase;color:var(--text-muted);margin-bottom:7px;font-weight:500">Type</label>
-      <div class="type-grid" id="type-grid">
+      <div class="type-grid">
         <div class="type-opt sel" onclick="pickType('video',this)"><span class="ti">▷</span>YouTube</div>
         <div class="type-opt" onclick="pickType('book',this)"><span class="ti">◎</span>Book</div>
         <div class="type-opt" onclick="pickType('podcast',this)"><span class="ti">◉</span>Podcast</div>
@@ -611,250 +446,247 @@ body::after{
         <div class="type-opt" onclick="pickType('dsa-note',this)"><span class="ti">⟨⟩</span>DSA Note</div>
       </div>
     </div>
-
     <div class="fg">
       <label>Title / Quote</label>
       <input type="text" id="e-title" placeholder="What's the title or quote?">
     </div>
-    <div class="fg" id="e-author-fg">
+    <div class="fg">
       <label id="e-author-lbl">Creator / Author</label>
       <input type="text" id="e-author" placeholder="By whom?">
     </div>
-
+    <!-- YouTube -->
     <div class="yt-extra" id="yt-extra">
-      <label style="display:block;font-size:.66rem;letter-spacing:.13em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;font-weight:500">YouTube URL <span style="color:var(--text-dim);font-weight:300">(auto-fetches thumbnail)</span></label>
+      <label style="display:block;font-size:.66rem;letter-spacing:.13em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;font-weight:500">YouTube URL</label>
       <input type="url" id="e-yturl" placeholder="https://youtube.com/watch?v=…" oninput="previewThumb(this.value)">
       <img id="thumb-prev" class="thumb-preview" alt="thumbnail preview">
     </div>
-
-    <div class="aitool-extra" id="aitool-extra" style="display:none;margin-bottom:17px">
+    <!-- AI Tool -->
+    <div class="aitool-extra" id="aitool-extra">
       <label style="display:block;font-size:.66rem;letter-spacing:.13em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;font-weight:500">Tool URL</label>
       <input type="url" id="e-toolurl" placeholder="https://tool.com">
     </div>
-
-    <div class="book-extra" id="book-extra" style="display:none;margin-bottom:17px">
+    <!-- Book -->
+    <div class="book-extra" id="book-extra">
       <label style="display:block;font-size:.66rem;letter-spacing:.13em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;font-weight:500">Book Cover Image URL</label>
-      <input type="url" id="e-coverurl" placeholder="https://covers.openlibrary.org/..." oninput="previewCover(this.value)">
-      <img id="cover-prev" style="width:80px;margin-top:8px;border-radius:6px;display:none;border:1px solid var(--border)" alt="cover">
-      
+      <input type="url" id="e-coverurl" placeholder="https://covers.openlibrary.org/…" oninput="previewCover(this.value)">
+      <img id="cover-prev" class="cover-preview" alt="cover preview">
       <label style="display:block;font-size:.66rem;letter-spacing:.13em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;font-weight:500;margin-top:12px">Buy Link</label>
-      <input type="url" id="e-buyurl" placeholder="https://amazon.in/...">
+      <input type="url" id="e-buyurl" placeholder="https://amazon.in/…">
     </div>
-
     <div class="fg">
       <label>Tags <span style="color:var(--text-dim);font-weight:300">(comma separated)</span></label>
-      <input type="text" id="e-tags" placeholder="philosophy, dsa, java, branding">
+      <input type="text" id="e-tags" placeholder="e.g. philosophy, dsa, habits">
     </div>
     <div class="fg">
       <label>Notes / Takeaway</label>
-      <textarea id="e-notes" placeholder="Key ideas, quotes, or learnings..."></textarea>
+      <textarea id="e-notes" placeholder="Key ideas, quotes, what you learned…"></textarea>
     </div>
-
     <button class="save-btn" onclick="saveEntry()">Add to Library →</button>
   </div>
 </div>
 
 <script>
-/* ═══════════════════════════════════════
-   STATIC JOURNEY MAPPERS
-═══════════════════════════════════════ */
+/* ═══ STATIC DATA ═══ */
 const DSA_TOPICS = [
-  {id:'arrays',    name:'Arrays',      icon:'▦', done:false},
-  {id:'strings',   name:'Strings',     icon:'∑', done:false},
-  {id:'ll',        name:'Linked List', icon:'◌', done:false},
-  {id:'stacks',    name:'Stacks',      icon:'⊟', done:false},
-  {id:'queues',    name:'Queues',      icon:'⊞', done:false},
-  {id:'trees',     name:'Trees',       icon:'⊤', done:false},
-  {id:'graphs',    name:'Graphs',      icon:'⬡', done:false},
-  {id:'dp',        name:'Dyn. Prog.',  icon:'◈', done:false},
-  {id:'sorting',   name:'Sorting',     icon:'↕', done:false},
-  {id:'searching', name:'Searching',   icon:'⊛', done:false},
-  {id:'hashing',   name:'Hashing',     icon:'⊕', done:false},
-  {id:'heap',      name:'Heap / PQ',   icon:'△', done:false},
-  {id:'trie',      name:'Trie',        icon:'⊳', done:false},
-  {id:'bt',        name:'Backtracking',icon:'↺', done:false},
-  {id:'greedy',    name:'Greedy',      icon:'→', done:false},
-  {id:'bit',       name:'Bit Manip.',  icon:'⊗', done:false},
-  {id:'twoptr',    name:'Two Pointer', icon:'⇔', done:false},
-  {id:'sliding',   name:'Sliding Win.',icon:'⊡', done:false},
-  {id:'recursion', name:'Recursion',   icon:'∞', done:false},
-  {id:'seg',       name:'Seg. Tree',   icon:'⊾', done:false},
+  {id:'arrays',name:'Arrays',icon:'▦',done:false},{id:'strings',name:'Strings',icon:'∑',done:false},
+  {id:'ll',name:'Linked List',icon:'◌',done:false},{id:'stacks',name:'Stacks',icon:'⊟',done:false},
+  {id:'queues',name:'Queues',icon:'⊞',done:false},{id:'trees',name:'Trees',icon:'⊤',done:false},
+  {id:'graphs',name:'Graphs',icon:'⬡',done:false},{id:'dp',name:'Dyn. Prog.',icon:'◈',done:false},
+  {id:'sorting',name:'Sorting',icon:'↕',done:false},{id:'searching',name:'Searching',icon:'⊛',done:false},
+  {id:'hashing',name:'Hashing',icon:'⊕',done:false},{id:'heap',name:'Heap / PQ',icon:'△',done:false},
+  {id:'trie',name:'Trie',icon:'⊳',done:false},{id:'bt',name:'Backtracking',icon:'↺',done:false},
+  {id:'greedy',name:'Greedy',icon:'→',done:false},{id:'bit',name:'Bit Manip.',icon:'⊗',done:false},
+  {id:'twoptr',name:'Two Pointer',icon:'⇔',done:false},{id:'sliding',name:'Sliding Win.',icon:'⊡',done:false},
+  {id:'recursion',name:'Recursion',icon:'∞',done:false},{id:'seg',name:'Seg. Tree',icon:'⊾',done:false},
 ];
-
 const CERTS_DEFAULT = [
-  {name:'AWS Cloud Practitioner',     status:'planned'},
-  {name:'Google Data Analytics',      status:'in-progress'},
-  {name:'Meta Front-End Developer',   status:'planned'},
-  {name:'HackerRank Problem Solving', status:'done'},
-  {name:'freeCodeCamp JS Algorithms', status:'in-progress'},
+  {name:'AWS Cloud Practitioner',status:'planned'},
+  {name:'Google Data Analytics',status:'in-progress'},
+  {name:'Meta Front-End Developer',status:'planned'},
+  {name:'HackerRank Problem Solving',status:'done'},
+  {name:'freeCodeCamp JS Algorithms',status:'in-progress'},
 ];
 
-/* ═══════════════════════════════════════
-   STORAGE STATES
-═══════════════════════════════════════ */
-const KEY = 'rchives_lib_v1';
-const DSA_KEY = 'rchives_dsa_v1';
-const CERT_KEY = 'rchives_certs_v1';
+/* ═══ STATE ═══ */
+const KEY='rchives_lib_v1', DSA_KEY='rchives_dsa_v1', CERT_KEY='rchives_certs_v1', SESSION_KEY='rchives_auth';
+function loadLib(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch{return[]}}
+function saveLib(l){localStorage.setItem(KEY,JSON.stringify(l))}
+function loadDSA(){try{const s=JSON.parse(localStorage.getItem(DSA_KEY));if(s)return s}catch{}return DSA_TOPICS.map(t=>({...t}))}
+function saveDSA(a){localStorage.setItem(DSA_KEY,JSON.stringify(a))}
+function loadCerts(){try{const s=JSON.parse(localStorage.getItem(CERT_KEY));if(s)return s}catch{}return CERTS_DEFAULT.map(c=>({...c}))}
 
-function loadLib() { try { return JSON.parse(localStorage.getItem(KEY) || '[]'); } catch { return []; } }
-function saveLib(lib) { localStorage.setItem(KEY, JSON.stringify(lib)); }
+let LIB=loadLib(), DSA=loadDSA(), CERTS=loadCerts();
+let manageMode=false, curType='video', curPage='home';
+let isAuthed=sessionStorage.getItem(SESSION_KEY)==='1';
 
-function loadDSA() {
-  try { const saved = JSON.parse(localStorage.getItem(DSA_KEY)); if (saved) return saved; } catch {}
-  return DSA_TOPICS.map(t => ({...t}));
-}
-function saveDSA(arr) { localStorage.setItem(DSA_KEY, JSON.stringify(arr)); }
-
-function loadCerts() {
-  try { const saved = JSON.parse(localStorage.getItem(CERT_KEY)); if (saved) return saved; } catch {}
-  return CERTS_DEFAULT.map(c => ({...c}));
-}
-function saveCerts(arr) { localStorage.setItem(CERT_KEY, JSON.stringify(arr)); }
-
-let LIB = loadLib();
-let DSA = loadDSA();
-let CERTS = loadCerts();
-let manageMode = false;
-let curType = 'video';
-let curPage = 'home';
-
-const T = {
-  video:    {label:'YouTube',    icon:'▷', page:'videos'},
-  book:     {label:'Book',       icon:'◎', page:'books'},
-  podcast:  {label:'Podcast',    icon:'◉', page:'podcasts'},
-  knowledge:{label:'Note',       icon:'✦', page:'knowledge'},
-  philosophy:{label:'Philosophy',icon:'∿', page:'philosophy'},
-  aitool:   {label:'AI Tool',    icon:'◬', page:'aitools'},
-  'dsa-note':{label:'DSA Note',  icon:'⟨⟩',page:'knowledge'},
+const T={
+  video:{label:'YouTube',icon:'▷',page:'videos'},
+  book:{label:'Book',icon:'◎',page:'books'},
+  podcast:{label:'Podcast',icon:'◉',page:'podcasts'},
+  knowledge:{label:'Note',icon:'✦',page:'knowledge'},
+  philosophy:{label:'Philosophy',icon:'∿',page:'philosophy'},
+  aitool:{label:'AI Tool',icon:'◬',page:'aitools'},
+  'dsa-note':{label:'DSA Note',icon:'⟨⟩',page:'knowledge'},
 };
 
-/* ═══════════════════════════════════════
-   MEDIA PARSERS
-═══════════════════════════════════════ */
-function ytIdFromUrl(url) {
-  if (!url) return null;
-  const patterns = [
-    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
-    /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/,
-  ];
-  for (const p of patterns) {
-    const m = url.match(p);
-    if (m) return m[1];
+/* ═══ AUTH ═══ */
+// Hashed credentials (SHA-256) — not reversible
+const AUTH_USER_HASH='fc0464fb4f430b31ade7788719c827cfa46fbeda2c0ef5213404e89873d872a2';
+const AUTH_PASS_HASH='8629b4cf048df59d4bf953fa28b538bd6238721d2edcc57f7e2b8a7f60593a85';
+
+function applyAuthState(){
+  const add=document.getElementById('add-btn'),mgr=document.getElementById('manage-btn');
+  const lb=document.getElementById('lock-btn'),li=document.getElementById('lock-icon'),ll=document.getElementById('lock-label');
+  if(isAuthed){
+    add.classList.add('visible'); mgr.classList.add('visible');
+    lb.classList.add('authed'); li.textContent='⊡'; ll.textContent='Logout';
+  } else {
+    add.classList.remove('visible'); mgr.classList.remove('visible');
+    lb.classList.remove('authed'); li.textContent='⊠'; ll.textContent='Admin';
+    if(manageMode){manageMode=false;renderAll();}
   }
+}
+
+function handleLock(){
+  if(isAuthed){isAuthed=false;sessionStorage.removeItem(SESSION_KEY);applyAuthState();}
+  else openAuth();
+}
+
+function openAuth(){
+  document.getElementById('auth-bg').classList.add('open');
+  document.getElementById('auth-user').value='';
+  document.getElementById('auth-pass').value='';
+  document.getElementById('auth-err').textContent='';
+  setTimeout(()=>document.getElementById('auth-user').focus(),80);
+}
+function closeAuth(){document.getElementById('auth-bg').classList.remove('open')}
+function authBgClose(e){if(e.target===document.getElementById('auth-bg'))closeAuth()}
+
+async function hashStr(str){
+  const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+async function submitAuth(){
+  const u=document.getElementById('auth-user').value.trim();
+  const p=document.getElementById('auth-pass').value;
+  const err=document.getElementById('auth-err');
+  const[uh,ph]=await Promise.all([hashStr(u),hashStr(p)]);
+  if(uh===AUTH_USER_HASH&&ph===AUTH_PASS_HASH){
+    isAuthed=true; sessionStorage.setItem(SESSION_KEY,'1');
+    closeAuth(); applyAuthState();
+  } else {
+    err.textContent='⚠ Incorrect credentials.';
+    document.getElementById('auth-pass').value='';
+    document.getElementById('auth-pass').animate(
+      [{transform:'translateX(-5px)'},{transform:'translateX(5px)'},{transform:'translateX(-3px)'},{transform:'none'}],
+      {duration:280}
+    );
+    setTimeout(()=>{err.textContent=''},2800);
+  }
+}
+
+/* ═══ YOUTUBE ═══ */
+function ytIdFromUrl(url){
+  if(!url)return null;
+  const ps=[/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,/youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/];
+  for(const p of ps){const m=url.match(p);if(m)return m[1];}
   return null;
 }
-function ytThumb(videoId) { return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`; }
-
-function previewThumb(url) {
-  const vid = ytIdFromUrl(url);
-  const img = document.getElementById('thumb-prev');
-  if (vid) { img.src = ytThumb(vid); img.classList.add('show'); }
-  else { img.classList.remove('show'); img.src=''; }
+function ytThumb(id){return`https://img.youtube.com/vi/${id}/hqdefault.jpg`}
+function previewThumb(url){
+  const vid=ytIdFromUrl(url),img=document.getElementById('thumb-prev');
+  if(vid){img.src=ytThumb(vid);img.classList.add('show');}
+  else{img.classList.remove('show');img.src='';}
+}
+function previewCover(url){
+  const img=document.getElementById('cover-prev');
+  if(url){img.src=url;img.classList.add('show');}
+  else{img.classList.remove('show');img.src='';}
 }
 
-function previewCover(url) {
-  const img = document.getElementById('cover-prev');
-  if (url) { img.src = url; img.style.display = 'block'; }
-  else { img.style.display = 'none'; img.src = ''; }
-}
+/* ═══ CARD BUILDER ═══ */
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 
-/* ═══════════════════════════════════════
-   DOM VIEW RENDERING
-═══════════════════════════════════════ */
-function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function makeCard(item,showDel=false){
+  const meta=T[item.type]||{label:item.type,icon:'·'};
+  const author=esc(item.author||item.source||'');
+  const tags=(item.tags||[]).map(t=>`<span class="chip">${esc(t)}</span>`).join('');
+  const delBtn=showDel?`<button class="card-del" onclick="deleteEntry('${item.id}',event)">✕</button>`:'';
+  const vid=item.type==='video'?ytIdFromUrl(item.yturl||''):null;
 
-function makeCard(item, showDel=false) {
-  const meta = T[item.type] || {label:item.type, icon:'·'};
-  const author = esc(item.author || item.source || '');
-  const tags = (item.tags||[]).map(t=>`<span class="chip">${esc(t)}</span>`).join('');
-  const delBtn = showDel ? `<button class="card-del" onclick="deleteEntry('${item.id}',event)">✕</button>` : '';
-  const vid = item.type==='video' ? ytIdFromUrl(item.yturl||'') : null;
-
-  let thumbHtml = '';
-  if (vid) {
-    thumbHtml = `<div class="card-thumb-wrap"><img class="card-thumb" src="${ytThumb(vid)}" alt="${esc(item.title)}" loading="lazy"></div>`;
-  } else if (item.type === 'book' && item.coverurl) {
-    thumbHtml = `<div class="card-thumb-wrap"><img class="card-thumb book-cover" src="${esc(item.coverurl)}" alt="${esc(item.title)}" loading="lazy"></div>`;
+  let thumbHtml='';
+  if(vid){
+    thumbHtml=`<div class="card-thumb-wrap"><img class="card-thumb" src="${ytThumb(vid)}" alt="${esc(item.title)}" loading="lazy" onerror="this.style.display='none';this.parentElement.style.display='none'"></div>`;
+  } else if(item.type==='book'&&item.coverurl){
+    thumbHtml=`<div class="card-thumb-wrap"><img class="card-thumb book-cover" src="${esc(item.coverurl)}" alt="${esc(item.title)}" loading="lazy" onerror="this.style.display='none';this.parentElement.style.display='none'"></div>`;
   }
 
-  const destinationUrl = item.type==='video' ? item.yturl : (item.type==='book' ? item.buyurl : item.toolurl);
-  const clickAttr = destinationUrl ? `onclick="if(!event.target.classList.contains('card-del'))window.open('${esc(destinationUrl)}','_blank')"` : '';
-  const cursorStyle = destinationUrl ? 'cursor:pointer' : '';
+  const isVideo=item.type==='video'&&item.yturl;
+  const cardClick=isVideo?`onclick="if(!event.target.classList.contains('card-del'))window.open('${esc(item.yturl)}','_blank')"` :'';
+  const cardCursor=isVideo?'cursor:pointer':'';
 
-  return `<div class="card" data-id="${item.id}" ${clickAttr} style="${cursorStyle}">
-    ${delBtn}
-    ${thumbHtml}
+  const buyBtn=item.buyurl?`<a href="${esc(item.buyurl)}" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="display:inline-flex;align-items:center;gap:4px;margin-top:8px;font-size:0.62rem;color:var(--salmon);border:1px solid var(--border-salmon);border-radius:50px;padding:3px 10px;text-decoration:none;font-family:'DM Mono',monospace">⊙ Buy</a>`:'';
+  const toolBtn=item.toolurl?`<a href="${esc(item.toolurl)}" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="display:inline-flex;align-items:center;gap:4px;margin-top:8px;font-size:0.62rem;color:var(--salmon);border:1px solid var(--border-salmon);border-radius:50px;padding:3px 10px;text-decoration:none;font-family:'DM Mono',monospace">◬ Open Tool</a>`:'';
+
+  return`<div class="card" data-id="${item.id}" ${cardClick} style="${cardCursor}">
+    ${delBtn}${thumbHtml}
     <div class="card-body">
       <div class="card-pill">${meta.icon} ${meta.label}</div>
       <div class="card-title">${esc(item.title)}</div>
-      ${author ? `<div class="card-author">— ${author}</div>` : ''}
-      ${item.notes ? `<div class="card-note">${esc(item.notes)}</div>` : ''}
-      ${tags ? `<div class="chips">${tags}</div>` : ''}
-      ${item.date ? `<div class="card-date">${esc(item.date)}</div>` : ''}
-      ${item.buyurl ? `<a href="${esc(item.buyurl)}" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="display:inline-flex;align-items:center;gap:4px;margin-top:8px;font-size:0.62rem;color:var(--salmon);border:1px solid var(--border-salmon);border-radius:50px;padding:3px 10px;text-decoration:none;font-family:'DM Mono',monospace;transition:all .18s" onmouseover="this.style.background='var(--salmon-glow)'" onmouseout="this.style.background='transparent'">⊙ Buy</a>` : ''}
-      ${item.toolurl ? `<a href="${esc(item.toolurl)}" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="display:inline-flex;align-items:center;gap:4px;margin-top:8px;font-size:0.62rem;color:var(--salmon);border:1px solid var(--border-salmon);border-radius:50px;padding:3px 10px;text-decoration:none;font-family:'DM Mono',monospace;transition:all .18s" onmouseover="this.style.background='var(--salmon-glow)'" onmouseout="this.style.background='transparent'">◬ Open Tool</a>` : ''}
+      ${author?`<div class="card-author">— ${author}</div>`:''}
+      ${item.notes?`<div class="card-note">${esc(item.notes)}</div>`:''}
+      ${tags?`<div class="chips">${tags}</div>`:''}
+      <div class="card-date">${esc(item.date||'')} ${buyBtn}${toolBtn}</div>
     </div>
   </div>`;
 }
 
-function makeQuote(item, showDel=false) {
-  const tags = (item.tags||[]).map(t=>`<span class="chip">${esc(t)}</span>`).join('');
-  const delBtn = showDel ? `<button class="card-del" style="opacity:1" onclick="deleteEntry('${item.id}',event)">✕</button>` : '';
-  return `<div class="quote-block" style="position:relative" data-id="${item.id}">
+function makeQuote(item,showDel=false){
+  const tags=(item.tags||[]).map(t=>`<span class="chip">${esc(t)}</span>`).join('');
+  const delBtn=showDel?`<button class="card-del" style="opacity:1" onclick="deleteEntry('${item.id}',event)">✕</button>`:'';
+  return`<div class="quote-block" data-id="${item.id}">
     ${delBtn}
     <div class="quote-text">"${esc(item.title)}"</div>
-    ${item.source ? `<div class="quote-source">— ${esc(item.source)}</div>` : ''}
-    ${item.notes ? `<div class="quote-note">${esc(item.notes)}</div>` : ''}
-    ${tags ? `<div class="chips" style="margin-top:9px">${tags}</div>` : ''}
+    ${item.source?`<div class="quote-source">— ${esc(item.source)}</div>`:''}
+    ${item.notes?`<div class="quote-note">${esc(item.notes)}</div>`:''}
+    ${tags?`<div class="chips" style="margin-top:9px">${tags}</div>`:''}
   </div>`;
 }
 
-function fillGrid(elId, items, showDel=false) {
-  const el = document.getElementById(elId);
-  if (!el) return;
-  if (!items.length) {
-    el.innerHTML = `<div class="empty"><div class="empty-ico">◌</div><div class="empty-title">Nothing here yet</div><div class="empty-sub">Click "Add Entry" to balance the workspace</div></div>`;
-    return;
-  }
-  el.innerHTML = items.map(i => makeCard(i, showDel)).join('');
+/* ═══ RENDER ═══ */
+function fillGrid(id,items,showDel=false){
+  const el=document.getElementById(id);if(!el)return;
+  el.innerHTML=items.length?items.map(i=>makeCard(i,showDel)).join(''):`<div class="empty"><div class="empty-ico">◌</div><div class="empty-title">Nothing here yet</div><div class="empty-sub">Click "Add Entry" to get started</div></div>`;
 }
+function setBar(fId,pId,val){const f=document.getElementById(fId),p=document.getElementById(pId);if(f)f.style.width=val+'%';if(p)p.textContent=val+'%';}
+function setText(id,v){const e=document.getElementById(id);if(e)e.textContent=v;}
+function setHTML(id,v){const e=document.getElementById(id);if(e)e.innerHTML=v;}
 
-function setBar(fId, pId, val) {
-  const f=document.getElementById(fId), p=document.getElementById(pId);
-  if(f) f.style.width=val+'%'; if(p) p.textContent=val+'%';
-}
-function setText(id,v){ const e=document.getElementById(id); if(e) e.textContent=v; }
-function setHTML(id,v){ const e=document.getElementById(id); if(e) e.innerHTML=v; }
+function renderAll(){
+  const now=new Date();
+  setText('foot-date',now.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}));
+  setText('topbar-meta',now.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'}).toUpperCase());
 
-function renderAll() {
-  const now = new Date();
-  setText('foot-date', now.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}));
-  setText('topbar-meta', now.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'}).toUpperCase());
+  const byType=t=>LIB.filter(i=>i.type===t);
+  const videos=byType('video'),books=byType('book'),podcasts=byType('podcast');
+  const knowledge=LIB.filter(i=>i.type==='knowledge'||i.type==='dsa-note');
+  const philosophy=byType('philosophy'),aitools=byType('aitool');
+  const total=LIB.length;
 
-  const byType = t => LIB.filter(i => i.type===t);
-  const videos = byType('video'), books = byType('book'), podcasts = byType('podcast'), philosophy = byType('philosophy'), aitools = byType('aitool');
-  const knowledge = LIB.filter(i=>i.type==='knowledge'||i.type==='dsa-note');
-  const total = LIB.length;
+  setText('b-home',total||'—');setText('b-videos',videos.length);setText('b-books',books.length);
+  setText('b-podcasts',podcasts.length);setText('b-knowledge',knowledge.length);
+  setText('b-philosophy',philosophy.length);setText('b-aitools',aitools.length);
 
-  setText('b-home', total||'—');
-  setText('b-videos', videos.length);
-  setText('b-books', books.length);
-  setText('b-podcasts', podcasts.length);
-  setText('b-knowledge', knowledge.length);
-  setText('b-philosophy', philosophy.length);
-  setText('b-aitools', aitools.length);
-
-  const sections = [
-    { key:'videos',     label:'YouTube',    icon:'▷',  cls:'sb-videos',     page:'videos',    count: videos.length,    unit:'videos'     },
-    { key:'books',      label:'Books',      icon:'◎',  cls:'sb-books',      page:'books',     count: books.length,     unit:'books'      },
-    { key:'podcasts',   label:'Podcasts',   icon:'◉',  cls:'sb-podcasts',   page:'podcasts',  count: podcasts.length,  unit:'episodes'   },
-    { key:'knowledge',  label:'Knowledge',  icon:'✦',  cls:'sb-knowledge',  page:'knowledge', count: knowledge.length, unit:'notes'      },
-    { key:'philosophy', label:'Philosophy', icon:'∿',  cls:'sb-philosophy', page:'philosophy',count: philosophy.length, unit:'principles' },
-    { key:'aitools',    label:'AI Tools',   icon:'◬',  cls:'sb-aitools',    page:'aitools',   count: aitools.length,   unit:'tools'      },
-    { key:'dsa',        label:'DSA',        icon:'⟨⟩', cls:'sb-dsa',        page:'dsa',       count: DSA.filter(t=>t.done).length+' / '+DSA.length, unit:'done' },
+  const sections=[
+    {label:'YouTube',icon:'▷',cls:'sb-videos',page:'videos',count:videos.length,unit:'videos'},
+    {label:'Books',icon:'◎',cls:'sb-books',page:'books',count:books.length,unit:'books'},
+    {label:'Podcasts',icon:'◉',cls:'sb-podcasts',page:'podcasts',count:podcasts.length,unit:'episodes'},
+    {label:'Knowledge',icon:'✦',cls:'sb-knowledge',page:'knowledge',count:knowledge.length,unit:'notes'},
+    {label:'Philosophy',icon:'∿',cls:'sb-philosophy',page:'philosophy',count:philosophy.length,unit:'principles'},
+    {label:'AI Tools',icon:'◬',cls:'sb-aitools',page:'aitools',count:aitools.length,unit:'tools'},
+    {label:'DSA',icon:'⟨⟩',cls:'sb-dsa',page:'dsa',count:DSA.filter(t=>t.done).length+' / '+DSA.length,unit:'done'},
   ];
-  
-  document.getElementById('home-grid').innerHTML = sections.map(s => `
+  document.getElementById('home-grid').innerHTML=sections.map(s=>`
     <div class="sec-block ${s.cls}" onclick="gotoFromHome('${s.page}')">
       <div class="sec-block-art">${s.icon}</div>
       <div class="sec-block-footer">
@@ -863,286 +695,150 @@ function renderAll() {
       </div>
     </div>`).join('');
 
-  fillGrid('grid-videos', [...videos].reverse(), manageMode);
-  fillGrid('grid-books', [...books].reverse(), manageMode);
-  fillGrid('grid-podcasts', [...podcasts].reverse(), manageMode);
-  fillGrid('grid-knowledge', [...knowledge].reverse(), manageMode);
-  fillGrid('grid-aitools', [...aitools].reverse(), manageMode);
+  fillGrid('grid-videos',[...videos].reverse(),manageMode);
+  fillGrid('grid-books',[...books].reverse(),manageMode);
+  fillGrid('grid-podcasts',[...podcasts].reverse(),manageMode);
+  fillGrid('grid-knowledge',[...knowledge].reverse(),manageMode);
+  fillGrid('grid-aitools',[...aitools].reverse(),manageMode);
+  setText('cnt-videos',videos.length+' saved');setText('cnt-books',books.length+' archived');
+  setText('cnt-podcasts',podcasts.length+' listened');setText('cnt-knowledge',knowledge.length+' notes');
+  setText('cnt-aitools',aitools.length+' tools');
 
-  setText('cnt-videos', videos.length+' saved');
-  setText('cnt-books', books.length+' archived');
-  setText('cnt-podcasts', podcasts.length+' listened');
-  setText('cnt-knowledge', knowledge.length+' notes');
-  setText('cnt-aitools', aitools.length + ' tools');
-  setText('cnt-philosophy', philosophy.length+' principles');
+  setText('cnt-philosophy',philosophy.length+' principles');
+  const ph=document.getElementById('grid-philosophy');
+  ph.innerHTML=philosophy.length?[...philosophy].reverse().map(i=>makeQuote(i,manageMode)).join(''):`<div class="empty"><div class="empty-ico">∿</div><div class="empty-title">Nothing yet</div></div>`;
 
-  const ph = document.getElementById('grid-philosophy');
-  ph.innerHTML = philosophy.length
-    ? [...philosophy].reverse().map(i=>makeQuote(i, manageMode)).join('')
-    : `<div class="empty"><div class="empty-ico">∿</div><div class="empty-title">Nothing yet</div></div>`;
-
-  const dsaDone = DSA.filter(t=>t.done).length;
-  const dsaPct = Math.round((dsaDone/DSA.length)*100);
-  setText('dsa-count', `${dsaDone} / ${DSA.length} complete`);
-  
-  document.getElementById('dsa-grid').innerHTML = DSA.map(t=>`
-    <div class="dsa-chip ${t.done?'done':''}" onclick="toggleDSA('${t.id}',this)" title="${isAuthed?'Click to toggle':'View only'}" style="cursor:${isAuthed?'pointer':'default'}">
+  const dsaDone=DSA.filter(t=>t.done).length,dsaPct=Math.round((dsaDone/DSA.length)*100);
+  setText('dsa-count',`${dsaDone} / ${DSA.length} complete`);
+  document.getElementById('dsa-grid').innerHTML=DSA.map(t=>`
+    <div class="dsa-chip ${t.done?'done':''}" onclick="toggleDSA('${t.id}',this)" style="cursor:${isAuthed?'pointer':'default'}">
       <div class="dsa-ico">${t.icon}</div>
       <div class="dsa-name">${t.name}</div>
       ${t.done?'<div class="dsa-check">✓ done</div>':''}
     </div>`).join('');
   setBar('pf-dsa','pp-dsa',dsaPct);
 
-  const certDone = CERTS.filter(c=>c.status==='done').length;
-  const certPct = CERTS.length ? Math.round((certDone/CERTS.length)*100) : 0;
-  const sMap = {planned:'Planned','in-progress':'In Progress',done:'Completed'};
-  
-  document.getElementById('cert-row').innerHTML = CERTS.map(c=>`
+  const certDone=CERTS.filter(c=>c.status==='done').length;
+  const certPct=CERTS.length?Math.round((certDone/CERTS.length)*100):0;
+  const sMap={planned:'Planned','in-progress':'In Progress',done:'Completed'};
+  document.getElementById('cert-row').innerHTML=CERTS.map(c=>`
     <div class="cert-tag ${c.status==='done'?'done':c.status==='in-progress'?'inprog':''}">
-      <span class="cert-dot"></span>
-      ${esc(c.name)}
+      <span class="cert-dot"></span>${esc(c.name)}
       <span class="cert-status">${sMap[c.status]||c.status}</span>
     </div>`).join('');
-    
   setBar('pf-cert','pp-cert',certPct);
   setBar('pf-cert-dsa','pp-cert-dsa',dsaPct);
   setBar('pf-content','pp-content',Math.min(Math.round((total/50)*100),100));
 }
 
-function toggleDSA(id, el) {
-  if (!isAuthed) return;
-  const topic = DSA.find(t=>t.id===id);
-  if (!topic) return;
-  topic.done = !topic.done;
-  saveDSA(DSA);
-  el.classList.toggle('done', topic.done);
-  const check = el.querySelector('.dsa-check');
-  if (topic.done && !check) {
-    const d=document.createElement('div'); d.className='dsa-check'; d.textContent='✓ done'; el.appendChild(d);
-  } else if (!topic.done && check) { check.remove(); }
-  const done = DSA.filter(t=>t.done).length;
-  setText('dsa-count', `${done} / ${DSA.length} complete`);
+/* ═══ DSA TOGGLE ═══ */
+function toggleDSA(id,el){
+  if(!isAuthed)return;
+  const t=DSA.find(t=>t.id===id);if(!t)return;
+  t.done=!t.done;saveDSA(DSA);
+  el.classList.toggle('done',t.done);
+  const c=el.querySelector('.dsa-check');
+  if(t.done&&!c){const d=document.createElement('div');d.className='dsa-check';d.textContent='✓ done';el.appendChild(d);}
+  else if(!t.done&&c)c.remove();
+  const done=DSA.filter(t=>t.done).length;
+  setText('dsa-count',`${done} / ${DSA.length} complete`);
   setBar('pf-dsa','pp-dsa',Math.round((done/DSA.length)*100));
 }
 
-/* ═══════════════════════════════════════
-   ADMIN SECURITY HANDLERS
-═══════════════════════════════════════ */
-const AUTH_USER_HASH = 'fc0464fb4f430b31ade7788719c827cfa46fbeda2c0ef5213404e89873d872a2'; 
-const AUTH_PASS_HASH = '8629b4cf048df59d4bf953fa28b538bd6238721d2edcc57f7e2b8a7f60593a85'; 
-const SESSION_KEY = 'rchives_auth';
-
-let isAuthed = sessionStorage.getItem(SESSION_KEY) === '1';
-
-// Native Crypto API utility to compute SHA-256 matching your hashes
-async function sha256(str) {
-  const buf = new TextEncoder().encode(str);
-  const hashBuf = await crypto.subtle.digest('SHA-256', buf);
-  return Array.from(new Uint8Array(hashBuf)).map(b => b.toString(16).padStart(2, '0')).join('');
-}
-
-function applyAuthState() {
-  const addBtn    = document.getElementById('add-btn');
-  const manageBtn = document.getElementById('manage-btn');
-  const lockBtn   = document.getElementById('lock-btn');
-  const lockIcon  = document.getElementById('lock-icon');
-  const lockLabel = document.getElementById('lock-label');
-
-  if (isAuthed) {
-    addBtn.classList.add('visible');
-    manageBtn.classList.add('visible');
-    lockBtn.classList.add('authed');
-    lockIcon.textContent = '¼';
-    lockLabel.textContent = 'Logout';
-  } else {
-    addBtn.classList.remove('visible');
-    manageBtn.classList.remove('visible');
-    lockBtn.classList.remove('authed');
-    lockIcon.textContent = '⊠';
-    lockLabel.textContent = 'Admin';
-    if (manageMode) { manageMode = false; renderAll(); }
-  }
-}
-
-function handleLock() {
-  if (isAuthed) {
-    isAuthed = false;
-    sessionStorage.removeItem(SESSION_KEY);
-    applyAuthState();
-    renderAll();
-  } else {
-    openAuth();
-  }
-}
-
-function openAuth() {
-  document.getElementById('auth-bg').classList.add('open');
-  document.getElementById('auth-user').value = '';
-  document.getElementById('auth-pass').value = '';
-  document.getElementById('auth-err').textContent = '';
-  setTimeout(() => document.getElementById('auth-user').focus(), 80);
-}
-
-function closeAuth() { document.getElementById('auth-bg').classList.remove('open'); }
-function authBgClose(e) { if (e.target === document.getElementById('auth-bg')) closeAuth(); }
-
-async function submitAuth() {
-  const u = document.getElementById('auth-user').value.trim();
-  const p = document.getElementById('auth-pass').value;
-  const err = document.getElementById('auth-err');
-
-  const uHash = await sha256(u);
-  const pHash = await sha256(p);
-
-  if (uHash === AUTH_USER_HASH && pHash === AUTH_PASS_HASH) {
-    isAuthed = true;
-    sessionStorage.setItem(SESSION_KEY, '1');
-    closeAuth();
-    applyAuthState();
-    renderAll();
-  } else {
-    err.textContent = '⚠ Incorrect credentials.';
-    document.getElementById('auth-pass').value = '';
-    const field = document.getElementById('auth-pass');
-    field.animate(
-      [{transform:'translateX(-5px)'},{transform:'translateX(5px)'},{transform:'translateX(-3px)'},{transform:'none'}],
-      {duration:280}
-    );
-    setTimeout(() => { err.textContent = ''; }, 2800);
-  }
-}
-
-function toggleManage() {
-  if (!isAuthed) return;
-  manageMode = !manageMode;
-  const btn = document.getElementById('manage-btn');
-  btn.classList.toggle('on', manageMode);
-  btn.textContent = manageMode ? '✕ Done' : '✏ Manage';
+/* ═══ MANAGE ═══ */
+function toggleManage(){
+  if(!isAuthed)return;
+  manageMode=!manageMode;
+  const btn=document.getElementById('manage-btn');
+  btn.classList.toggle('on',manageMode);
+  btn.textContent=manageMode?'✕ Done':'✏ Manage';
   renderAll();
 }
 
-/* ═══════════════════════════════════════
-   CREATION MODAL HANDLERS
-═══════════════════════════════════════ */
-function openModal() {
-  if (!isAuthed) { openAuth(); return; }
-  document.getElementById('modal-bg').classList.add('open');
-  pickType('video', null, true);
-}
-function bgClose(e) { if (e.target===document.getElementById('modal-bg')) closeModal(); }
-
-function closeModal() {
+/* ═══ MODAL ═══ */
+function openModal(){if(!isAuthed){openAuth();return;}document.getElementById('modal-bg').classList.add('open');pickType('video',null,true);}
+function bgClose(e){if(e.target===document.getElementById('modal-bg'))closeModal()}
+function closeModal(){
   document.getElementById('modal-bg').classList.remove('open');
-  ['e-title','e-author','e-yturl','e-tags','e-notes','e-toolurl','e-coverurl','e-buyurl'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
-  const tp=document.getElementById('thumb-prev'); if(tp){tp.classList.remove('show');tp.src='';}
-  const cp=document.getElementById('cover-prev'); if(cp){cp.style.display='none';cp.src='';}
+  ['e-title','e-author','e-yturl','e-tags','e-notes','e-toolurl','e-coverurl','e-buyurl'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  const tp=document.getElementById('thumb-prev');if(tp){tp.classList.remove('show');tp.src='';}
+  const cp=document.getElementById('cover-prev');if(cp){cp.classList.remove('show');cp.src='';}
+  document.getElementById('yt-extra').style.display='none';
+  document.getElementById('aitool-extra').style.display='none';
+  document.getElementById('book-extra').style.display='none';
 }
 
-function pickType(type, el, auto=false) {
-  curType = type;
-  if (auto) {
-    document.querySelectorAll('.type-opt').forEach(o=>{
-      const t=o.getAttribute('onclick').match(/pickType\('([^']+)'/)?.[1];
-      o.classList.toggle('sel', t===type);
-    });
-  } else {
-    document.querySelectorAll('.type-opt').forEach(o=>o.classList.remove('sel'));
-    if (el) el.classList.add('sel');
-  }
-  const labels = {video:'Channel / Creator',book:'Author',podcast:'Host / Show',knowledge:'Source',philosophy:'Source / Philosopher',aitool:'Made by / Category','dsa-note':'Source / Topic'};
-  document.getElementById('e-author-lbl').textContent = labels[type]||'Author';
-  document.getElementById('yt-extra').style.display = type==='video' ? 'block' : 'none';
-  document.getElementById('aitool-extra').style.display = type==='aitool' ? 'block' : 'none';
-  document.getElementById('book-extra').style.display = type==='book' ? 'block' : 'none';
+function pickType(type,el,auto=false){
+  curType=type;
+  document.querySelectorAll('.type-opt').forEach(o=>{
+    const t=o.getAttribute('onclick').match(/pickType\('([^']+)'/)?.[1];
+    o.classList.toggle('sel',t===type);
+  });
+  const labels={video:'Channel / Creator',book:'Author',podcast:'Host / Show',knowledge:'Source',philosophy:'Source / Philosopher',aitool:'Made by / Category','dsa-note':'Source / Topic'};
+  document.getElementById('e-author-lbl').textContent=labels[type]||'Author';
+  document.getElementById('yt-extra').style.display=type==='video'?'block':'none';
+  document.getElementById('aitool-extra').style.display=type==='aitool'?'block':'none';
+  document.getElementById('book-extra').style.display=type==='book'?'block':'none';
 }
 
-function saveEntry() {
-  const title = document.getElementById('e-title').value.trim();
-  if (!title) { document.getElementById('e-title').focus(); return; }
+function fmtDate(){return new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})}
 
-  const entry = {
-    id: Date.now().toString(36) + Math.random().toString(36).slice(2,6),
-    type: curType,
-    title,
-    author: document.getElementById('e-author').value.trim(),
-    source: curType==='philosophy' ? document.getElementById('e-author').value.trim() : '',
-    yturl:     document.getElementById('e-yturl')?.value.trim()    || '',
-    toolurl:   document.getElementById('e-toolurl')?.value.trim()  || '',
-    coverurl:  document.getElementById('e-coverurl')?.value.trim() || '',
-    buyurl:    document.getElementById('e-buyurl')?.value.trim()   || '',
-    tags: document.getElementById('e-tags').value.split(',').map(t=>t.trim()).filter(Boolean),
-    notes: document.getElementById('e-notes').value.trim(),
-    date: new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}),
+function saveEntry(){
+  const title=document.getElementById('e-title').value.trim();
+  if(!title){document.getElementById('e-title').focus();return;}
+  const entry={
+    id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),
+    type:curType,title,
+    author:document.getElementById('e-author').value.trim(),
+    source:curType==='philosophy'?document.getElementById('e-author').value.trim():'',
+    yturl:document.getElementById('e-yturl')?.value.trim()||'',
+    toolurl:document.getElementById('e-toolurl')?.value.trim()||'',
+    coverurl:document.getElementById('e-coverurl')?.value.trim()||'',
+    buyurl:document.getElementById('e-buyurl')?.value.trim()||'',
+    tags:document.getElementById('e-tags').value.split(',').map(t=>t.trim()).filter(Boolean),
+    notes:document.getElementById('e-notes').value.trim(),
+    date:fmtDate(),
   };
-
-  LIB.push(entry);
-  saveLib(LIB);
-  closeModal();
-  renderAll();
-
-  if (curPage !== 'home') {
-    const targetPage = T[curType]?.page || 'home';
-    if (targetPage !== curPage) {
-      const navItem = document.querySelector(`.nav-item[onclick*="goto('${targetPage}"]`);
-      goto(targetPage, navItem || document.querySelector('.nav-item'));
-    }
-  }
+  LIB.push(entry);saveLib(LIB);closeModal();renderAll();
 }
 
-function deleteEntry(id, e) {
-  if (e) e.stopPropagation();
-  if (!isAuthed) return;
-  if (!confirm('Remove this entry from your library?')) return;
-  LIB = LIB.filter(i=>i.id!==id);
-  saveLib(LIB);
-  renderAll();
+function deleteEntry(id,e){
+  if(e)e.stopPropagation();
+  if(!isAuthed)return;
+  if(!confirm('Remove this entry?'))return;
+  LIB=LIB.filter(i=>i.id!==id);saveLib(LIB);renderAll();
 }
 
-/* ═══════════════════════════════════════
-   APP ROUTING INTERNALS
-═══════════════════════════════════════ */
-const PAGE_TITLES = {
-  home:'<em>Rchives</em> — Home', videos:'YouTube ▷', books:'Books ◎',
-  podcasts:'Podcasts ◉', knowledge:'Knowledge ✦', philosophy:'Life Philosophies ∿',
-  aitools:'AI Tools ◬', dsa:'DSA Progress ⟨⟩', certs:'Certifications ⬡', about:'About',
+/* ═══ NAVIGATION ═══ */
+const PAGE_TITLES={
+  home:'<em>Rchives</em> — Home',videos:'YouTube ▷',books:'Books ◎',
+  podcasts:'Podcasts ◉',knowledge:'Knowledge ✦',philosophy:'Life Philosophies ∿',
+  aitools:'AI Tools ◬',dsa:'DSA Progress ⟨⟩',certs:'Certifications ⬡',about:'About',
 };
 
-function goHome() { goto('home', document.querySelector(".nav-item[onclick*=\"goto('home'\"]")); }
-function gotoFromHome(page) { goto(page, document.querySelector(`.nav-item[onclick*="goto('${page}'"]`)); }
-
-function goto(page, el) {
+function goHome(){goto('home',document.querySelector(".nav-item[onclick*=\"goto('home'\"]"));}
+function gotoFromHome(page){goto(page,document.querySelector(`.nav-item[onclick*="goto('${page}'"]`));}
+function goto(page,el){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  
-  const targetPageElement = document.getElementById('page-'+page);
-  if (targetPageElement) targetPageElement.classList.add('active');
-  if (el) el.classList.add('active');
-  
-  curPage = page;
-  setHTML('topbar-title', PAGE_TITLES[page]||page);
-  if (window.innerWidth < 860) closeSidebar();
+  document.getElementById('page-'+page).classList.add('active');
+  if(el)el.classList.add('active');
+  curPage=page;
+  setHTML('topbar-title',PAGE_TITLES[page]||page);
+  if(window.innerWidth<860)closeSidebar();
 }
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('ov').classList.toggle('open');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('ov').classList.remove('open');}
 
-function toggleSidebar() {
-  document.getElementById('sidebar').classList.toggle('open');
-  document.getElementById('ov').classList.toggle('open');
-}
-function closeSidebar() {
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('ov').classList.remove('open');
-}
-
-// Global System Watchers
-document.addEventListener('keydown', e => {
-  if (e.key !== 'Escape') return;
-  if (document.getElementById('auth-bg').classList.contains('open')) { closeAuth(); return; }
-  if (document.getElementById('modal-bg').classList.contains('open')) { closeModal(); return; }
-  if (curPage !== 'home') goHome();
-});
-
-// Boot Shell
+/* ═══ BOOT ═══ */
 renderAll();
 applyAuthState();
+document.addEventListener('keydown',e=>{
+  if(e.key!=='Escape')return;
+  if(document.getElementById('auth-bg').classList.contains('open')){closeAuth();return;}
+  if(document.getElementById('modal-bg').classList.contains('open')){closeModal();return;}
+  if(curPage!=='home')goHome();
+});
 </script>
 </body>
 </html>
