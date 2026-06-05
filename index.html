@@ -306,58 +306,56 @@
   </div>
 </section>
 
-<!-- HUMOR -->
-<section id="humor">
-  <h2 class="humor-title reveal">Things I do that <span>look productive.</span></h2>
-  <div class="humor-cards">
-    <!-- Git card — clickable to show GitHub contributions -->
-    <div class="humor-card reveal" onclick="openGhModal()" style="cursor:pointer;border-color:rgba(255,107,26,.3);" title="Click to see GitHub contributions">
-      <span class="humor-emoji">🐛</span>
-      <p class="humor-q">$ git commit -m "fix"</p>
-      <p class="humor-a">"It was working yesterday. I swear on my GPA."</p>
-      <div style="margin-top:.8rem;font-family:'Space Mono',monospace;font-size:.5rem;color:#FF6B1A;letter-spacing:.08em;">📊 click → see my contributions</div>
+<section id="projects">
+  <h2 class="projects-title reveal">Things I build that <span>actually work.</span></h2>
+  
+  <div class="projects-cards">
+    <div class="projects-card reveal" onclick="window.open('https://github.com/DssRam24/OutfitOracle', '_blank')" style="cursor: pointer; border-color: rgba(255, 107, 26, 0.4);" title="Click to view repository">
+      <span class="projects-emoji">👔</span>
+      <p class="projects-q">$ python OutfitOracle.py --generate-fit</p>
+      <p class="projects-a"><strong>OutfitOracle:</strong> Smart Wardrobe Outfit Generator creating personalized clothing combinations based on inventory, local live weather, and specific occasions. Engineered with a rapid prototyping architecture to solve real-world routine choices with zero overhead.</p>
+      <div class="projects-tags" style="margin-top: .4rem; font-size: .55rem; color: #FF6B1A; font-family: monospace;">🌐 click → view on github</div>
     </div>
-    <div class="humor-card reveal">
-      <span class="humor-emoji">🎵</span>
-      <p class="humor-q">$ sudo apt install flac</p>
-      <p class="humor-a">Life is too short for 128kbps feelings.</p>
+
+    <div class="projects-card reveal">
+      <span class="projects-emoji">🚰</span>
+      <p class="projects-q">$ telemetry stream --target=hostel-taps</p>
+      <p class="projects-a"><strong>Smart Water Quality Monitor:</strong> An IoT + ML system developed under the EPICS team framework to track water safety inside college hostels. Own the machine learning pipeline for real-time anomaly forecasting and cross-functional Android system integrations.</p>
+      <div class="projects-tags">#IoT #MachineLearning #Android #EPICS</div>
     </div>
-    <div class="humor-card reveal">
-      <span class="humor-emoji">💪</span>
-      <p class="humor-q">$ ./gym --mode=recomp</p>
-      <p class="humor-a">The first rule of body recomp: you don't talk about Day 1. The second rule: you DO NOT talk about Day 1. Third rule: someone yells stop, taps out — Day 1 is over. Day 1 never ends.</p>
-    </div>
-    <div class="humor-card reveal">
-      <span class="humor-emoji">📐</span>
-      <p class="humor-q">$ open figma</p>
-      <p class="humor-a">45 mins choosing a font. Ship it. Call it intentional.</p>
-    </div>
-    <!-- DSA card -->
-    <div class="humor-card reveal">
-      <span class="humor-emoji">🧠</span>
-      <p class="humor-q">$ solve --algo=optimal</p>
-      <p class="humor-a">Spent 3 hours on a binary search problem. It was just arr[mid]. It's always arr[mid].</p>
-    </div>
-    <!-- Canva card -->
-    <div class="humor-card reveal">
-      <span class="humor-emoji">🎨</span>
-      <p class="humor-q">$ open canva</p>
-      <p class="humor-a">Started with a blank canvas. Added 47 elements. Deleted 45. The two remaining elements? Chef's kiss.</p>
+
+    <div class="projects-card reveal" onclick="openGhModal()" style="cursor: pointer; border-color: rgba(255, 107, 26, 0.35);" title="Click to see code updates">
+      <span class="projects-emoji">📈</span>
+      <p class="projects-q">$ git push origin main --force</p>
+      <p class="projects-a"><strong>Open Source &amp; Core Architecture:</strong> Maintaining version histories, runtime scripts, and foundational algorithm logic setups. Click this card to examine my active git commit matrix directly inside the modal panel.</p>
+      <div style="margin-top: .8rem; font-family: 'Space Mono', monospace; font-size: .55rem; color: #FF6B1A; letter-spacing: .08em;">📊 click → inspect contributions</div>
     </div>
   </div>
-  <!-- Minimal interest cards: fashion, auto, architecture -->
-  <div class="humor-mini-row reveal">
-    <div class="humor-mini">
-      <span class="humor-mini-em">👔</span>
-      <span>Silently judging fits. Fashion is architecture for bodies.</span>
+
+  <h3 class="interests-subtitle reveal" style="font-family: 'Space Mono', monospace; font-size: 0.9rem; color: #FF6B1A; margin: 2.5rem 0 1rem 0; text-transform: uppercase; letter-spacing: 0.1em;">
+    ✦ Things I am proud of / Interests
+  </h3>
+
+  <div class="projects-mini-row reveal">
+    <div class="projects-mini">
+      <span class="projects-mini-em">🧡</span>
+      <span><strong>SRH Fan:</strong> Orange isn't just a layout accent choice—it's loyalty to the Sunrisers Hyderabad flight.</span>
     </div>
-    <div class="humor-mini">
-      <span class="humor-mini-em">🚗</span>
-      <span>Obsessed with curves. Automobile design is sculpture you sit in.</span>
+    <div class="projects-mini">
+      <span class="projects-mini-em">🏠</span>
+      <span><strong>Floor Plans:</strong> Secretly drafting structural layouts. Floor-to-ceiling windows are non-negotiable architectural law.</span>
     </div>
-    <div class="humor-mini">
-      <span class="humor-mini-em">🏠</span>
-      <span>Draws house plans for fun. Nobody asked. Floor-to-ceiling windows, always.</span>
+    <div class="projects-mini">
+      <span class="projects-mini-em">♟️</span>
+      <span><strong>Chess:</strong> Calculating positional strategies ahead. Life is just a game of tempo management and positional advantage.</span>
+    </div>
+    <div class="projects-mini">
+      <span class="projects-mini-em">👔</span>
+      <span><strong>Fashion:</strong> Analyzing fits and daily combinations. Style is clothing architecture tailored directly to the body.</span>
+    </div>
+    <div class="projects-mini">
+      <span class="projects-mini-em">🚗</span>
+      <span><strong>Automobile Design:</strong> Obsessed with industrial contours and chassis profiles. Fast machinery is sculpture you drive.</span>
     </div>
   </div>
 </section>
