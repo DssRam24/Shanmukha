@@ -457,58 +457,63 @@ section:hover .section-title { letter-spacing: -.01em; }
   border: 1px solid rgba(255,107,26,.2); 
   transform-style: preserve-3d; 
   
-  /* Layout adjustments for full uniform row heights */
+  /* Flexbox configuration fixes layout stretching */
   display: flex;
   flex-direction: column;
-  justify-content: space-between; 
+  justify-content: flex-start; /* Stack elements naturally from the top */
+  align-items: flex-start;
   min-height: 340px; 
   
   transition: transform .4s var(--ease-smooth), box-shadow .4s var(--ease-smooth), border-color .3s, background .4s; 
 }
 
-/* Responsive 3D transforms on hover */
-.projects-card:hover { 
-  transform: translateY(-12px) rotateX(4deg) scale(1.02); 
-  box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 40px rgba(255,107,26,.2); 
-  border-color: #FF6B1A; 
-  background: rgba(26,26,26,.95); 
-}
-
-/* Emoji animations */
-.projects-emoji { 
-  display: inline-block; 
-  transition: transform .4s var(--ease-bounce); 
-  font-size: 1.8rem; 
-  margin-bottom: .8rem; 
-}
-
-.projects-card:hover .projects-emoji { 
-  transform: translateY(-4px) scale(1.3); 
-}
-
-/* Terminal prompts inside blocks */
-.projects-q { 
-  font-family: 'Space Mono', monospace; 
-  font-size: .62rem; 
-  color: #555; 
-  margin-bottom: .6rem; 
-}
-
-/* Explanation text blocks modified to use Space Mono */
+/* Forces the explanation text to take up remaining space, pushing action/tags to bottom naturally */
 .projects-a { 
   font-family: 'Space Mono', monospace; 
   font-size: 0.75rem; 
   color: #FFFAF2; 
   line-height: 1.6;
+  margin-bottom: 1rem;
+  flex-grow: 1; /* This is the magic key that prevents layout grouping glitches */
+  width: 100%;
 }
 
-.projects-a strong { 
-  font-family: system-ui, -apple-system, sans-serif;
-  font-size: 1.1rem;
-  color: #FF6B1A; 
-  display: block;
-  margin-bottom: 0.6rem;
-  letter-spacing: -0.01em;
+/* Adjust margins on the inner layout elements for perfect balance */
+.projects-emoji { 
+  display: inline-block; 
+  transition: transform .4s var(--ease-bounce); 
+  font-size: 1.8rem; 
+  margin-bottom: .4rem; 
+}
+
+.projects-q { 
+  font-family: 'Space Mono', monospace; 
+  font-size: .62rem; 
+  color: #555; 
+  margin-bottom: 1rem; /* Marginally expanded space below command prompt */
+  width: 100%;
+}
+
+.projects-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: auto; /* Stays anchored right above action text */
+  padding-top: 0.8rem;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  width: 100%;
+}
+
+.projects-action {
+  margin-top: auto; /* Automatically pins to the bottom border area of the card */
+  padding-top: 0.5rem;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  color: #FF6B1A;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  width: 100%;
 }
 
 /* Grid Entry Cascading Delay Animations */
