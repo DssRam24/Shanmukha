@@ -35,11 +35,11 @@ body::before {
 ============================================================ */
 
 /* ============================================================
-    GLITCH-FREE 3D PIXEL CURSOR & HAND (ORANGE NEON SELECTION)
+    GLITCH-FREE 3D PIXEL CURSOR (NO TRAIL — CLASSIC FULL HAND)
 ============================================================ */
 
 /* Hide the default browser cursor completely */
-html, body, a, button, select, input, [role="button"], .hover-target {
+html, body, a, button, select, input, [role="button"] {
   cursor: none !important;
 }
 
@@ -75,58 +75,36 @@ html, body, a, button, select, input, [role="button"], .hover-target {
   transition: background 0.1s, clip-path 0.1s, width 0.1s, height 0.1s;
 }
 
-/* 2. HOVER STATE: Perfectly Formed 8-Bit Pointing Hand */
+/* 2. HOVER STATE: Classic Full Pointing Hand */
 #px-cursor.hover {
-  width: 24px;
-  height: 26px;
+  width: 26px;
+  height: 28px;
   background: #FF6B1A;
   
-  /* Strict block coordinates to create a proper pixel hand silhouette */
+  /* Re-engineered for a full, blocky, traditional hand silhouette */
   clip-path: polygon(
-    /* Index Finger */
-    25% 0%, 42% 0%, 42% 45%, 
-    /* Middle Finger step down */
-    58% 45%, 58% 54%, 
-    /* Ring Finger step down */
-    75% 54%, 75% 63%, 
-    /* Pinky Finger / Outer edge */
-    92% 63%, 92% 76%,
-    100% 76%, 100% 88%,
-    /* Bottom Base of Palm */
-    88% 100%, 17% 100%, 
-    /* Thumb block on left side */
-    0% 80%, 0% 68%,
-    25% 52%
+    /* Wrist / Base Left */
+    24% 100%, 
+    /* Thumb */
+    0% 72%, 0% 56%, 24% 44%, 
+    /* Index Finger (The main pointer) */
+    24% 0%, 44% 0%, 44% 36%, 
+    /* Middle Finger */
+    44% 16%, 62% 16%, 62% 36%, 
+    /* Ring Finger */
+    62% 22%, 80% 22%, 80% 40%, 
+    /* Pinky Finger */
+    80% 30%, 98% 30%, 98% 68%, 
+    /* Outer Right Palm down to base */
+    84% 84%, 64% 100%
   );
   
-  /* Advanced shading: Left/Top gets a highlight shade, Bottom/Right gets a dark shade */
-  filter: drop-shadow(2px 2px 0px #0a0a0a)          /* Bottom-Right Dark Edge */
-          drop-shadow(-1.5px -1.5px 0px #ff9e64)    /* Top-Left Light Edge */
-          drop-shadow(1px 0px 0px rgba(0,0,0,0.15) inset); 
+  /* 3D Multi-pass Shading: Highlights top-left, shadows bottom-right */
+  filter: drop-shadow(2px 2px 0px #0a0a0a)          
+          drop-shadow(-1.5px -1.5px 0px #ff9e64);
 
-  /* Pin-point alignment so the tip of the index finger handles the click exactly */
-  transform: translate(-7px, -2px);
-}
-
-/* 3. LIGHT/DARK TRAIL EFFECT */
-#px-trail {
-  position: fixed;
-  pointer-events: none;
-  z-index: 99998;
-  width: 6px;
-  height: 6px;
-  
-  /* Two-tone shading for the trail particle */
-  background: #FF6B1A;
-  border: 1px solid #ff9e64;
-  box-shadow: 1px 1px 0px #0a0a0a;
-  
-  top: 0;
-  left: 0;
-  transform: translate(12px, 16px);
-  
-  /* Linear micro-latency tracking */
-  transition: left 0.06s linear, top 0.06s linear;
+  /* Precise offset alignment so the index finger matches your active click coordinates */
+  transform: translate(-9px, -1px);
 }
 /* ============================================================
    NAV
