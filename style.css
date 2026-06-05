@@ -373,11 +373,12 @@ section:hover .section-title { letter-spacing: -.01em; }
 .interests-grid .interest-card:nth-child(6) { transition-delay: .40s; }
 
 /* ============================================================
-   HUMOR CARDS
+   PROJECTS CARDS SECTION
 ============================================================ */
-#humor { padding: 5rem 5%; background: #0a0a0a; text-align: center; }
+#projects { position: relative; padding: 5rem 5%; background: #0a0a0a; text-align: center; }
+
 /* Dark section glow overlay */
-#humor::before {
+#projects::before {
   content: '';
   position: absolute;
   top: 0;
