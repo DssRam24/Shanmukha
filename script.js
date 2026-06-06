@@ -156,25 +156,26 @@ document.querySelectorAll('.wp-img').forEach(function(img) {
 (function initQuotes() {
   var scene = document.getElementById('quotes-scene');
   if (!scene) return;
-var quotes = [
- 
-  '"It was the best of times, it was the worst of times."',
-  '"Imagination is more important than knowledge."',
-  '"We accept the love we think we deserve."',
-  '"Time you enjoy wasting is not wasted time."',
-  '"Words are our most inexhaustible source of magic."',
-  '"I am not afraid of storms, for I am learning to sail."',
-  '"So many books, so little time."',
-  '"It is a truth universally acknowledged..."',
-  '"నేను సైతం ప్రపంచాగ్నికి సమిధనొక్కటి ఆహుతిచ్చాను! "',
-  '"కదిలేది కల్పించేది పెనుతుఫానై గర్జించేది నా అక్షరమే!"',
-  '"ఏ దేశ చరిత్ర చూసినా ఏముంది గర్వకారణం? నరజాతి చరిత్ర సమస్తం పరపీడన పరాయణత్వం!"',
-  '"స్వేచ్ఛ లేని జీవితం చచ్చినదానితో సమానం."',
-  '"పుస్తకాలు చదవడం అంటే ఇంకొకరి మెదడుతో ఆలోచించడం కాదు, మన మెదడుకి పదును పెట్టుకోవడం "',
-  '"ప్రేమించడమంటే ఎదుటివారిని మనకు నచ్చినట్టు మార్చుకోవడం కాదు, వారు ఎలా ఉన్నారో అలాగే స్వీకరించడం.  "'
- '"దేశమంటే మట్టి కాదోయ్, దేశమంటే మనుషులోయ్!"',
-  '"సొంత లాభం కొంత మానుకు, పొరుగువాడికి తోడుపడవోయ్!"',
-];
+  var quotes = [
+    '"A reader lives a thousand lives before he dies."',
+    '"Not all those who wander are lost."',
+    '"So we beat on, boats against the current."',
+    '"It was the best of times, it was the worst of times."',
+    '"Imagination is more important than knowledge."',
+    '"We accept the love we think we deserve."',
+    '"Time you enjoy wasting is not wasted time."',
+    '"Stay hungry, stay foolish."',
+    '"There is no friend as loyal as a book."',
+    '"Words are our most inexhaustible source of magic."',
+    '"I am not afraid of storms, for I am learning to sail."',
+    '"So many books, so little time."',
+    '"Call me Ishmael."',
+    '"To be or not to be, that is the question."',
+    '"All animals are equal, but some are more equal."',
+    '"The journey of a thousand miles begins with one step."',
+    '"In the beginning was the Word."',
+    '"It is a truth universally acknowledged..."',
+  ];
   quotes.forEach(function(q) {
     var el  = document.createElement('div');
     el.className = 'q-float';
