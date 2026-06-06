@@ -156,26 +156,31 @@ document.querySelectorAll('.wp-img').forEach(function(img) {
 (function initQuotes() {
   var scene = document.getElementById('quotes-scene');
   if (!scene) return;
-  var quotes = [
-    '"A reader lives a thousand lives before he dies."',
-    '"Not all those who wander are lost."',
-    '"So we beat on, boats against the current."',
-    '"It was the best of times, it was the worst of times."',
-    '"Imagination is more important than knowledge."',
-    '"We accept the love we think we deserve."',
-    '"Time you enjoy wasting is not wasted time."',
-    '"Stay hungry, stay foolish."',
-    '"There is no friend as loyal as a book."',
-    '"Words are our most inexhaustible source of magic."',
-    '"I am not afraid of storms, for I am learning to sail."',
-    '"So many books, so little time."',
-    '"Call me Ishmael."',
-    '"To be or not to be, that is the question."',
-    '"All animals are equal, but some are more equal."',
-    '"The journey of a thousand miles begins with one step."',
-    '"In the beginning was the Word."',
-    '"It is a truth universally acknowledged..."',
-  ];
+var quotes = [
+ 
+  '"It was the best of times, it was the worst of times."',
+  '"Imagination is more important than knowledge."',
+  '"We accept the love we think we deserve."',
+  '"Time you enjoy wasting is not wasted time."',
+
+  '"Words are our most inexhaustible source of magic."',
+  '"I am not afraid of storms, for I am learning to sail."',
+  '"So many books, so little time."',
+  '"It is a truth universally acknowledged..."',
+  
+  // Sri Sri Quotes (From Maha Prasthanam & Literary Works)
+  '"నేను సైతం ప్రపంచాగ్నికి సమిధనొక్కటి ఆహుతిచ్చాను! [I too have offered a piece of firewood to the world’s destructive fire!]" — Sri Sri',
+  '"కదిలేది కల్పించేది పెనుతుఫానై గర్జించేది నా అక్షరమే! [That which moves, that which creates, that which roars like a massive storm is my alphabet!]" — Sri Sri',
+  '"ఏ దేశ చరిత్ర చూసినా ఏముంది గర్వకారణం? నరజాతి చరిత్ర సమస్తం పరపీడన పరాయణత్వం! [What is there to be proud of in any country’s history? The entire history of mankind is a history of exploiting others!]" — Sri Sri',
+  
+  // Chalam Quotes (From Musings, Maidanam & Letters)
+  '"స్వేచ్ఛ లేని జీవితం చచ్చినదానితో సమానం. [A life without freedom is equivalent to being dead.]" — Chalam',
+  '"పుస్తకాలు చదవడం అంటే ఇంకొకరి మెదడుతో ఆలోచించడం కాదు, మన మెదడుకి పదును పెట్టుకోవడం. [Reading books doesn’t mean thinking with someone else’s brain; it means sharpening our own.]" — Chalam',
+  '"ప్రేమించడమంటే ఎదుటివారిని మనకు నచ్చినట్టు మార్చుకోవడం కాదు, వారు ఎలా ఉన్నారో అలాగే స్వీకరించడం. [To love is not to change others to suit us, but to accept them exactly as they are.]" — Chalam'
+
+  '"దేశమంటే మట్టి కాదోయ్, దేశమంటే మనుషులోయ్! [A country is not made of mere soil; a country means its people!]" — Gurajada Apparao',
+  '"సొంత లాభం కొంత మానుకు, పొరుగువాడికి తోడుపడవోయ్! [Give up a bit of your selfish gain, and extend a helping hand to your neighbor!]" — Gurajada Apparao',
+];
   quotes.forEach(function(q) {
     var el  = document.createElement('div');
     el.className = 'q-float';
