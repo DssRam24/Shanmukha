@@ -305,77 +305,152 @@
 
   </div>
 </section>
+<!-- PROJECTS -->
 <section id="projects">
-  <h2 class="projects-title reveal">Things I build that <span>actually work.</span></h2>
-  
+
+  <div class="section-tag reveal" style="justify-content:center;position:relative;z-index:2;">
+    003 — Projects &amp; Builds
+  </div>
+
+  <h2 class="projects-title reveal">
+    Things I build that <span>actually work.</span>
+  </h2>
+  <p class="projects-sub reveal">// and a few that work after the 47th console.log</p>
+
   <div class="projects-cards">
-    <!-- Project 1: OutfitOracle (Wardrobe Management) -->
-    <div class="projects-card reveal" onclick="window.open('https://github.com/DssRam24/OutfitOracle', '_blank')" style="cursor: pointer; border-color: rgba(255, 107, 26, 0.4);" title="Click to view repository">
+
+    <!-- OutfitOracle -->
+    <div class="projects-card reveal"
+         onclick="window.open('https://github.com/DssRam24/OutfitOracle','_blank')"
+         style="cursor:pointer;"
+         title="View on GitHub">
       <span class="projects-emoji">👔</span>
       <p class="projects-q">$ python OutfitOracle.py --generate-fit</p>
       <p class="projects-a">
-        <strong>OutfitOracle:</strong> A smart wardrobe outfit pairing generator engine. <br><br>
-        ✦ Automatically curates custom clothing combinations by parsing personal inventory against real-time local weather API feeds and specific occasion criteria.<br>
-        ✦ Built using an agile, rapid prototyping architecture to solve everyday decision fatigue with minimal code overhead.
+        <strong>OutfitOracle</strong>
+        A smart wardrobe engine that kills decision fatigue at 7am. Parses your clothing inventory, hits a weather API, reads the occasion — and hands you a fit. No thinking required.
+        <br><br>
+        Built fast. Solves a real problem. Ships.
       </p>
       <div class="projects-tags">
-        <span>#Python</span> <span>#API-Integration</span> <span>#Automation</span>
+        <span>Python</span>
+        <span>API</span>
+        <span>Automation</span>
       </div>
-      <div class="projects-action">🌐 click → view on github</div>
+      <div class="projects-action">🌐 click → view on github ↗</div>
     </div>
 
-    <!-- Project 2: Smart Water Quality Monitoring System -->
+    <!-- Smart Water Quality Monitor -->
     <div class="projects-card reveal">
       <span class="projects-emoji">🚰</span>
-      <p class="projects-q">$ telemetry stream --target=hostel-taps</p>
+      <p class="projects-q">$ telemetry stream --target hostel-taps</p>
       <p class="projects-a">
-        <strong>Smart Water Quality Monitor:</strong> An integrated IoT + ML hardware-software safety platform built under the college EPICS engineering framework.<br><br>
-        ✦ Engineered the Machine Learning core logic pipeline tasked with tracking real-time telemetry inputs and streaming predictive anomaly forecasting logs.<br>
-        ✦ Collaborated directly across hardware sub-teams to manage cross-functional Android system firmware integrations.
+        <strong>Smart Water Quality Monitor</strong>
+        IoT + ML platform built under the college EPICS framework. Sensors track TDS, turbidity, pH, and ORP in real time — an LSTM forecasting model flags anomalies before they become a health problem.
+        <br><br>
+        My role: ML pipeline + Android app integration across hardware sub-teams.
       </p>
       <div class="projects-tags">
-        <span>#IoT</span> <span>#MachineLearning</span> <span>#Android</span> <span>#EPICS</span>
+        <span>IoT</span>
+        <span>LSTM</span>
+        <span>Android</span>
+        <span>MQTT</span>
+        <span>EPICS</span>
       </div>
     </div>
 
-    <!-- Project 3: Daily DSA Problem Solving Engine -->
-    <div class="projects-card reveal" style="border-color: rgba(255, 107, 26, 0.3);">
+    <!-- DSA / Algorithms Lab -->
+    <div class="projects-card reveal">
       <span class="projects-emoji">🧠</span>
-      <p class="projects-q">$ javac DSA.java && java DataStructures</p>
+      <p class="projects-q">$ javac DSA.java &amp;&amp; java DataStructures</p>
       <p class="projects-a">
-        <strong>Algorithms &amp; Logic Lab:</strong> A dedicated environment focusing on rigorous programmatic optimization frameworks.<br><br>
-        ✦ Actively architecting and implementing comprehensive Data Structures &amp; Algorithms solutions natively using **Java** core fundamentals.<br>
-        ✦ Focused on mastering runtime efficiency metrics including deep-dives into array manipulations, trees, graphs, dynamic programming, and search optimizations.
+        <strong>Algorithms &amp; Logic Lab</strong>
+        Not a project. A discipline. Daily Java DSA practice — arrays, trees, graphs, DP, search — focused on runtime efficiency and clean pattern recognition.
+        <br><br>
+        It's always arr[mid]. It's always arr[mid].
       </p>
       <div class="projects-tags">
-        <span>#Java</span> <span>#DSA</span> <span>#Algorithms</span> <span>#LeetCode</span>
+        <span>Java</span>
+        <span>DSA</span>
+        <span>Graphs</span>
+        <span>DP</span>
+        <span>LeetCode</span>
       </div>
     </div>
 
-    <!-- Project 4: GitHub Code Contributions Graph (RESTORED) -->
-<!-- Project 4: GitHub Contributions Graph (Reverted to Classic Humor Vibe) -->
-<div class="projects-card reveal" onclick="openGhModal()" style="cursor: pointer; border-color: rgba(255, 107, 26, 0.3);" title="Click to see GitHub contributions">
-  <span class="projects-emoji">🐛</span>
-  <p class="projects-q">$ git commit -m "fix"</p>
-  <p class="projects-a">
-    "It was working yesterday. I swear on my GPA."
-  </p>
-  <div class="projects-action">📊 click → see my contributions</div>
-</div>
-<br>
-  <!-- Subtitle for Interests -->
-  <h3 class="interests-subtitle reveal">
-    ✦ Things I am proud of / Interests
-  </h3>
+    <!-- GitHub / Git card -->
+    <div class="projects-card reveal"
+         onclick="openGhModal()"
+         style="cursor:pointer;"
+         title="Click to see GitHub contributions">
+      <span class="projects-emoji">🐛</span>
+      <p class="projects-q">$ git commit -m "fix"</p>
+      <p class="projects-a">
+        <strong>GitHub Activity</strong>
+        "It was working yesterday. I swear on my GPA."
+        <br><br>
+        Green squares don't lie. Click to see how many times I've saved and broken the same file.
+      </p>
+      <div class="projects-tags">
+        <span>Git</span>
+        <span>Open Source</span>
+        <span>Contributions</span>
+      </div>
+      <div class="projects-action">📊 click → contribution graph ↗</div>
+    </div>
 
-  <!-- Real Humorous Interests & Passions Row -->
-  <div class="projects-mini-row reveal">
-    <div class="projects-mini"><span class="projects-mini-em">🧡</span><span><strong>SRH Fan:</strong> Orange isn't just a layout accent choice—it's loyalty to the Sunrisers Hyderabad flight.</span></div>
-    <div class="projects-mini"><span class="projects-mini-em">🏠</span><span><strong>Floor Plans:</strong> Secretly drafting structural layouts. Floor-to-ceiling windows are non-negotiable architectural law.</span></div>
-    <div class="projects-mini"><span class="projects-mini-em">♟️</span><span><strong>Chess:</strong> Calculating positional strategies ahead. Life is just a game of tempo management.</span></div>
-    <div class="projects-mini"><span class="projects-mini-em">👔</span><span><strong>Fashion:</strong> Analyzing fits and daily combinations. Style is clothing architecture tailored directly to the body.</span></div>
-    <div class="projects-mini"><span class="projects-mini-em">🚗</span><span><strong>Automobile Design:</strong> Obsessed with industrial contours and chassis profiles. Fast machinery is sculpture you drive.</span></div>
+  </div><!-- /projects-cards -->
+
+  <!-- Interests divider -->
+  <div class="interests-divider reveal">
+    <span>✦ things I'm proud of &amp; into</span>
   </div>
+
+  <!-- Mini interest cards -->
+  <div class="projects-mini-row reveal">
+
+    <div class="projects-mini">
+      <span class="projects-mini-em">🧡</span>
+      <span>
+        <strong>SRH Fan</strong>
+        Orange isn't just a design accent. It's loyalty to the Sunrisers.
+      </span>
+    </div>
+
+    <div class="projects-mini">
+      <span class="projects-mini-em">🏠</span>
+      <span>
+        <strong>Floor Plans</strong>
+        Draws house layouts for fun. Floor-to-ceiling windows. Non-negotiable.
+      </span>
+    </div>
+
+    <div class="projects-mini">
+      <span class="projects-mini-em">♟️</span>
+      <span>
+        <strong>Chess</strong>
+        Life is just tempo management with better visuals.
+      </span>
+    </div>
+
+    <div class="projects-mini">
+      <span class="projects-mini-em">👔</span>
+      <span>
+        <strong>Fashion</strong>
+        Silently judging fits. Style is architecture for the body.
+      </span>
+    </div>
+
+    <div class="projects-mini">
+      <span class="projects-mini-em">🚗</span>
+      <span>
+        <strong>Automobile Design</strong>
+        Obsessed with chassis profiles. Fast machinery is sculpture you sit in.
+      </span>
+    </div>
+
+  </div>
+
 </section>
 
    
