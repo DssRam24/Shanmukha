@@ -983,7 +983,7 @@ document.addEventListener('keydown', function(e) {
     else stopSky();
   }, { threshold: 0.08 });
 
-  document.querySelectorAll('#humor, #books, #footer').forEach(function(s) {
+document.querySelectorAll('#humor, #books, #footer, #story, #projects').forEach(function(s) { {
     nightObs.observe(s);
   });
 
