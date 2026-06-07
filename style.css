@@ -984,13 +984,14 @@ section:hover .section-title { letter-spacing: -.01em; }
     }
 
     /* SVG Artwork Container */
-    .city-svg {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-    }
+  /* 1. Make the SVG block-level so it drops the baseline white space */
+.city-svg {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 
     /* Footer Text Layout */
     .footer-content {
@@ -1028,17 +1029,20 @@ section:hover .section-title { letter-spacing: -.01em; }
       color: #003675;
     }
 
-    /* Bottom Centered Copyright Bar */
-    .footer-copy {
-      pointer-events: auto; /* Re-enable clicks for links/text choice */
-      width: 100%;
-      text-align: center;
-      padding: 12px;
-      font-size: 0.85rem;
-      font-weight: 500;
-      color: #ffffff;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-    }
+
+/* 2. Style the copyright container to prevent margin collapsing */
+.footer-copy {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin: 0;
+    /* Match this background color exactly to your var(--layer-frontmost) 
+       or the final dark blue color of the vector skyline path */
+    background-color: #061026; 
+    padding: 1.5rem 0 2rem; /* Adds safe, clean spacing at the absolute bottom */
+    position: relative;
+    z-index: 10;
+}
 /* ============================================================
    RESPONSIVE DESIGN SYSTEM (MEDIA QUERIES)
 ============================================================ */
