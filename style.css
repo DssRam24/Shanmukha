@@ -33,28 +33,55 @@ body::before {
 /* ============================================================
     RGB 3D PIXEL CURSOR (Vaporwave / Retro Style)
 ============================================================ */
+/* ============================================================
+   PIXEL CURSOR
+============================================================ */
+*, *::before, *::after { cursor: none; }
 
-/* 1. HOVERING (Interactive element) */
-.hover-element {
-  cursor: context-menu; /* Indicates a menu or action is available */
+#px-cursor {
+  position: fixed;
+  pointer-events: none;
+  z-index: 99999;
+  width: 12px; height: 12px;
+  background: #FF6B1A;
+  border: 2px solid #0a0a0a;
+  box-shadow: 2px 2px 0 #0a0a0a;
+  image-rendering: pixelated;
+  top: 0; left: 0;
+  transition: width .12s, height .12s, border-radius .12s, background .12s;
+}
+#px-cursor.hover {
+  width: 20px; height: 20px;
+  background: #0a0a0a;
+  border-color: #FF6B1A;
+  box-shadow: 3px 3px 0 #FF6B1A;
+  border-radius: 2px;
 }
 
-/* 2. CLICKING (Buttons/Links) */
-.click-element {
-  cursor: pointer; /* The classic hand icon */
+/* Pixel dot trail */
+#px-trail {
+  position: fixed;
+  pointer-events: none;
+  z-index: 99998;
+  width: 6px; height: 6px;
+  background: rgba(255,107,26,0.35);
+  border: 1px solid rgba(255,107,26,0.5);
+  image-rendering: pixelated;
+  top: 0; left: 0;
+  transition: left .12s linear, top .12s linear;
 }
 
-/* 3. DRAGGING (Grab to move) */
-.drag-element {
-  cursor: grab; /* Open hand indicating it can be grabbed */
-}
-.drag-element:active {
-  cursor: grabbing; /* Closed hand when mouse is held down */
-}
-
-/* 4. SELECTING (Text input/Highlighting) */
-.select-element {
-  cursor: text; /* The I-beam cursor for selecting text */
+/* Pixel grid background overlay (subtle) */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,107,26,.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,107,26,.03) 1px, transparent 1px);
+  background-size: 16px 16px;
+  pointer-events: none;
+  z-index: 0;
 }
 /* ============================================================
    NAV
