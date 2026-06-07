@@ -34,7 +34,28 @@ body::before {
     RGB 3D PIXEL CURSOR (Vaporwave / Retro Style)
 ============================================================ */
 
+/* 1. HOVERING (Interactive element) */
+.hover-element {
+  cursor: context-menu; /* Indicates a menu or action is available */
+}
 
+/* 2. CLICKING (Buttons/Links) */
+.click-element {
+  cursor: pointer; /* The classic hand icon */
+}
+
+/* 3. DRAGGING (Grab to move) */
+.drag-element {
+  cursor: grab; /* Open hand indicating it can be grabbed */
+}
+.drag-element:active {
+  cursor: grabbing; /* Closed hand when mouse is held down */
+}
+
+/* 4. SELECTING (Text input/Highlighting) */
+.select-element {
+  cursor: text; /* The I-beam cursor for selecting text */
+}
 /* ============================================================
    NAV
 ============================================================ */
