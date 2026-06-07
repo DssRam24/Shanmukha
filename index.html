@@ -167,81 +167,10 @@
     <span class="badge" style="background:#111;border-color:rgba(255,213,128,.3);color:#FFD580;">OS · Networks 💻</span>
   </div>
 
-  <div class="interests-grid reveal">
-    <div class="interest-card">
-      <span class="ic-emoji">💻</span>
-      <div class="ic-title">Development</div>
-      <p class="ic-desc">Building apps that actually work after the 47th console.log. React, Firebase, and prayers to the CSS gods.</p>
-      <span class="ic-tag">./dev</span>
-    </div>
-    <div class="interest-card">
-      <span class="ic-emoji">🎨</span>
-      <div class="ic-title">Design</div>
-      <p class="ic-desc">Will spend 3 hours choosing a border-radius. Built a full color system for a music app nobody asked for. Worth it.</p>
-      <span class="ic-tag">./design</span>
-    </div>
-    <div class="interest-card">
-      <span class="ic-emoji">📚</span>
-      <div class="ic-title">Books</div>
-      <p class="ic-desc">Non-fiction only — because fiction is just lying on paper with good prose.</p>
-      <span class="ic-tag">./books</span>
-    </div>
-   <!-- MUSIC CARD -->
-<div class="interest-card" id="card-music">
-  <span class="ic-emoji">🎵</span>
-  <div class="ic-title">Music</div>
-  <p class="ic-desc">FLAC or nothing. Built a personal player because Spotify's audio quality is a personal insult.</p>
-  <span class="ic-tag">./music</span>
-  <div class="ic-form">
-    <div class="ic-form-toggle" onclick="toggleIcForm('music-form')">🎧 Drop me your playlist →</div>
-    <div class="ic-form-body" id="music-form" style="display:none;">
-      <input class="ic-input" id="music-val" placeholder="Playlist name or link...">
-      <input class="ic-input" id="music-who" placeholder="Your name (optional)">
-      <button class="ic-btn" onclick="submitIcForm('music')">Send it 🎶</button>
-      <div id="music-confirm" style="display:none;font-family:'Space Mono',monospace;font-size:.6rem;color:#6BFFB8;margin-top:.3rem;">✓ Sent! I'll check it out.</div>
-    </div>
-  </div>
-</div>
 
-<!-- FITNESS CARD -->
-<div class="interest-card" id="card-fitness">
-  <span class="ic-emoji">🏋️</span>
-  <div class="ic-title">Fitness</div>
-  <p class="ic-desc">The first rule of body recomposition is — you do not talk about Day 1. The second rule is — you <em>do not</em> talk about Day 1. (It's still Day 1.)</p>
-  <span class="ic-tag">./fitness</span>
-  <div class="ic-form">
-    <div class="ic-form-toggle" onclick="toggleIcForm('fitness-form')">💪 Tell me a routine →</div>
-    <div class="ic-form-body" id="fitness-form" style="display:none;">
-      <textarea class="ic-input" id="fitness-val" placeholder="Your go-to workout routine..." rows="2" style="resize:none;"></textarea>
-      <input class="ic-input" id="fitness-who" placeholder="Your name (optional)">
-      <button class="ic-btn" onclick="submitIcForm('fitness')">Send it 🔥</button>
-      <div id="fitness-confirm" style="display:none;font-family:'Space Mono',monospace;font-size:.6rem;color:#6BFFB8;margin-top:.3rem;">✓ Routine noted. Day 1 starts soon.</div>
-    </div>
-  </div>
-</div>
-
-<!-- MAKING CONNECTIONS / SPEAKING CARD -->
-<div class="interest-card" id="card-speaking">
-  <span class="ic-emoji">🎤</span>
-  <div class="ic-title">నేనొక దుర్గం<br>
-                      నాదొక స్వర్గం<br>
-                అనర్గళం,<br>
-     అనితరసాధ్యం నా మార్గం</div>
-  <p class="ic-desc"></p>
-  <span class="ic-tag">./speaking</span>
-  <div class="ic-form">
-    <div class="ic-form-toggle" onclick="toggleIcForm('speaking-form')">💬 Quote me something →</div>
-    <div class="ic-form-body" id="speaking-form" style="display:none;">
-      <textarea class="ic-input" id="speaking-val" placeholder="Drop a quote that hits different..." rows="2" style="resize:none;"></textarea>
-      <input class="ic-input" id="speaking-who" placeholder="Your name (optional)">
-      <button class="ic-btn" onclick="submitIcForm('speaking')">Send it ✨</button>
-      <div id="speaking-confirm" style="display:none;font-family:'Space Mono',monospace;font-size:.6rem;color:#6BFFB8;margin-top:.3rem;">✓ Quoted. I'll carry it.</div>
-    </div>
-  </div>
-</div>
-  </div>
-</section>
-   <!-- STORY SECTION -->
+<!-- ============================================================
+     STORY SECTION — condensed, same arc
+     ============================================================ -->
 <section id="story">
   <div class="story-line"></div>
   <div class="story-dot" style="top:6rem;"></div>
@@ -253,60 +182,37 @@
 
     <div class="story-para reveal">
       <p>
-        When I was a kid, I was the quiet one in the corner.
-        Bullied sometimes. Sick often.
-        <span class="story-accent">Sinusitis made breathing feel like a battle on certain days, but my mind never stopped running.</span>
-        Cricket was my escape. A bat in hand felt lighter than the weight of overthinking.
+        I was the quiet one. Bullied sometimes, sick often —
+        <span class="story-accent">sinusitis made breathing a battle, but my mind never stopped running.</span>
+        Cricket was the escape. A bat in hand felt lighter than whatever I was carrying that day.
       </p>
     </div>
 
     <div class="story-para reveal">
       <p>
-        At home, curiosity ruled everything. While most kids played games,
-        I opened CPUs with my brother just to see what lived inside them.
-        We probably dismantled 10 to 15 computers over the years —
-        not because we knew what we were doing,
-        <span >but because we needed to know how things worked.</span>
-        Wires, fans, motherboards, boot screens, BIOS sounds… that world fascinated me.
+        At home, curiosity ran the house. While other kids played games, my brother and I dismantled 10 to 15 computers
+        just to see what lived inside them. Not because we knew what we were doing —
+        <span class="story-accent">because we needed to know how things worked.</span>
+        That question never really left me.
       </p>
     </div>
 
     <div class="story-para reveal">
       <p>
-        My first real experience with a smartphone was my father's rare
-        <span style="font-style:italic;">Nokia Lumia 530.</span>
-        That Windows interface felt futuristic to me.
-        I explored every corner of it like a tiny scientist discovering another planet.
-      </p>
-    </div>
-
-    <div class="story-para reveal">
-      <p>
-        And somewhere in between all of that, I discovered art.
-        I used to sit in front of my father's computer drawing random things
-        in MS Paint for hours. Bad sketches. Weird color combinations.
-        <span >Endless creativity. That artistic side never left me.</span>
-      </p>
-    </div>
-
-    <div class="story-para reveal">
-      <p>
-        Today, it evolved. I design posters. I edit videos. I build projects.
-        I create ideas from scratch.
-        <span >I mix technology with creativity because I never liked choosing only one side.</span>
-        What started as curiosity became obsession.
-        What started as struggle became fuel.
+        Somewhere in between, I discovered art — hours in MS Paint, bad sketches, weird color palettes, zero regrets.
+        That side grew up with me. Today I design, build, and ship.
+        <span class="story-accent">I mix technology with creativity because I never liked choosing only one.</span>
       </p>
     </div>
 
     <div class="story-para reveal">
       <div class="story-pullquote">
         <p>
-          Now I'm focused on building things of my own. Not just products or projects,
-          but a life that reflects who I really am.
+          Now I'm focused on building things that are mine. Not just products —
+          a life that reflects who I actually am.
         </p>
         <span class="story-final-line">
-          Creative. Curious. Restless. Always learning. ✦
+          Creative. Curious. Restless. Always building. ✦
         </span>
       </div>
     </div>
@@ -460,6 +366,90 @@
   </div>
 
 </section>
+  <!-- ============================================================
+     INTERESTS GRID — drop-in replacement
+     ============================================================ -->
+<div class="interests-grid reveal">
+
+  <div class="interest-card">
+    <span class="ic-emoji">💻</span>
+    <div class="ic-title">Development</div>
+    <p class="ic-desc">React, Firebase, and a genuine belief that the 47th console.log will finally explain everything.</p>
+    <span class="ic-tag">./dev</span>
+  </div>
+
+  <div class="interest-card">
+    <span class="ic-emoji">🎨</span>
+    <div class="ic-title">Design</div>
+    <p class="ic-desc">Will spend three hours on a border-radius. Built a full color system for a music app nobody asked for. No regrets.</p>
+    <span class="ic-tag">./design</span>
+  </div>
+
+  <div class="interest-card">
+    <span class="ic-emoji">📚</span>
+    <div class="ic-title">Books</div>
+    <p class="ic-desc">Non-fiction only. Fiction is lying on paper with better prose.</p>
+    <span class="ic-tag">./books</span>
+  </div>
+
+  <!-- MUSIC CARD -->
+  <div class="interest-card" id="card-music">
+    <span class="ic-emoji">🎵</span>
+    <div class="ic-title">Music</div>
+    <p class="ic-desc">FLAC or nothing. Built a personal player because Spotify's audio quality felt like a personal insult.</p>
+    <span class="ic-tag">./music</span>
+    <div class="ic-form">
+      <div class="ic-form-toggle" onclick="toggleIcForm('music-form')">🎧 Drop me your playlist →</div>
+      <div class="ic-form-body" id="music-form" style="display:none;">
+        <input class="ic-input" id="music-val" placeholder="Playlist name or link...">
+        <input class="ic-input" id="music-who" placeholder="Your name (optional)">
+        <button class="ic-btn" onclick="submitIcForm('music')">Send it 🎶</button>
+        <div id="music-confirm" style="display:none;font-family:'Space Mono',monospace;font-size:.6rem;color:#6BFFB8;margin-top:.3rem;">✓ Sent. I'll check it out.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FITNESS CARD -->
+  <div class="interest-card" id="card-fitness">
+    <span class="ic-emoji">🏋️</span>
+    <div class="ic-title">Fitness</div>
+    <p class="ic-desc">Body recomposition in progress. Day 1 is a recurring event — but the streak's building.</p>
+    <span class="ic-tag">./fitness</span>
+    <div class="ic-form">
+      <div class="ic-form-toggle" onclick="toggleIcForm('fitness-form')">💪 Tell me a routine →</div>
+      <div class="ic-form-body" id="fitness-form" style="display:none;">
+        <textarea class="ic-input" id="fitness-val" placeholder="Your go-to workout routine..." rows="2" style="resize:none;"></textarea>
+        <input class="ic-input" id="fitness-who" placeholder="Your name (optional)">
+        <button class="ic-btn" onclick="submitIcForm('fitness')">Send it 🔥</button>
+        <div id="fitness-confirm" style="display:none;font-family:'Space Mono',monospace;font-size:.6rem;color:#6BFFB8;margin-top:.3rem;">✓ Routine noted. Day 1 starts soon.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SPEAKING CARD -->
+  <div class="interest-card" id="card-speaking">
+    <span class="ic-emoji">🎤</span>
+    <div class="ic-title">
+      నేనొక దుర్గం<br>
+      నాదొక స్వర్గం<br>
+      అనర్గళం,<br>
+      అనితరసాధ్యం నా మార్గం
+    </div>
+    <p class="ic-desc"></p>
+    <span class="ic-tag">./speaking</span>
+    <div class="ic-form">
+      <div class="ic-form-toggle" onclick="toggleIcForm('speaking-form')">💬 Quote me something →</div>
+      <div class="ic-form-body" id="speaking-form" style="display:none;">
+        <textarea class="ic-input" id="speaking-val" placeholder="Drop a quote that hits different..." rows="2" style="resize:none;"></textarea>
+        <input class="ic-input" id="speaking-who" placeholder="Your name (optional)">
+        <button class="ic-btn" onclick="submitIcForm('speaking')">Send it ✨</button>
+        <div id="speaking-confirm" style="display:none;font-family:'Space Mono',monospace;font-size:.6rem;color:#6BFFB8;margin-top:.3rem;">✓ Quoted. I'll carry it.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
 
    
 <section id="blogs" class="reveal">
