@@ -791,11 +791,52 @@ section:hover .section-title { letter-spacing: -.01em; }
 /* ============================================================
    LIGHTBOX OVERLAY MODAL
 ============================================================ */
-#img-lightbox { position: fixed; inset: 0; z-index: 99995; background: rgba(0,0,0,.92); backdrop-filter: blur(12px); display: none; align-items: center; justify-content: center; flex-direction: column; gap: 1.5rem; perspective: 1200px; }
+#img-lightbox { 
+  position: fixed; 
+  inset: 0; 
+  z-index: 99995; 
+  background: rgba(0,0,0,.92); 
+  backdrop-filter: blur(12px); 
+  display: none; 
+  align-items: center; 
+  justify-content: center; 
+  flex-direction: column; 
+  gap: 1.5rem; 
+  perspective: 1200px; 
+  padding: 20px; /* Prevents card from hitting screen edges on small devices */
+}
 #img-lightbox.open { display: flex; }
-.lb-card { position: relative; transform: scale(.4) rotateX(60deg) translateY(80px); opacity: 0; transition: transform .55s cubic-bezier(.23,1,.32,1), opacity .45s; max-width: min(82vw, 700px); filter: drop-shadow(0 40px 80px rgba(255,107,26,.25)); }
+
+.lb-card { 
+  position: relative; 
+  transform: scale(.4) rotateX(60deg) translateY(80px); 
+  opacity: 0; 
+  transition: transform .55s cubic-bezier(.23,1,.32,1), opacity .45s; 
+  
+  /* FIXES: Ensure the container doesn't exceed viewport bounds */
+  width: 100%;
+  max-width: min(82vw, 700px); 
+  max-height: 70vh; /* Keeps room for the rating system below the card */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  filter: drop-shadow(0 40px 80px rgba(255,107,26,.25)); 
+}
 #img-lightbox.open .lb-card { transform: scale(1) rotateX(0deg) translateY(0); opacity: 1; }
-.lb-card img { width: 80%; border-radius: 12px; display: block; box-shadow: 0 0 0 2px rgba(255,107,26,.4); }
+
+.lb-card img { 
+  /* FIXES: Makes image responsive to the card container */
+  width: 100%; 
+  max-width: 100%;
+  max-height: 70vh; 
+  object-fit: contain; /* Keeps aspect ratio without clipping */
+  
+  border-radius: 12px; 
+  display: block; 
+  box-shadow: 0 0 0 2px rgba(255,107,26,.4); 
+}
+
 .lb-card-label { position: absolute; top: 12px; left: 12px; font-family: 'Space Mono', monospace; font-size: .55rem; color: #fff; background: rgba(0,0,0,.55); padding: .25rem .55rem; border-radius: 4px; backdrop-filter: blur(4px); letter-spacing: .08em; }
 .lb-close-btn { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,.5); border: 1.5px solid rgba(255,107,26,.5); color: #FF6B1A; border-radius: 6px; font-family: 'Space Mono', monospace; font-size: .7rem; padding: .25rem .6rem; transition: background .2s; }
 .lb-close-btn:hover { background: #FF6B1A; color: #fff; }
@@ -810,11 +851,48 @@ section:hover .section-title { letter-spacing: -.01em; }
 
 /* ============================================================
    GREETING ROTATOR & ADMIN SYSTEM
-============================================================ */
-.greeting-wrap { height: 2rem; overflow: hidden; margin-bottom: 1.2rem; position: relative; }
-.greeting-word { display: block; font-family: 'Press Start 2P', monospace; font-size: clamp(.7rem, 1.4vw, 1rem); color: #FF6B1A; letter-spacing: .08em; opacity: 0; transform: translateY(100%) rotateX(-90deg); transition: opacity .5s, transform .5s cubic-bezier(.23,1,.32,1); position: absolute; left: 0; }
-.greeting-word.active { opacity: 1; transform: translateY(0) rotateX(0); }
-.greeting-lang { font-family: 'Space Mono', monospace; font-size: .5rem; color: #aaa; letter-spacing: .12em; text-transform: uppercase; margin-left: .4rem; vertical-align: middle; }
+/* ============================================================ */
+.greeting-wrap { 
+  height: 2.6rem; /* INCREASED: Accommodates the larger font size without clipping */
+  overflow: hidden; 
+  margin-bottom: 1.2rem; 
+  position: relative; 
+}
+
+.greeting-word { 
+  display: block; 
+  font-family: 'Press Start 2P', monospace; 
+  
+  /* INCREASED: Old size was clamp(.7rem, 1.4vw, 1rem) */
+  font-size: clamp(0.9rem, 1.8vw, 1.3rem); 
+  
+  color: #FF6B1A; 
+  letter-spacing: .08em; 
+  opacity: 0; 
+  transform: translateY(100%) rotateX(-90deg); 
+  transition: opacity .5s, transform .5s cubic-bezier(.23,1,.32,1); 
+  position: absolute; 
+  left: 0; 
+  bottom: 0; /* Ensures baseline alignment during the scale up */
+}
+
+.greeting-word.active { 
+  opacity: 1; 
+  transform: translateY(0) rotateX(0); 
+}
+
+.greeting-lang { 
+  font-family: 'Space Mono', monospace; 
+  
+  /* OPTIONAL INCREASE: Bumped up slightly from .5rem to match the new vibe */
+  font-size: .6rem; 
+  
+  color: #aaa; 
+  letter-spacing: .12em; 
+  text-transform: uppercase; 
+  margin-left: .5rem; 
+  vertical-align: middle; 
+}
 
 .door-3d-wrap { position: fixed; bottom: 0; left: 10px; z-index: 9990; width: 22px; height: 38px; cursor: pointer; opacity: 0.28; transition: filter .25s, opacity .25s; }
 .door-3d-wrap:hover { filter: drop-shadow(0 0 6px rgba(255,107,26,.6)); opacity: 0.7; }
