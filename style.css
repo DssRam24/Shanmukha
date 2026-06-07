@@ -925,7 +925,7 @@ section:hover .section-title { letter-spacing: -.01em; }
 #footer {
   position: relative; overflow: hidden;
   background: linear-gradient(180deg, #FFFAF2 0%, #FFE0A0 18%, #FF9B60 35%, #CC4B2E 52%, #5A2D70 68%, #1a1060 80%, #0a0820 100% );
-  padding: 5rem 5% 0;
+  padding: 5rem 5% 4rem;
 }
 .footer-content { position: relative; z-index: 3; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 2rem; margin-bottom: 3rem; }
 .footer-big-text { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 6.5vw, 6rem); line-height: .92; font-weight: 700; color: #0a0a0a; }
