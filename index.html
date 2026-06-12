@@ -16,40 +16,57 @@
 /* ============================================================
    PROJECTS SLIDESHOW — inline styles (add to style.css if preferred)
    ============================================================ */
-* Edge-to-Edge Wrapper with smooth, glowy ambient border */
-.projects-outer-wrapper {
-  width: 100vw;
-  max-width: 100%;
-  margin: 0;
-  padding: 0;
+/* ============================================================
+   PREMIUM PORTFOLIO CONTEXT — HARD SCREEN BOX VIEWPORTS
+   ============================================================ */
+
+/* Lock window behaviors cleanly without external margin escapes */
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
   background: #060606;
-  position: relative;
+  overflow-x: hidden;
 }
 
-/* Subtle glow accents around the full-screen window split edges */
+.projects-outer-wrapper {
+  width: 100vw;
+  height: 100vh;
+  max-width: 100%;
+  max-height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background: #060606;
+  overflow: hidden;
+}
+
+/* Master viewport box with clean orange glow framework borders */
 #projects-slideshow {
   position: relative;
   width: 100%;
-  height: 100vh;
-  min-height: 750px;
+  height: 100%;
   overflow: hidden;
   background: #060606;
   border-top: 1px solid rgba(226, 105, 58, 0.25);
   border-bottom: 1px solid rgba(226, 105, 58, 0.25);
   box-shadow: inset 0 0 60px rgba(226, 105, 58, 0.04),
-              0 0 40px rgba(226, 105, 58, 0.03);
+              0 0 40px rgba(226, 105, 58, 0.02);
 }
 
-/* Slide Base Viewport Layer */
+/* Base structural slide layers */
 .ps-slide {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: opacity 0.6s cubic-bezier(0.2, 1, 0.4, 1);
   z-index: 1;
 }
 .ps-slide.active {
@@ -67,100 +84,111 @@
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  padding: 80px 60px 40px; /* Space for headers and nav dots */
+  padding: 100px 40px 60px;
 }
 
-/* Premium Radial Background Gradients */
+/* Base Asset Gradients */
 .ps-bg {
   position: absolute;
   inset: 0;
   z-index: 0;
 }
-.ps-bg-chani   { background: radial-gradient(circle at 50% 50%, #032121 0%, #060606 80%); }
-.ps-bg-outfit  { background: radial-gradient(circle at 50% 50%, #240e02 0%, #060606 80%); }
-.ps-bg-water   { background: radial-gradient(circle at 50% 50%, #021624 0%, #060606 80%); }
+.ps-bg-outfit  { background: radial-gradient(circle at 50% 50%, #1e0d02 0%, #060606 80%); }
+.ps-bg-water   { background: radial-gradient(circle at 50% 50%, #02121e 0%, #060606 80%); }
 .ps-bg-dsa     { background: #060606; }
-.ps-bg-github  { background: radial-gradient(circle at 50% 50%, #081702 0%, #060606 80%); }
+.ps-bg-github  { background: radial-gradient(circle at 50% 50%, #061202 0%, #060606 80%); }
 
-#ps-matrix-canvas {
+.ps-grid-tex {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.25;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+  background-size: 50px 50px;
 }
 
-.ps-blur-overlay {
+/* ============================================================
+   CHANI RETRO CRT ANSI TYPE BACKGROUND STYLING
+   ============================================================ */
+.ps-bg-chani {
+  background: #020b0b;
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 50%, rgba(6,6,6,0.1) 0%, #060606 90%);
 }
 
-/* Bento Layout Core */
+/* Simulated terminal block array background */
+.ansi-grid-overlay {
+  position: absolute;
+  inset: 0;
+  background: 
+    linear-gradient(rgba(0, 242, 242, 0.02) 50%, transparent 50%),
+    linear-gradient(90deg, rgba(0, 242, 242, 0.01) 50%, transparent 50%);
+  background-size: 4px 8px; /* Micro pixel grid spacing */
+}
+
+/* Smooth ambient scanning terminal glow line */
+.ansi-flicker {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 0%,
+    rgba(0, 242, 242, 0.04) 10%,
+    rgba(18, 16, 16, 0) 20%
+  );
+  animation: ansi-scan 12s linear infinite;
+}
+
+@keyframes ansi-scan {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+/* ============================================================
+   BENTO CONTENT GRID DESIGN (NO FLOATING BUG TAGS)
+   ============================================================ */
 .ps-bento-grid {
   position: relative;
   z-index: 10;
   width: 100%;
-  max-width: 900px;
+  max-width: 840px;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 20px;
-  justify-content: center;
+  gap: 16px;
 }
 
-/* Premium Progressive Glass Card Styling */
 .ps-bento-card {
-  background: rgba(20, 20, 20, 0.35);
-  backdrop-filter: blur(16px) saturate(120%);
-  -webkit-backdrop-filter: blur(16px) saturate(120%);
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  border-radius: 24px;
-  padding: 40px;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4),
-              inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  transition: border-color 0.4s, box-shadow 0.4s;
+  background: rgba(14, 14, 14, 0.45);
+  backdrop-filter: blur(20px) saturate(110%);
+  -webkit-backdrop-filter: blur(20px) saturate(110%);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  border-radius: 20px;
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.5),
+              inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  box-sizing: border-box;
 }
 
-/* Soft interaction glows */
-.ps-bento-card:hover {
-  border-color: rgba(226, 105, 58, 0.3);
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5),
-              0 0 30px rgba(226, 105, 58, 0.05),
-              inset 0 1px 0 rgba(255, 255, 255, 0.08);
-}
-
-/* Main Premium Centered Copy Block */
 .ps-bento-main {
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.ps-icon {
-  font-size: 42px;
-  margin-bottom: 12px;
-  display: inline-block;
-  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
+  padding: 40px 40px 32px;
 }
 
 .ps-cmd {
   font-family: 'Courier New', monospace;
   font-size: 11px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   color: #e2693a;
   opacity: 0.6;
-  margin-bottom: 16px;
+  margin: 0 0 12px;
 }
 
 .ps-title {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, sans-serif;
-  font-size: clamp(28px, 4vw, 44px);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: clamp(26px, 3.5vw, 38px);
   font-weight: 800;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
   color: #f5f5f7;
   line-height: 1.1;
-  margin-bottom: 18px;
+  margin: 0 0 16px;
 }
 .ps-title span {
   color: #e2693a;
@@ -169,15 +197,14 @@
 }
 
 .ps-desc {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-size: 14px;
-  color: #a1a1a6;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13.5px;
+  color: #96969a;
   line-height: 1.6;
-  max-width: 580px;
-  margin: 0 auto 28px;
+  max-width: 540px;
+  margin: 0 auto 24px;
 }
 
-/* Premium Button Positioning Wrapper */
 .ps-action-wrapper {
   width: 100%;
   display: flex;
@@ -187,44 +214,41 @@
 .ps-action {
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 500;
-  font-size: 12px;
-  letter-spacing: 0.05em;
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
   color: #f5f5f7;
-  background: rgba(226, 105, 58, 0.15);
-  border: 1px solid rgba(226, 105, 58, 0.4);
-  padding: 12px 28px;
-  border-radius: 14px;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  background: rgba(226, 105, 58, 0.12);
+  border: 1px solid rgba(226, 105, 58, 0.35);
+  padding: 10px 24px;
+  border-radius: 12px;
+  transition: all 0.25s ease;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(226, 105, 58, 0.05);
 }
 .ps-action:hover {
   background: #e2693a;
   color: #ffffff;
   border-color: #e2693a;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(226, 105, 58, 0.25);
+  box-shadow: 0 6px 16px rgba(226, 105, 58, 0.2);
 }
 
-/* Lower Bento Tag Strip */
+/* Tags Box — Fully Integrated to stay completely centered */
 .ps-bento-tags {
-  padding: 24px 40px;
+  padding: 20px 30px;
   text-align: center;
 }
 .ps-bento-tags h3 {
   font-family: -apple-system, sans-serif;
-  font-size: 11px;
+  font-size: 10.5px;
   text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: #6e6e73;
-  margin-bottom: 16px;
-  margin-top: 0;
+  letter-spacing: 0.12em;
+  color: #55555a;
+  margin: 0 0 12px;
 }
 
 .ps-tags-flex {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px;
   justify-content: center;
 }
 
@@ -232,18 +256,18 @@
   font-family: 'Courier New', monospace;
   font-size: 11px;
   font-weight: 600;
-  padding: 6px 14px;
-  border-radius: 8px;
-  border: 1px solid rgba(255,255,255,0.03);
+  padding: 5px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.02);
   user-select: none;
 }
-.ps-orange { color: #e2693a; background: rgba(226, 105, 58, 0.08); border-color: rgba(226,105,58,0.15); }
-.ps-blue   { color: #5b9bd5; background: rgba(91, 155, 213, 0.08); border-color: rgba(91,155,213,0.15); }
-.ps-green  { color: #6abf6a; background: rgba(106, 191, 106, 0.08); border-color: rgba(106,191,106,0.15); }
-.ps-purple { color: #a07fd4; background: rgba(160, 127, 212, 0.08); border-color: rgba(160,127,212,0.15); }
-.ps-cyan   { color: #5bbfbf; background: rgba(91, 191, 191, 0.08); border-color: rgba(91,191,191,0.15); }
+.ps-orange { color: #e2693a; background: rgba(226, 105, 58, 0.06); border-color: rgba(226,105,58,0.12); }
+.ps-blue   { color: #5b9bd5; background: rgba(91, 155, 213, 0.06); border-color: rgba(91,155,213,0.12); }
+.ps-green  { color: #6abf6a; background: rgba(106, 191, 106, 0.06); border-color: rgba(106,191,106,0.12); }
+.ps-purple { color: #a07fd4; background: rgba(160, 127, 212, 0.06); border-color: rgba(160,127,212,0.12); }
+.ps-cyan   { color: #5bbfbf; background: rgba(91, 191, 191, 0.06); border-color: rgba(91,191,191,0.12); }
 
-/* Absolute Header Alignment */
+/* Absolute Navigation Controls Setup */
 .ps-header-meta {
   position: absolute;
   top: 32px;
@@ -257,87 +281,81 @@
 .ps-eyebrow {
   font-family: 'Courier New', monospace;
   font-size: 11px;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.16em;
   color: #e2693a;
   text-transform: uppercase;
 }
 .ps-counter {
   font-family: 'Courier New', monospace;
   font-size: 11px;
-  letter-spacing: 0.1em;
-  color: #6e6e73;
+  letter-spacing: 0.08em;
+  color: #55555a;
 }
 
-/* Nav Arrows System */
 .ps-arrow {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   z-index: 30;
-  background: rgba(30, 30, 30, 0.4);
+  background: rgba(20, 20, 20, 0.5);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  color: #86868b;
-  width: 50px;
-  height: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  color: #666;
+  width: 46px;
+  height: 46px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-size: 16px;
-  transition: all 0.3s;
+  font-size: 15px;
+  transition: all 0.25s;
   border-radius: 50%;
 }
 .ps-arrow:hover {
-  border-color: rgba(226, 105, 58, 0.5);
+  border-color: rgba(226, 105, 58, 0.4);
   color: #e2693a;
-  background: rgba(226, 105, 58, 0.05);
 }
-.ps-prev { left: 30px; }
-.ps-next { right: 30px; }
-
-/* Dynamic Progress & Control Dots */
-.ps-progress {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 3px;
-  background: #e2693a;
-  z-index: 40;
-  width: 0%;
-  box-shadow: 0 0 12px #e2693a;
-}
+.ps-prev { left: 24px; }
+.ps-next { right: 24px; }
 
 .ps-dots {
   position: absolute;
-  bottom: 32px;
+  bottom: 24px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 12px;
+  gap: 10px;
   z-index: 30;
 }
 .ps-dot {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
-  background: #333;
+  background: #252528;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.25s ease;
   border: none;
   padding: 0;
 }
 .ps-dot.active {
   background: #e2693a;
-  transform: scale(1.5);
-  box-shadow: 0 0 8px #e2693a;
+  transform: scale(1.4);
 }
 
-/* Responsive Adaptive Layer */
-@media (max-width: 1024px) {
-  .ps-arrow { display: none; } /* Clear up interface real estate on small screens */
-  .ps-bento-grid { max-width: 90%; }
+.ps-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  background: #e2693a;
+  z-index: 40;
+  width: 0%;
+}
+
+@media (max-width: 950px) {
+  .ps-arrow { display: none; }
+  .ps-bento-grid { width: calc(100% - 40px); }
 }
 </style>
 </head>
@@ -521,7 +539,6 @@
   </div>
 </section>
 
-<!-- PROJECTS SLIDESHOW WRAPPER -->
 <div class="projects-outer-wrapper">
   <section id="projects" style="padding:0; overflow:hidden;">
     <div id="projects-slideshow">
@@ -535,12 +552,13 @@
 
       <div class="ps-slide active" id="ps-slide-0">
         <div class="ps-slide-inner">
-          <div class="ps-bg ps-bg-chani"></div>
+          <div class="ps-bg ps-bg-chani">
+            <div class="ansi-grid-overlay"></div>
+            <div class="ansi-flicker"></div>
+          </div>
           
           <div class="ps-bento-grid">
-            
             <div class="ps-bento-card ps-bento-main">
-              <span class="ps-icon">🤖</span>
               <p class="ps-cmd">$ chani --init</p>
               <h2 class="ps-title">CHANI<span>v2.0</span></h2>
               <p class="ps-desc">Cognitive Heuristic Autonomous Nexus Intelligence. A terminal-driven personal AI partner running natively on Windows environment. Architected with long-term semantic memory storage, local file system automation, and cross-application scripting capabilities.</p>
@@ -559,16 +577,15 @@
                 <div class="ps-tag ps-green">Heuristics</div>
               </div>
             </div>
-
-          </div></div>
+          </div>
+        </div>
       </div>
 
       <div class="ps-slide" id="ps-slide-1">
         <div class="ps-slide-inner">
-          <div class="ps-bg ps-bg-outfit"></div>
+          <div class="ps-bg ps-bg-outfit"><div class="ps-grid-tex"></div></div>
           <div class="ps-bento-grid">
             <div class="ps-bento-card ps-bento-main">
-              <span class="ps-icon">👔</span>
               <p class="ps-cmd">$ python OutfitOracle.py</p>
               <h2 class="ps-title">Outfit<span>Oracle</span></h2>
               <p class="ps-desc">An intelligent wardrobe engine engineered to eliminate decision fatigue. By parsing personal clothing inventory, analyzing weather metrics, and evaluating event context, it delivers an optimized outfit selection instantly.</p>
@@ -592,10 +609,9 @@
 
       <div class="ps-slide" id="ps-slide-2">
         <div class="ps-slide-inner">
-          <div class="ps-bg ps-bg-water"></div>
+          <div class="ps-bg ps-bg-water"><div class="ps-grid-tex"></div></div>
           <div class="ps-bento-grid">
             <div class="ps-bento-card ps-bento-main">
-              <span class="ps-icon">🚰</span>
               <p class="ps-cmd">$ telemetry stream --hostel-taps</p>
               <h2 class="ps-title">Smart Water<span>Monitor</span></h2>
               <p class="ps-desc">An end-to-end IoT and Machine Learning platform deployed under the EPICS framework. Features real-time sensor integration tracking TDS, turbidity, pH, and ORP levels with anomaly detection.</p>
@@ -607,7 +623,7 @@
                 <div class="ps-tag ps-cyan">LSTM Networks</div>
                 <div class="ps-tag ps-green">Android SDK</div>
                 <div class="ps-tag ps-orange">MQTT Stream</div>
-                <div class="ps-tag ps-purple">EPICS framework</div>
+                <div class="ps-tag ps-purple">EPICS Framework</div>
               </div>
             </div>
           </div>
@@ -622,7 +638,6 @@
           </div>
           <div class="ps-bento-grid">
             <div class="ps-bento-card ps-bento-main">
-              <span class="ps-icon">🧠</span>
               <p class="ps-cmd">$ java DataStructures</p>
               <h2 class="ps-title">Algorithms &amp;<span>Logic Lab</span></h2>
               <p class="ps-desc">Not a side project—a daily architectural discipline. Consistent Java implementation focusing on tree structures, graph traversal, and complex dynamic programming optimized for microsecond runtime efficiency.</p>
@@ -643,10 +658,9 @@
 
       <div class="ps-slide" id="ps-slide-4">
         <div class="ps-slide-inner">
-          <div class="ps-bg ps-bg-github"></div>
+          <div class="ps-bg ps-bg-github"><div class="ps-grid-tex"></div></div>
           <div class="ps-bento-grid">
             <div class="ps-bento-card ps-bento-main">
-              <span class="ps-icon">🐛</span>
               <p class="ps-cmd">$ git commit -m "production fix"</p>
               <h2 class="ps-title">GitHub<span>Activity</span></h2>
               <p class="ps-desc">Proof of continuous velocity. Version control mapping out cycles of architectural iterations, optimization patches, and open-source contributions.</p>
@@ -656,8 +670,8 @@
             </div>
             <div class="ps-bento-card ps-bento-tags">
               <h3>Git Metrics</h3>
-              <div class="ps-gh-grid" id="ps-gh-grid" style="margin: 0 auto 15px;"></div>
-              <div class="ps-tags-flex" style="justify-content: center;">
+              <div class="ps-gh-grid" id="ps-gh-grid" style="margin: 0 auto 16px;"></div>
+              <div class="ps-tags-flex">
                 <div class="ps-tag ps-green">CI/CD Pipeline</div>
                 <div class="ps-tag ps-cyan">Open Source</div>
               </div>
