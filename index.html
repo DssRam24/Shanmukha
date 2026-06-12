@@ -1391,5 +1391,123 @@ window.adminTab = async function(key, el) {
 };
 </script>
 
+          
+<script id="PROJECTS-SLIDESHOW-JS">
+(function() {
+  const TOTAL = 4;
+  let current = 0;
+  const AUTO_MS = 5500;
+  let autoTimer = null;
+  let progStart = Date.now();
+  let progRAF = null;
+ 
+  // Build nav dots
+  const dotsEl = document.getElementById('ps-dots');
+  for (let i = 0; i < TOTAL; i++) {
+    const d = document.createElement('button');
+    d.className = 'ps-dot' + (i === 0 ? ' active' : '');
+    d.setAttribute('aria-label', 'Slide ' + (i + 1));
+    d.onclick = () => { goTo(i); resetAuto(); };
+    dotsEl.appendChild(d);
+  }
+ 
+  function goTo(idx) {
+    document.getElementById('ps-slide-' + current).classList.remove('active');
+    dotsEl.children[current].classList.remove('active');
+    current = ((idx % TOTAL) + TOTAL) % TOTAL;
+    document.getElementById('ps-slide-' + current).classList.add('active');
+    dotsEl.children[current].classList.add('active');
+    document.getElementById('ps-counter').textContent =
+      String(current + 1).padStart(2, '0') + ' / ' + String(TOTAL).padStart(2, '0');
+    progStart = Date.now();
+  }
+ 
+  document.getElementById('ps-prev').onclick = () => { goTo(current - 1); resetAuto(); };
+  document.getElementById('ps-next').onclick = () => { goTo(current + 1); resetAuto(); };
+ 
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight') { goTo(current + 1); resetAuto(); }
+    if (e.key === 'ArrowLeft')  { goTo(current - 1); resetAuto(); }
+  });
+ 
+  function resetAuto() {
+    clearInterval(autoTimer);
+    autoTimer = setInterval(() => goTo(current + 1), AUTO_MS);
+    progStart = Date.now();
+  }
+  resetAuto();
+ 
+  // Progress bar tick
+  (function tickProgress() {
+    const pct = Math.min(100, ((Date.now() - progStart) / AUTO_MS) * 100);
+    const bar = document.getElementById('ps-progress');
+    if (bar) bar.style.width = pct + '%';
+    requestAnimationFrame(tickProgress);
+  })();
+ 
+  // Floating tag ambient animation
+  (function animateTags() {
+    document.querySelectorAll('.ps-tag').forEach(function(tag, i) {
+      var phase = i * 1.4;
+      var amp = 8 + (i % 3) * 5;
+      var speed = 2.8 + (i % 4) * 0.9;
+      (function tick() {
+        var t = Date.now() / 1000 + phase;
+        var tx = Math.sin(t / speed) * amp;
+        var ty = Math.cos(t / (speed * 0.65)) * (amp * 0.6);
+        tag.style.transform = 'translate(' + tx.toFixed(2) + 'px,' + ty.toFixed(2) + 'px)';
+        requestAnimationFrame(tick);
+      })();
+    });
+  })();
+ 
+  // Matrix rain (DSA slide)
+  var canvas = document.getElementById('ps-matrix-canvas');
+  if (canvas) {
+    var ctx = canvas.getContext('2d');
+    var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789{}[]<>=+-*/JavaDSATreeGraphDP';
+    var fontSize = 13;
+    function resizeMatrix() {
+      canvas.width = canvas.offsetWidth || canvas.parentElement.offsetWidth;
+      canvas.height = canvas.offsetHeight || canvas.parentElement.offsetHeight;
+    }
+    resizeMatrix();
+    window.addEventListener('resize', resizeMatrix);
+    var drops = [];
+    function initDrops() {
+      var cols = Math.floor(canvas.width / fontSize);
+      drops = Array.from({length: cols}, () => Math.random() * -50);
+    }
+    initDrops();
+    window.addEventListener('resize', initDrops);
+    setInterval(function() {
+      ctx.fillStyle = 'rgba(8,8,8,0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.font = fontSize + 'px Courier New';
+      for (var i = 0; i < drops.length; i++) {
+        var ch = chars[Math.floor(Math.random() * chars.length)];
+        ctx.fillStyle = (i % 5 === 0) ? '#39d353' : '#1a5c1a';
+        ctx.fillText(ch, i * fontSize, drops[i] * fontSize);
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
+      }
+    }, 50);
+  }
+ 
+  // GitHub contribution mini-grid
+  var ghGrid = document.getElementById('ps-gh-grid');
+  if (ghGrid) {
+    var levels = ['', 'l1', 'l2', 'l3', 'l4'];
+    for (var g = 0; g < 42; g++) {
+      var cell = document.createElement('div');
+      var r = Math.random();
+      var lv = r > 0.75 ? 4 : r > 0.55 ? 3 : r > 0.4 ? 2 : r > 0.25 ? 1 : 0;
+      cell.className = 'ps-gh-cell ' + levels[lv];
+      ghGrid.appendChild(cell);
+    }
+  }
+})();
+</script>
+ 
 </body>
 </html>
