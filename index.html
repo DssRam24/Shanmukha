@@ -4,34 +4,270 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Shanmukha Donepudi</title>
-   <!-- Favicon -->
 <link rel="icon" type="image/x-icon" href="favicon.ico">
-
-<!-- PNG Favicons -->
 <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
-
-<!-- SVG Favicon -->
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
-
-<!-- Apple Touch Icon -->
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-
-<!-- Web App Manifest -->
 <link rel="manifest" href="site.webmanifest">
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Press+Start+2P&family=Noto+Sans+Telugu:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+
+<style>
+/* ============================================================
+   PROJECTS SLIDESHOW — inline styles (add to style.css if preferred)
+   ============================================================ */
+#projects-slideshow {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 600px;
+  overflow: hidden;
+  background: #0c0c0c;
+}
+.ps-eyebrow {
+  position: absolute;
+  top: 28px;
+  left: 48px;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: #e2693a;
+  z-index: 20;
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+  /* override any section-tag background from light sections */
+  background: transparent !important;
+  border: none !important;
+}
+.ps-counter {
+  position: absolute;
+  top: 28px;
+  right: 48px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: #555;
+  z-index: 20;
+  font-family: 'Courier New', monospace;
+}
+.ps-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  background: #e2693a;
+  z-index: 30;
+  width: 0%;
+}
+.ps-slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+}
+.ps-slide.active {
+  opacity: 1;
+  pointer-events: all;
+  z-index: 2;
+}
+.ps-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.ps-bg-outfit { background: radial-gradient(ellipse at 20% 50%, #1a0a00 0%, #0c0c0c 70%); }
+.ps-bg-water  { background: radial-gradient(ellipse at 20% 50%, #00101a 0%, #0c0c0c 70%); }
+.ps-bg-dsa    { background: #080808; }
+.ps-bg-github { background: radial-gradient(ellipse at 20% 50%, #050d00 0%, #0c0c0c 70%); }
+.ps-grid-tex {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+#ps-matrix-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.45;
+}
+.ps-blur-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(8,8,8,0.02) 0%,
+    rgba(8,8,8,0.25) 30%,
+    rgba(8,8,8,0.65) 55%,
+    rgba(8,8,8,0.94) 100%
+  );
+}
+.ps-content {
+  position: relative;
+  z-index: 10;
+  padding: 0 48px;
+  max-width: 560px;
+  width: 100%;
+}
+.ps-icon {
+  font-size: 36px;
+  margin-bottom: 16px;
+  display: block;
+}
+.ps-cmd {
+  font-size: 11px;
+  color: #e2693a;
+  letter-spacing: 0.05em;
+  margin-bottom: 18px;
+  opacity: 0.8;
+  font-family: 'Courier New', monospace;
+}
+.ps-title {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(32px, 4.5vw, 54px);
+  font-weight: 700;
+  font-style: italic;
+  color: #f0ede8;
+  line-height: 1.05;
+  margin-bottom: 20px;
+  letter-spacing: -0.02em;
+}
+.ps-title span { color: #e2693a; }
+.ps-desc {
+  font-size: 13px;
+  color: #888;
+  line-height: 1.8;
+  margin-bottom: 28px;
+  max-width: 420px;
+  font-family: 'Courier New', monospace;
+}
+.ps-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: #e2693a;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  border: 1px solid rgba(226,105,58,0.3);
+  padding: 8px 18px;
+  border-radius: 2px;
+  transition: all 0.2s;
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.ps-action:hover { border-color: #e2693a; color: #f5a87a; background: rgba(226,105,58,0.05); }
+.ps-tags-zone {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 46%;
+  z-index: 5;
+  pointer-events: none;
+}
+.ps-tag {
+  position: absolute;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  font-family: 'Courier New', monospace;
+  padding: 6px 14px;
+  border-radius: 2px;
+  border: 1px solid;
+  pointer-events: all;
+  user-select: none;
+  text-transform: uppercase;
+  transition: filter 0.15s;
+}
+.ps-tag:hover { filter: brightness(1.4); }
+.ps-orange { color: #e2693a; border-color: rgba(226,105,58,0.35); background: rgba(226,105,58,0.06); }
+.ps-blue   { color: #5b9bd5; border-color: rgba(91,155,213,0.35); background: rgba(91,155,213,0.06); }
+.ps-green  { color: #6abf6a; border-color: rgba(106,191,106,0.35); background: rgba(106,191,106,0.06); }
+.ps-purple { color: #a07fd4; border-color: rgba(160,127,212,0.35); background: rgba(160,127,212,0.06); }
+.ps-cyan   { color: #5bbfbf; border-color: rgba(91,191,191,0.35); background: rgba(91,191,191,0.06); }
+.ps-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #555;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+  transition: all 0.2s;
+  border-radius: 2px;
+}
+.ps-arrow:hover { border-color: #e2693a; color: #e2693a; }
+.ps-prev { left: 12px; }
+.ps-next { right: 12px; }
+.ps-dots {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 20;
+}
+.ps-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #333;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: none;
+  padding: 0;
+}
+.ps-dot.active { background: #e2693a; transform: scale(1.4); }
+.ps-gh-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  width: 182px;
+  margin-top: 16px;
+}
+.ps-gh-cell {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background: #1a1a1a;
+}
+.ps-gh-cell.l1 { background: #0e3b1a; }
+.ps-gh-cell.l2 { background: #1a6b32; }
+.ps-gh-cell.l3 { background: #2ea043; }
+.ps-gh-cell.l4 { background: #39d353; }
+@media (prefers-reduced-motion: reduce) {
+  .ps-tag  { transition: none !important; }
+  .ps-slide { transition: opacity 0.1s; }
+}
+</style>
 </head>
+
 <body>
-<!-- NIGHT SKY CANVAS (renders animated stars & meteors) -->
-<canvas id="night-sky-canvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 50; pointer-events: none; opacity: 0; transition: opacity 1.2s cubic-bezier(.23,1,.32,1);"></canvas>
+
+<!-- NIGHT SKY CANVAS -->
+<canvas id="night-sky-canvas" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:50;pointer-events:none;opacity:0;transition:opacity 1.2s cubic-bezier(.23,1,.32,1);"></canvas>
+
 <!-- RGB PIXEL CURSOR -->
 <div id="px-cursor"></div>
 <div id="px-trail"></div>
 
 <!-- NAV -->
 <nav id="main-nav">
-  <a class="nav-logo" href="#" >DSSRam/</a>
-
+  <a class="nav-logo" href="#">DSSRam/</a>
   <div class="nav-links" id="nav-links">
     <a href="#about">About</a>
     <a href="#design">Design</a>
@@ -45,19 +281,15 @@
   </button>
 </nav>
 
-
 <!-- HERO -->
 <section id="hero">
- 
   <div class="hero-bg-grid" id="hero-grid"></div>
   <div class="float-tag ft-1">✦ creative</div>
   <div class="float-tag ft-2">↗ lets build</div>
   <div class="float-tag ft-3">⌘ maker</div>
 
   <div class="hero-left">
-    <!-- NAME BLOCK (no image) -->
     <div class="hero-name-block reveal-l">
-      <!-- MULTILANG GREETING -->
       <div class="greeting-wrap" id="greeting-wrap">
         <span class="greeting-word active" id="gw-0">Hello <span class="greeting-lang">EN</span></span>
         <span class="greeting-word" id="gw-1">नमस्ते <span class="greeting-lang">HI</span></span>
@@ -65,15 +297,13 @@
         <span class="greeting-word" id="gw-3">こんにちは <span class="greeting-lang">JP</span></span>
         <span class="greeting-word" id="gw-4">Hola <span class="greeting-lang">ES</span></span>
         <span class="greeting-word" id="gw-5">Bonjour <span class="greeting-lang">FR</span></span>
-         <span class="greeting-word" id="gw-8">नमस्कार <span class="greeting-lang">MR</span></span> <!-- Marathi -->
-
-  <span class="greeting-word" id="gw-9">ನಮಸ್ಕಾರ <span class="greeting-lang">KN</span></span> <!-- Kannada -->
-  <span class="greeting-word" id="gw-10">നമസ്കാരം <span class="greeting-lang">ML</span></span> <!-- Malayalam -->
-<span class="greeting-word" id="gw-11">Ciao <span class="greeting-lang">IT</span></span>
-         <span class="greeting-word" id="gw-12">مرحباً <span class="greeting-lang">AR</span></span>
-         
+        <span class="greeting-word" id="gw-8">नमस्कार <span class="greeting-lang">MR</span></span>
+        <span class="greeting-word" id="gw-9">ನಮಸ್ಕಾರ <span class="greeting-lang">KN</span></span>
+        <span class="greeting-word" id="gw-10">നമസ്കാരം <span class="greeting-lang">ML</span></span>
+        <span class="greeting-word" id="gw-11">Ciao <span class="greeting-lang">IT</span></span>
+        <span class="greeting-word" id="gw-12">مرحباً <span class="greeting-lang">AR</span></span>
       </div>
-       <h2>I am</h2>
+      <h2>I am</h2>
       <h1 class="hero-name">
         Shanmukha<br><span>Donepudi</span>
       </h1>
@@ -101,7 +331,6 @@
     </div>
   </div>
 
- <!-- PHOTO -->
   <div class="hero-right">
     <div class="photo-universe" id="photo-drag">
       <div class="photo-drag-hint">drag me ✦ double-click to snap back</div>
@@ -112,9 +341,9 @@
       <div class="fshape fs-5"></div>
       <div class="fshape fs-6"></div>
       <div class="photo-wrap reveal">
-        <!-- USER PHOTO (color, no filter) -->
-        <img src="photo.jpg" alt="Shanmukha Donepudi" class="photo" id="hero-photo">
-           <div class="photo-corner pc-tl"></div>
+        <!-- Replace src="" with your actual photo path -->
+        <img src="" alt="Shanmukha Donepudi">
+        <div class="photo-corner pc-tl"></div>
         <div class="photo-corner pc-tr"></div>
         <div class="photo-corner pc-bl"></div>
         <div class="photo-corner pc-br"></div>
@@ -122,21 +351,17 @@
     </div>
   </div>
 </section>
-   
-<div class="rchives-wrapper">
-  <!-- Left accent line vector -->
-  <div class="line"></div>
 
-  <!-- Redesigned Standalone Button Target -->
-  <a href="rchives.html" 
-     target="_blank" 
-     rel="noopener noreferrer" 
-     class="rchives-logo">
-     R<span>chives</span>
+<!-- RCHIVES LINK -->
+<div class="rchives-wrapper">
+  <div class="line"></div>
+  <a href="rchives.html" target="_blank" rel="noopener noreferrer" class="rchives-logo">
+    R<span>chives</span>
   </a>
   <div class="line"></div>
 </div>
-<!-- ABOUT / INTERESTS (centered) -->
+
+<!-- ABOUT -->
 <section id="about" style="padding:7rem 0 6rem;background:#FFFAF2;text-align:center;">
   <div class="section-tag reveal" style="justify-content:center;text-align:center;max-width:600px;margin:0 auto 1rem;">
     001 — About Me
@@ -146,36 +371,29 @@
   </h2>
 
   <div class="reveal" style="display:flex;justify-content:center;gap:.4rem;flex-wrap:wrap;margin-bottom:3rem;">
-    <!-- Core Stack -->
     <span class="badge">React ⚛️</span>
     <span class="badge">Firebase 🔥</span>
     <span class="badge">UI/UX 🎨</span>
     <span class="badge">Figma ✏️</span>
-    <!-- Languages -->
     <span class="badge" style="background:#111;border-color:rgba(107,157,255,.4);color:#6B9DFF;">Java ☕</span>
     <span class="badge" style="background:#111;border-color:rgba(107,157,255,.4);color:#6B9DFF;">Python 🐍</span>
     <span class="badge" style="background:#111;border-color:rgba(107,157,255,.4);color:#6B9DFF;">C 🔧</span>
     <span class="badge" style="background:#111;border-color:rgba(107,157,255,.4);color:#6B9DFF;">HTML/CSS/JS 🌐</span>
-    <!-- DB & Tools -->
     <span class="badge" style="background:#111;border-color:rgba(107,255,184,.3);color:#6BFFB8;">MySQL 🗄️</span>
     <span class="badge" style="background:#111;border-color:rgba(107,255,184,.3);color:#6BFFB8;">Git 🌿</span>
-    <!-- CS Core -->
     <span class="badge" style="background:#111;border-color:rgba(255,213,128,.3);color:#FFD580;">OOP 🧱</span>
     <span class="badge" style="background:#111;border-color:rgba(255,213,128,.3);color:#FFD580;">DSA 🧠</span>
     <span class="badge" style="background:#111;border-color:rgba(255,213,128,.3);color:#FFD580;">OS · Networks 💻</span>
   </div>
+</section>
 
-
-<!-- ============================================================
-     STORY SECTION — condensed, same arc
-     ============================================================ -->
+<!-- STORY -->
 <section id="story">
   <div class="story-line"></div>
   <div class="story-dot" style="top:6rem;"></div>
   <div class="story-dot" style="bottom:6rem;"></div>
 
   <div class="story-inner">
-
     <div class="story-tag reveal">000 — Origin</div>
 
     <div class="story-para reveal">
@@ -214,18 +432,16 @@
         </span>
       </div>
     </div>
-
   </div>
 </section>
 
- 
-<!-- PROJECTS -->
+<!-- PROJECTS SLIDESHOW -->
 <section id="projects" style="padding:0;overflow:hidden;">
   <div id="projects-slideshow">
-    <div class="section-tag ps-eyebrow reveal">003 — Projects &amp; Builds</div>
+    <div class="ps-eyebrow reveal">003 — Projects &amp; Builds</div>
     <div class="ps-counter" id="ps-counter">01 / 04</div>
     <div class="ps-progress" id="ps-progress"></div>
- 
+
     <!-- SLIDE 1: OutfitOracle -->
     <div class="ps-slide active" id="ps-slide-0">
       <div class="ps-bg ps-bg-outfit"><div class="ps-grid-tex"></div></div>
@@ -234,7 +450,7 @@
         <p class="ps-cmd">$ python OutfitOracle.py --generate-fit</p>
         <h2 class="ps-title">Outfit<span>Oracle</span></h2>
         <p class="ps-desc">A smart wardrobe engine that kills decision fatigue at 7am. Parses your clothing inventory, hits a weather API, reads the occasion — and hands you a fit. No thinking required.<br><br>Built fast. Solves a real problem. Ships.</p>
-        <a onclick="window.open('https://github.com/DssRam24/OutfitOracle','_blank')" class="ps-action" style="cursor:pointer;">🌐 VIEW ON GITHUB ↗</a>
+        <span class="ps-action" onclick="window.open('https://github.com/DssRam24/OutfitOracle','_blank')">🌐 VIEW ON GITHUB ↗</span>
       </div>
       <div class="ps-tags-zone">
         <div class="ps-tag ps-orange" style="top:22%;left:18%">Python</div>
@@ -246,7 +462,7 @@
         <div class="ps-tag ps-blue"   style="top:15%;left:50%">Claude Vision</div>
       </div>
     </div>
- 
+
     <!-- SLIDE 2: Smart Water -->
     <div class="ps-slide" id="ps-slide-1">
       <div class="ps-bg ps-bg-water"><div class="ps-grid-tex"></div></div>
@@ -266,7 +482,7 @@
         <div class="ps-tag ps-cyan"   style="top:44%;left:28%">pH Monitor</div>
       </div>
     </div>
- 
+
     <!-- SLIDE 3: DSA (matrix rain background) -->
     <div class="ps-slide" id="ps-slide-2">
       <div class="ps-bg ps-bg-dsa">
@@ -289,7 +505,7 @@
         <div class="ps-tag ps-green"  style="top:40%;left:30%">Binary Search</div>
       </div>
     </div>
- 
+
     <!-- SLIDE 4: GitHub -->
     <div class="ps-slide" id="ps-slide-3">
       <div class="ps-bg ps-bg-github"><div class="ps-grid-tex"></div></div>
@@ -300,7 +516,7 @@
         <p class="ps-desc">"It was working yesterday. I swear on my GPA."<br><br>Green squares don't lie. Click to see how many times I've saved and broken the same file.</p>
         <div class="ps-gh-grid" id="ps-gh-grid"></div>
         <br>
-        <a onclick="openGhModal()" class="ps-action" style="cursor:pointer;">📊 CONTRIBUTION GRAPH ↗</a>
+        <span class="ps-action" onclick="openGhModal()">📊 CONTRIBUTION GRAPH ↗</span>
       </div>
       <div class="ps-tags-zone">
         <div class="ps-tag ps-green"  style="top:22%;left:20%">Git</div>
@@ -310,166 +526,123 @@
         <div class="ps-tag ps-blue"   style="top:30%;left:60%">GitHub</div>
       </div>
     </div>
- 
-    <!-- Navigation -->
+
     <button class="ps-arrow ps-prev" id="ps-prev">&#8592;</button>
     <button class="ps-arrow ps-next" id="ps-next">&#8594;</button>
     <div class="ps-dots" id="ps-dots"></div>
   </div>
 </section>
-   <br>
-   
-  <!-- Interests divider -->
 
+<!-- INTERESTS -->
+<section id="interests" style="padding:5rem 0 3rem;background:#FFFAF2;">
   <h2 class="section-title reveal" style="text-align:center;">
     Things I'm proud of &amp; <em>into</em>
   </h2>
-  <!-- Mini interest cards -->
-  <div class="projects-mini-row reveal">
 
+  <div class="projects-mini-row reveal">
     <div class="projects-mini">
       <span class="projects-mini-em">🧡</span>
-      <span>
-        <strong>SRH Fan</strong>
-        Orange isn't just a design accent. It's loyalty to the Sunrisers.
-      </span>
+      <span><strong>SRH Fan</strong> Orange isn't just a design accent. It's loyalty to the Sunrisers.</span>
     </div>
-
     <div class="projects-mini">
       <span class="projects-mini-em">🏠</span>
-      <span>
-        <strong>Floor Plans</strong>
-        Draws house layouts for fun. Floor-to-ceiling windows. Non-negotiable.
-      </span>
+      <span><strong>Floor Plans</strong> Draws house layouts for fun. Floor-to-ceiling windows. Non-negotiable.</span>
     </div>
-
     <div class="projects-mini">
       <span class="projects-mini-em">♟️</span>
-      <span>
-        <strong>Chess</strong>
-        Life is just tempo management with better visuals.
-      </span>
+      <span><strong>Chess</strong> Life is just tempo management with better visuals.</span>
     </div>
-
     <div class="projects-mini">
       <span class="projects-mini-em">👔</span>
-      <span>
-        <strong>Fashion</strong>
-        Silently judging fits. Style is architecture for the body.
-      </span>
+      <span><strong>Fashion</strong> Silently judging fits. Style is architecture for the body.</span>
     </div>
-
     <div class="projects-mini">
       <span class="projects-mini-em">🚗</span>
-      <span>
-        <strong>Automobile Design</strong>
-        Obsessed with chassis profiles. Fast machinery is sculpture you sit in.
-      </span>
+      <span><strong>Automobile Design</strong> Obsessed with chassis profiles. Fast machinery is sculpture you sit in.</span>
     </div>
-
   </div>
 
-
-   <br>
-  <!-- ============================================================
-     INTERESTS GRID — drop-in replacement
-     ============================================================ -->
-<div class="interests-grid reveal">
-
-  <div class="interest-card">
-    <span class="ic-emoji">💻</span>
-    <div class="ic-title">Development</div>
-    <p class="ic-desc">React, Firebase, and a genuine belief that the 47th console.log will finally explain everything.</p>
-    <span class="ic-tag">./dev</span>
-  </div>
-
-  <div class="interest-card">
-    <span class="ic-emoji">🎨</span>
-    <div class="ic-title">Design</div>
-    <p class="ic-desc">Will spend three hours on a border-radius. Built a full color system for a music app nobody asked for. No regrets.</p>
-    <span class="ic-tag">./design</span>
-  </div>
-
-  <div class="interest-card">
-    <span class="ic-emoji">📚</span>
-    <div class="ic-title">Books</div>
-    <p class="ic-desc">Non-fiction only. Fiction is lying on paper with better prose.</p>
-    <span class="ic-tag">./books</span>
-  </div>
-
-  <!-- MUSIC CARD -->
-  <div class="interest-card" id="card-music">
-    <span class="ic-emoji">🎵</span>
-    <div class="ic-title">Music</div>
-    <p class="ic-desc">FLAC or nothing. Built a personal player because Spotify's audio quality felt like a personal insult.</p>
-    <span class="ic-tag">./music</span>
-    <div class="ic-form">
-      <div class="ic-form-toggle" onclick="toggleIcForm('music-form')">🎧 Drop me your playlist →</div>
-      <div class="ic-form-body" id="music-form" style="display:none;">
-        <input class="ic-input" id="music-val" placeholder="Playlist name or link...">
-        <input class="ic-input" id="music-who" placeholder="Your name (optional)">
-        <button class="ic-btn" onclick="submitIcForm('music')">Send it 🎶</button>
-        <div id="music-confirm" style="display:none;font-family:'Space Mono',monospace;font-size:.6rem;color:#6BFFB8;margin-top:.3rem;">✓ Sent. I'll check it out.</div>
+  <div class="interests-grid reveal">
+    <div class="interest-card">
+      <span class="ic-emoji">💻</span>
+      <div class="ic-title">Development</div>
+      <p class="ic-desc">React, Firebase, and a genuine belief that the 47th console.log will finally explain everything.</p>
+      <span class="ic-tag">./dev</span>
+    </div>
+    <div class="interest-card">
+      <span class="ic-emoji">🎨</span>
+      <div class="ic-title">Design</div>
+      <p class="ic-desc">Will spend three hours on a border-radius. Built a full color system for a music app nobody asked for. No regrets.</p>
+      <span class="ic-tag">./design</span>
+    </div>
+    <div class="interest-card">
+      <span class="ic-emoji">📚</span>
+      <div class="ic-title">Books</div>
+      <p class="ic-desc">Non-fiction only. Fiction is lying on paper with better prose.</p>
+      <span class="ic-tag">./books</span>
+    </div>
+    <div class="interest-card" id="card-music">
+      <span class="ic-emoji">🎵</span>
+      <div class="ic-title">Music</div>
+      <p class="ic-desc">FLAC or nothing. Built a personal player because Spotify's audio quality felt like a personal insult.</p>
+      <span class="ic-tag">./music</span>
+      <div class="ic-form">
+        <div class="ic-form-toggle" onclick="toggleIcForm('music-form')">🎧 Drop me your playlist →</div>
+        <div class="ic-form-body" id="music-form" style="display:none;">
+          <input class="ic-input" id="music-val" placeholder="Playlist name or link...">
+          <input class="ic-input" id="music-who" placeholder="Your name (optional)">
+          <button class="ic-btn" onclick="submitIcForm('music')">Send it 🎶</button>
+          <div id="music-confirm" style="display:none;font-family:'Space Mono',monospace;font-size:.6rem;color:#6BFFB8;margin-top:.3rem;">✓ Sent. I'll check it out.</div>
+        </div>
+      </div>
+    </div>
+    <div class="interest-card" id="card-fitness">
+      <span class="ic-emoji">🏋️</span>
+      <div class="ic-title">Fitness</div>
+      <p class="ic-desc">Body recomposition in progress. Day 1 is a recurring event — but the streak's building.</p>
+      <span class="ic-tag">./fitness</span>
+      <div class="ic-form">
+        <div class="ic-form-toggle" onclick="toggleIcForm('fitness-form')">💪 Tell me a routine →</div>
+        <div class="ic-form-body" id="fitness-form" style="display:none;">
+          <textarea class="ic-input" id="fitness-val" placeholder="Your go-to workout routine..." rows="2" style="resize:none;"></textarea>
+          <input class="ic-input" id="fitness-who" placeholder="Your name (optional)">
+          <button class="ic-btn" onclick="submitIcForm('fitness')">Send it 🔥</button>
+          <div id="fitness-confirm" style="display:none;font-family:'Space Mono',monospace;font-size:.6rem;color:#6BFFB8;margin-top:.3rem;">✓ Routine noted. Day 1 starts soon.</div>
+        </div>
+      </div>
+    </div>
+    <div class="interest-card" id="card-speaking">
+      <span class="ic-emoji">🎤</span>
+      <div class="ic-title" style="font-size:0.9rem;font-family:'Gautami','Noto Sans Telugu',sans-serif;line-height:1.5;">
+        నేనొక దుర్గం<br>నాదొక స్వర్గం<br>అనర్గళం,<br>అనితరసాధ్యం నా మార్గం
+      </div>
+      <p class="ic-desc"></p>
+      <span class="ic-tag">./speaking</span>
+      <div class="ic-form">
+        <div class="ic-form-toggle" onclick="toggleIcForm('speaking-form')">💬 Quote me something →</div>
+        <div class="ic-form-body" id="speaking-form" style="display:none;">
+          <textarea class="ic-input" id="speaking-val" placeholder="Drop a quote that hits different..." rows="2" style="resize:none;"></textarea>
+          <input class="ic-input" id="speaking-who" placeholder="Your name (optional)">
+          <button class="ic-btn" onclick="submitIcForm('speaking')">Send it ✨</button>
+          <div id="speaking-confirm" style="display:none;font-family:'Space Mono',monospace;font-size:.6rem;color:#6BFFB8;margin-top:.3rem;">✓ Quoted. I'll carry it.</div>
+        </div>
       </div>
     </div>
   </div>
+</section>
 
-  <!-- FITNESS CARD -->
-  <div class="interest-card" id="card-fitness">
-    <span class="ic-emoji">🏋️</span>
-    <div class="ic-title">Fitness</div>
-    <p class="ic-desc">Body recomposition in progress. Day 1 is a recurring event — but the streak's building.</p>
-    <span class="ic-tag">./fitness</span>
-    <div class="ic-form">
-      <div class="ic-form-toggle" onclick="toggleIcForm('fitness-form')">💪 Tell me a routine →</div>
-      <div class="ic-form-body" id="fitness-form" style="display:none;">
-        <textarea class="ic-input" id="fitness-val" placeholder="Your go-to workout routine..." rows="2" style="resize:none;"></textarea>
-        <input class="ic-input" id="fitness-who" placeholder="Your name (optional)">
-        <button class="ic-btn" onclick="submitIcForm('fitness')">Send it 🔥</button>
-        <div id="fitness-confirm" style="display:none;font-family:'Space Mono',monospace;font-size:.6rem;color:#6BFFB8;margin-top:.3rem;">✓ Routine noted. Day 1 starts soon.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- SPEAKING CARD -->
-  <div class="interest-card" id="card-speaking">
-    <span class="ic-emoji">🎤</span>
-<div class="ic-title" style="font-size: 0.9rem; font-family: 'Gautami', 'Noto Sans Telugu', sans-serif; line-height: 1.5;">
-    నేనొక దుర్గం<br>
-    నాదొక స్వర్గం<br>
-    అనర్గళం,<br>
-    అనితరసాధ్యం నా మార్గం
-</div>
-    <p class="ic-desc"></p>
-    <span class="ic-tag">./speaking</span>
-    <div class="ic-form">
-      <div class="ic-form-toggle" onclick="toggleIcForm('speaking-form')">💬 Quote me something →</div>
-      <div class="ic-form-body" id="speaking-form" style="display:none;">
-        <textarea class="ic-input" id="speaking-val" placeholder="Drop a quote that hits different..." rows="2" style="resize:none;"></textarea>
-        <input class="ic-input" id="speaking-who" placeholder="Your name (optional)">
-        <button class="ic-btn" onclick="submitIcForm('speaking')">Send it ✨</button>
-        <div id="speaking-confirm" style="display:none;font-family:'Space Mono',monospace;font-size:.6rem;color:#6BFFB8;margin-top:.3rem;">✓ Quoted. I'll carry it.</div>
-      </div>
-    </div>
-  </div>
-
-</div>
-<br>
-
-   
+<!-- BLOGS -->
 <section id="blogs" class="reveal">
   <div class="blogs-container">
     <span class="section-tag">Latest Writing</span>
     <h2 class="section-title">From The <em>Notebook</em></h2>
-    
     <div class="blogs-grid" id="blogger-posts-grid">
       <div class="blog-loading">Initializing feed stream...</div>
     </div>
   </div>
 </section>
 
-   
-<!-- DESIGN — WINDOWS EXPLORER FLOATING -->
+<!-- DESIGN — WINDOWS EXPLORER -->
 <section id="design">
   <div class="section-tag reveal">002 — Design Works</div>
   <h2 class="section-title reveal">The stuff I make <em>at 2am.</em></h2>
@@ -503,135 +676,111 @@
         <div class="win-addr-input">C:\DSSRam\Portfolio\Design\</div>
       </div>
       <div class="win-body">
-  <div class="win-sidebar">
-    <div class="win-sb-head">Favourites</div>
-    <div class="win-sb-item"><span>🖥️</span> Desktop</div>
-    <div class="win-sb-item active"><span>🎨</span> Design</div>
-    <div class="win-sb-item"><span>📸</span> Photos</div>
-    <div class="win-sb-head" style="margin-top:.5rem">Drives</div>
-    <div class="win-sb-item"><span>💾</span> Local (C:)</div>
-    <div class="win-sb-item"><span>☁️</span> Firebase</div>
-  </div>
-
-  <div class="win-content" style="display:flex;gap:0;min-width:0;padding:0;">
-    <!-- FILE GRID SIDE -->
-    <div style="flex:1;min-width:0;padding:1rem;border-right:1px solid #eee;">
-      <div class="win-vtabs">
-        <div class="win-vtab active">⊞ Icons</div>
-        <div class="win-vtab">≡ List</div>
-        <div class="win-vtab">⊟ Details</div>
-      </div>
-      <div class="win-grid" id="win-grid">
-        <div class="win-file selected" onclick="winSel(this,'designs')">
-          <svg width="52" height="44" viewBox="0 0 52 44" fill="none">
-            <rect x="0" y="10" width="52" height="34" rx="3" fill="#FF6B1A" opacity=".9"/>
-            <rect x="0" y="10" width="22" height="8" rx="2" fill="#FFD580"/>
-          </svg>
-          <div class="win-file-name">Designs</div>
+        <div class="win-sidebar">
+          <div class="win-sb-head">Favourites</div>
+          <div class="win-sb-item"><span>🖥️</span> Desktop</div>
+          <div class="win-sb-item active"><span>🎨</span> Design</div>
+          <div class="win-sb-item"><span>📸</span> Photos</div>
+          <div class="win-sb-head" style="margin-top:.5rem">Drives</div>
+          <div class="win-sb-item"><span>💾</span> Local (C:)</div>
+          <div class="win-sb-item"><span>☁️</span> Firebase</div>
         </div>
-        <div class="win-file" onclick="winSel(this,'ui')">
-          <svg width="52" height="44" viewBox="0 0 52 44" fill="none">
-            <rect x="0" y="10" width="52" height="34" rx="3" fill="#6B9DFF" opacity=".85"/>
-            <rect x="0" y="10" width="20" height="8" rx="2" fill="#B3D0FF"/>
-            <rect x="8" y="20" width="36" height="20" rx="2" fill="rgba(255,255,255,.22)"/>
-            <rect x="12" y="24" width="10" height="8" rx="1" fill="rgba(255,255,255,.5)"/>
-            <rect x="26" y="24" width="14" height="4" rx="1" fill="rgba(255,255,255,.3)"/>
-          </svg>
-          <div class="win-file-name">UI Exploration</div>
+        <div class="win-content" style="display:flex;gap:0;min-width:0;padding:0;">
+          <!-- FILE GRID -->
+          <div style="flex:1;min-width:0;padding:1rem;border-right:1px solid #eee;">
+            <div class="win-vtabs">
+              <div class="win-vtab active">⊞ Icons</div>
+              <div class="win-vtab">≡ List</div>
+              <div class="win-vtab">⊟ Details</div>
+            </div>
+            <div class="win-grid" id="win-grid">
+              <div class="win-file selected" onclick="winSel(this,'designs')">
+                <svg width="52" height="44" viewBox="0 0 52 44" fill="none">
+                  <rect x="0" y="10" width="52" height="34" rx="3" fill="#FF6B1A" opacity=".9"/>
+                  <rect x="0" y="10" width="22" height="8" rx="2" fill="#FFD580"/>
+                </svg>
+                <div class="win-file-name">Designs</div>
+              </div>
+              <div class="win-file" onclick="winSel(this,'ui')">
+                <svg width="52" height="44" viewBox="0 0 52 44" fill="none">
+                  <rect x="0" y="10" width="52" height="34" rx="3" fill="#6B9DFF" opacity=".85"/>
+                  <rect x="0" y="10" width="20" height="8" rx="2" fill="#B3D0FF"/>
+                  <rect x="8" y="20" width="36" height="20" rx="2" fill="rgba(255,255,255,.22)"/>
+                  <rect x="12" y="24" width="10" height="8" rx="1" fill="rgba(255,255,255,.5)"/>
+                  <rect x="26" y="24" width="14" height="4" rx="1" fill="rgba(255,255,255,.3)"/>
+                </svg>
+                <div class="win-file-name">UI Exploration</div>
+              </div>
+              <div class="win-file" onclick="winSel(this,'content')">
+                <svg width="48" height="44" viewBox="0 0 48 44" fill="none">
+                  <rect x="4" y="0" width="36" height="44" rx="3" fill="#fff" stroke="#ddd" stroke-width="1.2"/>
+                  <rect x="10" y="8" width="22" height="2.5" rx="1" fill="#FF6B1A"/>
+                  <rect x="10" y="14" width="18" height="2" rx="1" fill="#ddd"/>
+                  <rect x="10" y="19" width="20" height="2" rx="1" fill="#ddd"/>
+                  <circle cx="36" cy="36" r="8" fill="#FF6B1A"/>
+                  <text x="36" y="40" text-anchor="middle" fill="#fff" font-size="10">✏</text>
+                </svg>
+                <div class="win-file-name">Content Creation</div>
+              </div>
+              <div class="win-file" onclick="winSel(this,'app')">
+                <svg width="52" height="44" viewBox="0 0 52 44" fill="none">
+                  <rect x="0" y="10" width="52" height="34" rx="3" fill="#6BFFB8" opacity=".82"/>
+                  <rect x="0" y="10" width="20" height="8" rx="2" fill="#B8FFD4"/>
+                  <rect x="15" y="18" width="22" height="22" rx="3" fill="rgba(0,0,0,.15)"/>
+                  <rect x="17" y="20" width="18" height="18" rx="2" fill="rgba(255,255,255,.35)"/>
+                  <rect x="19" y="22" width="14" height="4" rx="1" fill="rgba(0,0,0,.25)"/>
+                </svg>
+                <div class="win-file-name">App Design</div>
+              </div>
+              <div class="win-file" style="opacity:.45" onclick="winSel(this,'motion')">
+                <div style="font-size:2.2rem">🎬</div>
+                <div class="win-file-name" style="color:#aaa">Motion.ae</div>
+              </div>
+              <div class="win-file" style="opacity:.45" onclick="winSel(this,'brand')">
+                <div style="font-size:2.2rem">📦</div>
+                <div class="win-file-name" style="color:#aaa">Brand Kit</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PREVIEW PANE -->
+          <div id="win-preview" style="width:280px;flex-shrink:0;padding:1rem;background:#fafafa;display:flex;flex-direction:column;gap:.7rem;">
+            <div style="font-family:'Space Mono',monospace;font-size:.5rem;color:#aaa;text-transform:uppercase;letter-spacing:.15em;">Preview</div>
+            <div id="wp-name" style="font-family:'Space Mono',monospace;font-size:.68rem;font-weight:700;color:#333;">Designs</div>
+            <div id="wp-desc" style="font-family:'Space Mono',monospace;font-size:.58rem;color:#888;line-height:1.75;"></div>
+
+            <div id="wp-designs" class="wp-section">
+              <img src="Fully Loaded Gun.png" alt="Design Work 1" class="wp-img" onerror="this.style.display='none'">
+              <img src="Your paragraph text (2).png" alt="Design Work 2" class="wp-img" onerror="this.style.display='none'">
+              <img src="aveyard (Instagram Post (45)).png" alt="Design Work 3" class="wp-img" onerror="this.style.display='none'">
+              <img src="stevejobs.png" alt="Design Work 4" class="wp-img" onerror="this.style.display='none'">
+              <img src="Dssigns (1).png" alt="Design Work 5" class="wp-img" onerror="this.style.display='none'">
+              <img src="Tech Sprint.png" alt="Design Work 6" class="wp-img" onerror="this.style.display='none'">
+              <img src="@gdg_vrsec.png" alt="Design Work 7" class="wp-img" onerror="this.style.display='none'">
+            </div>
+            <div id="wp-ui" class="wp-section" style="display:none;">
+              <img src="" alt="UI Work 1" class="wp-img" onerror="this.style.display='none'">
+              <img src="" alt="UI Work 2" class="wp-img" onerror="this.style.display='none'">
+            </div>
+            <div id="wp-content" class="wp-section" style="display:none;">
+              <img src="" alt="Content 1" class="wp-img" onerror="this.style.display='none'">
+              <img src="" alt="Content 2" class="wp-img" onerror="this.style.display='none'">
+            </div>
+            <div id="wp-app" class="wp-section" style="display:none;">
+              <img src="" alt="App Design 1" class="wp-img" onerror="this.style.display='none'">
+              <img src="" alt="App Design 2" class="wp-img" onerror="this.style.display='none'">
+            </div>
+            <div id="wp-motion" class="wp-section" style="display:none;">
+              <div style="font-family:'Caveat',cursive;font-size:1.1rem;color:#aaa;padding:1rem;text-align:center;border:1px dashed #ddd;border-radius:8px;">Coming soon 🎬</div>
+            </div>
+            <div id="wp-brand" class="wp-section" style="display:none;">
+              <div style="font-family:'Caveat',cursive;font-size:1.1rem;color:#aaa;padding:1rem;text-align:center;border:1px dashed #ddd;border-radius:8px;">Coming soon 📦</div>
+            </div>
+
+            <div style="margin-top:auto;font-family:'Space Mono',monospace;font-size:.5rem;color:#ccc;line-height:1.8;" id="wp-meta"></div>
+          </div>
         </div>
-        <div class="win-file" onclick="winSel(this,'content')">
-          <svg width="48" height="44" viewBox="0 0 48 44" fill="none">
-            <rect x="4" y="0" width="36" height="44" rx="3" fill="#fff" stroke="#ddd" stroke-width="1.2"/>
-            <rect x="10" y="8" width="22" height="2.5" rx="1" fill="#FF6B1A"/>
-            <rect x="10" y="14" width="18" height="2" rx="1" fill="#ddd"/>
-            <rect x="10" y="19" width="20" height="2" rx="1" fill="#ddd"/>
-            <circle cx="36" cy="36" r="8" fill="#FF6B1A"/>
-            <text x="36" y="40" text-anchor="middle" fill="#fff" font-size="10">✏</text>
-          </svg>
-          <div class="win-file-name">Content Creation</div>
-        </div>
-        <div class="win-file" onclick="winSel(this,'app')">
-          <svg width="52" height="44" viewBox="0 0 52 44" fill="none">
-            <rect x="0" y="10" width="52" height="34" rx="3" fill="#6BFFB8" opacity=".82"/>
-            <rect x="0" y="10" width="20" height="8" rx="2" fill="#B8FFD4"/>
-            <rect x="15" y="18" width="22" height="22" rx="3" fill="rgba(0,0,0,.15)"/>
-            <rect x="17" y="20" width="18" height="18" rx="2" fill="rgba(255,255,255,.35)"/>
-            <rect x="19" y="22" width="14" height="4" rx="1" fill="rgba(0,0,0,.25)"/>
-          </svg>
-          <div class="win-file-name">App Design</div>
-        </div>
-        <div class="win-file" style="opacity:.45" onclick="winSel(this,'motion')">
-          <div style="font-size:2.2rem">🎬</div>
-          <div class="win-file-name" style="color:#aaa">Motion.ae</div>
-        </div>
-        <div class="win-file" style="opacity:.45" onclick="winSel(this,'brand')">
-          <div style="font-size:2.2rem">📦</div>
-          <div class="win-file-name" style="color:#aaa">Brand Kit</div>
-        </div>
       </div>
-    </div>
-
-    <!-- PREVIEW PANE -->
-    <div id="win-preview" style="width:280px;flex-shrink:0;padding:1rem;background:#fafafa;display:flex;flex-direction:column;gap:.7rem;">
-      <div style="font-family:'Space Mono',monospace;font-size:.5rem;color:#aaa;text-transform:uppercase;letter-spacing:.15em;">Preview</div>
-      <div id="wp-name" style="font-family:'Space Mono',monospace;font-size:.68rem;font-weight:700;color:#333;">Designs</div>
-      <div id="wp-desc" style="font-family:'Space Mono',monospace;font-size:.58rem;color:#888;line-height:1.75;"></div>
-
-      <!-- =====================================================
-           WORK IMAGES — ADD YOUR IMAGE SRC HERE
-           Each folder key has its own image slots below.
-           Uncomment/fill in the src="" for each one.
-      ====================================================== -->
-
-      <!-- DESIGNS folder preview -->
-     <!-- DESIGNS folder preview -->
-      <div id="wp-designs" class="wp-section">
-        <!-- ADD: src="path/to/design1.jpg" -->
-        <img src="Fully Loaded Gun.png" alt="Design Work 1" class="wp-img" onerror="this.style.display='none'">
-        <!-- ADD: src="path/to/design2.jpg" -->
-        <img src="Your paragraph text (2).png" alt="Design Work 2" class="wp-img" onerror="this.style.display='none'">
-          <img src="aveyard (Instagram Post (45)).png" alt="Design Work 3" class="wp-img" onerror="this.style.display='none'">
-          <img src="stevejobs.png" alt="Design Work 4" class="wp-img" onerror="this.style.display='none'">
-          <img src="Dssigns (1).png" alt="Design Work 5" class="wp-img" onerror="this.style.display='none'">
-         <img src="Tech Sprint.png" alt="Design Work 6" class="wp-img" onerror="this.style.display='none'">
-          <img src="@gdg_vrsec.png" alt="Design Work 7" class="wp-img" onerror="this.style.display='none'">
-      </div>
-
-      <!-- UI EXPLORATION folder preview -->
-      <div id="wp-ui" class="wp-section" style="display:none;">
-        <!-- ADD: src="path/to/ui1.jpg" -->
-        <img src="" alt="UI Work 1" class="wp-img" onerror="this.style.display='none'">
-        <img src="" alt="UI Work 2" class="wp-img" onerror="this.style.display='none'">
-      </div>
-
-      <!-- CONTENT CREATION folder preview -->
-      <div id="wp-content" class="wp-section" style="display:none;">
-        <!-- ADD: src="path/to/content1.jpg" -->
-        <img src="" alt="Content 1" class="wp-img" onerror="this.style.display='none'">
-        <img src="" alt="Content 2" class="wp-img" onerror="this.style.display='none'">
-      </div>
-
-      <!-- APP DESIGN folder preview -->
-      <div id="wp-app" class="wp-section" style="display:none;">
-        <!-- ADD: src="path/to/app1.jpg" -->
-        <img src="" alt="App Design 1" class="wp-img" onerror="this.style.display='none'">
-        <img src="" alt="App Design 2" class="wp-img" onerror="this.style.display='none'">
-      </div>
-
-      <!-- MOTION placeholder -->
-      <div id="wp-motion" class="wp-section" style="display:none;">
-        <div style="font-family:'Caveat',cursive;font-size:1.1rem;color:#aaa;padding:1rem;text-align:center;border:1px dashed #ddd;border-radius:8px;">Coming soon 🎬</div>
-      </div>
-
-      <!-- BRAND KIT placeholder -->
-      <div id="wp-brand" class="wp-section" style="display:none;">
-        <div style="font-family:'Caveat',cursive;font-size:1.1rem;color:#aaa;padding:1rem;text-align:center;border:1px dashed #ddd;border-radius:8px;">Coming soon 📦</div>
-      </div>
-
-      <div style="margin-top:auto;font-family:'Space Mono',monospace;font-size:.5rem;color:#ccc;line-height:1.8;" id="wp-meta"></div>
-    </div>
-  </div>
-</div>
       <div class="win-statusbar">
         <span class="win-status-text" id="win-status">6 items · Select a folder</span>
         <div class="win-sep"></div>
@@ -643,75 +792,72 @@
   </div>
 </section>
 
-<!-- BOOKS + SUGGEST -->
+<!-- BOOKS -->
 <section id="books">
-   <div>
-  <!-- 3D floating author quotes background -->
   <div class="quotes-scene" aria-hidden="true" id="quotes-scene"></div>
   <div class="section-tag reveal" style="position:relative;z-index:2;">003 — Books &amp; Films</div>
   <h2 class="section-title reveal" style="position:relative;z-index:2;">What I read &amp; watch <em>this year.</em></h2>
+
   <div class="books-layout reveal" style="position:relative;z-index:2;">
-   <div class="books-grid">
+    <div class="books-grid">
 
-  <!-- BOOK 1 -->
-  <div class="book-card" style="width: 240px; margin-bottom: 20px; display: inline-block; vertical-align: top;">
-  <div class="book-cover" style="background: linear-gradient(135deg,#1a0a2e,#3d1a5e); position: relative; width: 100%; aspect-ratio: 1/1; overflow: hidden; border-radius: 12px;">
-    <img src="book1.png" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; display: block;" onerror="this.style.display='none'">
-    <div class="book-overlay-g"></div>
-  </div>
-  <div class="book-info" style="padding: 12px 5px; text-align: left;">
-    <div class="book-title-text" style="font-weight: bold; color: #fff; margin-bottom: 4px;">Surrounded by Idiots</div>
-    <span class="book-author" style="color: #aaa; font-size: 14px;">Thomas Erikson</span>
-  </div>
-</div>
+      <div class="book-card" style="width:240px;margin-bottom:20px;display:inline-block;vertical-align:top;">
+        <div class="book-cover" style="background:linear-gradient(135deg,#1a0a2e,#3d1a5e);position:relative;width:100%;aspect-ratio:1/1;overflow:hidden;border-radius:12px;">
+          <img src="book1.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;" onerror="this.style.display='none'">
+          <div class="book-overlay-g"></div>
+        </div>
+        <div class="book-info" style="padding:12px 5px;text-align:left;">
+          <div class="book-title-text" style="font-weight:bold;color:#fff;margin-bottom:4px;">Surrounded by Idiots</div>
+          <span class="book-author" style="color:#aaa;font-size:14px;">Thomas Erikson</span>
+        </div>
+      </div>
 
-<div class="book-card" style="width: 240px; margin-bottom: 20px; display: inline-block; vertical-align: top;">
-  <div class="book-cover" style="background: linear-gradient(135deg,#1a1200,#4a3300); position: relative; width: 100%; aspect-ratio: 1/1; overflow: hidden; border-radius: 12px;">
-    <img src="book2.png" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; display: block;" onerror="this.style.display='none'">
-    <div class="book-overlay-g"></div>
-  </div>
-  <div class="book-info" style="padding: 12px 5px; text-align: left;">
-    <div class="book-title-text" style="font-weight: bold; color: #fff; margin-bottom: 4px;">Leadership</div>
-    <span class="book-author" style="color: #aaa; font-size: 14px;">B.V. Pattabhi Ram</span>
-  </div>
-</div>
+      <div class="book-card" style="width:240px;margin-bottom:20px;display:inline-block;vertical-align:top;">
+        <div class="book-cover" style="background:linear-gradient(135deg,#1a1200,#4a3300);position:relative;width:100%;aspect-ratio:1/1;overflow:hidden;border-radius:12px;">
+          <img src="book2.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;" onerror="this.style.display='none'">
+          <div class="book-overlay-g"></div>
+        </div>
+        <div class="book-info" style="padding:12px 5px;text-align:left;">
+          <div class="book-title-text" style="font-weight:bold;color:#fff;margin-bottom:4px;">Leadership</div>
+          <span class="book-author" style="color:#aaa;font-size:14px;">B.V. Pattabhi Ram</span>
+        </div>
+      </div>
 
-<div class="book-card" style="width: 240px; margin-bottom: 20px; display: inline-block; vertical-align: top;">
-  <div class="book-cover" style="background: linear-gradient(135deg,#001a08,#004d1a); position: relative; width: 100%; aspect-ratio: 1/1; overflow: hidden; border-radius: 12px;">
-    <img src="book3.png" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; display: block;" onerror="this.style.display='none'">
-    <div class="book-overlay-g"></div>
-  </div>
-  <div class="book-info" style="padding: 12px 5px; text-align: left;">
-    <div class="book-title-text" style="font-weight: bold; color: #fff; margin-bottom: 4px;">Zero to One</div>
-    <span class="book-author" style="color: #aaa; font-size: 14px;">Peter Thiel</span>
-  </div>
-</div>
+      <div class="book-card" style="width:240px;margin-bottom:20px;display:inline-block;vertical-align:top;">
+        <div class="book-cover" style="background:linear-gradient(135deg,#001a08,#004d1a);position:relative;width:100%;aspect-ratio:1/1;overflow:hidden;border-radius:12px;">
+          <img src="book3.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;" onerror="this.style.display='none'">
+          <div class="book-overlay-g"></div>
+        </div>
+        <div class="book-info" style="padding:12px 5px;text-align:left;">
+          <div class="book-title-text" style="font-weight:bold;color:#fff;margin-bottom:4px;">Zero to One</div>
+          <span class="book-author" style="color:#aaa;font-size:14px;">Peter Thiel</span>
+        </div>
+      </div>
 
-<div class="book-card" style="width: 240px; margin-bottom: 20px; display: inline-block; vertical-align: top;">
-  <div class="book-cover" style="background: linear-gradient(135deg,#001520,#003d5c); position: relative; width: 100%; aspect-ratio: 1/1; overflow: hidden; border-radius: 12px;">
-    <img src="book4.png" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; display: block;" onerror="this.style.display='none'">
-    <div class="book-overlay-g"></div>
-  </div>
-  <div class="book-info" style="padding: 12px 5px; text-align: left;">
-    <div class="book-title-text" style="font-weight: bold; color: #fff; margin-bottom: 4px;"><strong>The Dead Are Alive</strong><br><span style="font-size: 13px; font-weight: normal;">They Can and Do Communicate With You</span></div>
-    <span class="book-author" style="color: #aaa; font-size: 14px;">Harold Shermann</span>
-  </div>
-</div>
+      <div class="book-card" style="width:240px;margin-bottom:20px;display:inline-block;vertical-align:top;">
+        <div class="book-cover" style="background:linear-gradient(135deg,#001520,#003d5c);position:relative;width:100%;aspect-ratio:1/1;overflow:hidden;border-radius:12px;">
+          <img src="book4.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;" onerror="this.style.display='none'">
+          <div class="book-overlay-g"></div>
+        </div>
+        <div class="book-info" style="padding:12px 5px;text-align:left;">
+          <div class="book-title-text" style="font-weight:bold;color:#fff;margin-bottom:4px;"><strong>The Dead Are Alive</strong><br><span style="font-size:13px;font-weight:normal;">They Can and Do Communicate With You</span></div>
+          <span class="book-author" style="color:#aaa;font-size:14px;">Harold Shermann</span>
+        </div>
+      </div>
 
-<div class="book-card" style="width: 240px; margin-bottom: 20px; display: inline-block; vertical-align: top;">
-  <div class="book-cover" style="background: linear-gradient(135deg,#001520,#003d5c); position: relative; width: 100%; aspect-ratio: 1/1; overflow: hidden; border-radius: 12px;">
-    <img src="book5.png" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; display: block;" onerror="this.style.display='none'">
-    <div class="book-overlay-g"></div>
-  </div>
-  <div class="book-info" style="padding: 12px 5px; text-align: left;">
-    <div class="book-title-text" style="font-weight: bold; color: #fff; margin-bottom: 4px;">Maha Prasthanam</div>
-    <span class="book-author" style="color: #aaa; font-size: 14px;">SriSri</span>
-  </div>
-</div>
-      
-</div>
+      <div class="book-card" style="width:240px;margin-bottom:20px;display:inline-block;vertical-align:top;">
+        <div class="book-cover" style="background:linear-gradient(135deg,#001520,#003d5c);position:relative;width:100%;aspect-ratio:1/1;overflow:hidden;border-radius:12px;">
+          <img src="book5.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;" onerror="this.style.display='none'">
+          <div class="book-overlay-g"></div>
+        </div>
+        <div class="book-info" style="padding:12px 5px;text-align:left;">
+          <div class="book-title-text" style="font-weight:bold;color:#fff;margin-bottom:4px;">Maha Prasthanam</div>
+          <span class="book-author" style="color:#aaa;font-size:14px;">SriSri</span>
+        </div>
+      </div>
+
     </div>
-   <br>
+
     <!-- Suggest Panel -->
     <div class="suggest-panel">
       <h3>✦ Suggest me something</h3>
@@ -723,7 +869,6 @@
       <input class="suggest-input" id="sug-why" placeholder="Why I'd love it...">
       <input class="suggest-input" id="sug-name" placeholder="Your name (optional)">
       <button class="suggest-submit" onclick="addSuggestion()">SUGGEST IT →</button>
-      <!-- confirmation only — list hidden from public, visible to admin only -->
       <div class="fb-notes-head" id="sug-count" style="color:#6BFFB8;display:none;"></div>
     </div>
   </div>
@@ -733,24 +878,20 @@
 <section id="photos">
   <div class="section-tag reveal">004 — Photography</div>
   <h2 class="section-title reveal">Through the <em>lens.</em></h2>
-  <p style="font-family:'Space Mono',monospace;font-size:.68rem;color:#aaa;margin-top:-2rem;margin-bottom:2rem;">
-    <!-- DEVELOPER NOTE: Replace each .photo-placeholder div below with <img src="YOUR_PHOTO.jpg"> -->
-   
-  </p>
-<div class="photos-masonry reveal">
-  <div class="photo-card"><img src="hyd1.jpeg" alt="Hyderabad 1"></div>
-  <div class="photo-card"><img src="hyd2.jpeg" alt="Hyderabad 2"></div>
-  <div class="photo-card"><img src="hyd3.jpeg" alt="Hyderabad 3"></div>
-  <div class="photo-card"><img src="rama.jpeg" alt="Rama"></div>
-  <div class="photo-card"><img src="clg1.jpeg" alt="College"></div>
-  <div class="photo-card"><img src="123456.jpeg" alt="Photo 123456"></div>
-  <div class="photo-card"><img src="scenary.jpeg" alt="Scenery"></div>
-  <div class="photo-card"><img src="Childhood.jpeg" alt="Childhood"></div>
-  <div class="photo-card"><img src="flowers.jpeg" alt="Flowers"></div>
-  <div class="photo-card"><img src="nilofouer.jpeg" alt="Niloufer"></div>
-    <div class="photo-card"><img src="clg2.jpeg" alt="Niloufer"></div>
-    <div class="photo-card"><img src="click.jpeg" alt="Niloufer"></div>
-</div>
+  <div class="photos-masonry reveal">
+    <div class="photo-card"><img src="hyd1.jpeg" alt="Hyderabad 1"></div>
+    <div class="photo-card"><img src="hyd2.jpeg" alt="Hyderabad 2"></div>
+    <div class="photo-card"><img src="hyd3.jpeg" alt="Hyderabad 3"></div>
+    <div class="photo-card"><img src="rama.jpeg" alt="Rama"></div>
+    <div class="photo-card"><img src="clg1.jpeg" alt="College"></div>
+    <div class="photo-card"><img src="123456.jpeg" alt="Photo"></div>
+    <div class="photo-card"><img src="scenary.jpeg" alt="Scenery"></div>
+    <div class="photo-card"><img src="Childhood.jpeg" alt="Childhood"></div>
+    <div class="photo-card"><img src="flowers.jpeg" alt="Flowers"></div>
+    <div class="photo-card"><img src="nilofouer.jpeg" alt="Niloufer"></div>
+    <div class="photo-card"><img src="clg2.jpeg" alt="College 2"></div>
+    <div class="photo-card"><img src="click.jpeg" alt="Click"></div>
+  </div>
 </section>
 
 <!-- DOODLE -->
@@ -789,97 +930,82 @@
     </g>
   </svg>
 </button>
+
 <div id="feedback-panel">
   <div class="fb-title">✦ Leave a Note</div>
   <textarea class="fb-input" id="fb-text" placeholder="Say something nice... " rows="4"></textarea>
   <input class="fb-name" id="fb-name" placeholder="Your name (or 'anonymous weirdo')">
- <button class="fb-submit" id="fb-submit-btn" onclick="addNote()">PIN IT</button>
+  <button class="fb-submit" id="fb-submit-btn" onclick="addNote()">PIN IT</button>
   <div class="fb-notes-head" id="fb-notes-head" style="display:none;">Visitor Notes</div>
   <div class="fb-notes-list" id="fb-notes-list"></div>
 </div>
-</section>
-<!-- FOOTER — CRAYON MOUNTAINS + DAY/SUNSET/NIGHT SKY -->
+
+<!-- FOOTER -->
 <footer id="footer">
-  <!-- Stars layer -->
   <canvas id="stars-layer" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;"></canvas>
 
-<!-- FOOTER CONTENT — centered -->
-<div class="footer-content" style="flex-direction:column;align-items:center;text-align:center;gap:1.5rem;">
-  <div class="reveal-l">
-    <div class="footer-big-text" style="text-align:center;">
-      Let's build<br><em>something.</em>
+  <div class="footer-content" style="flex-direction:column;align-items:center;text-align:center;gap:1.5rem;">
+    <div class="reveal-l">
+      <div class="footer-big-text" style="text-align:center;">
+        Let's build<br><em>something.</em>
+      </div>
+      <div style="display:flex;justify-content:center;">
+        <div class="cta-scene">
+          <a href="mailto:dssram24067@gmail.com" class="footer-cta" id="cta-btn">CONTACT_NOW</a>
+        </div>
+      </div>
     </div>
-   <div style="display:flex;justify-content:center;">
- <div class="cta-scene">
-  <a href="mailto:dssram24067@gmail.com" class="footer-cta" id="cta-btn">CONTACT_NOW</a>
-</div>
-</div>
   </div>
 
-</div>
+  <div id="footer-clock" class="reveal" style="justify-content:center;">
+    <div class="clock-block">
+      <span class="clock-lbl">Time</span>
+      <span class="clock-val" id="clk-time">--:--:--</span>
+    </div>
+    <div class="clock-block">
+      <span class="clock-lbl">Date</span>
+      <span class="clock-dval" id="clk-date">---</span>
+    </div>
+    <div class="clock-block">
+      <span class="clock-lbl">Location</span>
+      <span class="clock-dval" style="font-size:.42rem;">VIJAYAWADA, IN</span>
+    </div>
+  </div>
 
-<!-- Clock — centered, location updated -->
-<div id="footer-clock" class="reveal" style="justify-content:center;">
-  <div class="clock-block">
-    <span class="clock-lbl">Time</span>
-    <span class="clock-val" id="clk-time">--:--:--</span>
-  </div>
-  <div class="clock-block">
-    <span class="clock-lbl">Date</span>
-    <span class="clock-dval" id="clk-date">---</span>
-  </div>
-  <div class="clock-block">
-    <span class="clock-lbl">Location</span>
-    <span class="clock-dval" style="font-size:.42rem;">VIJAYAWADA, IN</span>
-  </div>
-</div>
-
-  <!-- Social media (replace href="#" with your actual URLs) -->
   <div id="socials">
-    <!-- REPLACE: change href to your actual profile links -->
     <a class="social-link" href="https://github.com/DssRam24" target="_blank" rel="noopener">
-      <!-- GitHub -->
       <svg class="social-icon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3C5.37.3 0 5.67 0 12.3c0 5.3 3.44 9.8 8.2 11.4.6.1.83-.26.83-.58v-2c-3.34.73-4.04-1.6-4.04-1.6-.55-1.4-1.34-1.77-1.34-1.77-1.08-.74.09-.72.09-.72 1.2.09 1.83 1.23 1.83 1.23 1.07 1.83 2.8 1.3 3.48 1 .1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.13 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18.77.84 1.23 1.9 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.21.7.83.58C20.57 22.1 24 17.6 24 12.3 24 5.67 18.63.3 12 .3z"/></svg>
       <span class="social-name">GitHub</span>
     </a>
     <a class="social-link" href="https://www.linkedin.com/in/dssram24067/" target="_blank" rel="noopener">
-      <!-- LinkedIn -->
       <svg class="social-icon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.28 2.37 4.28 5.45v6.3zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zm1.78 13.02H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>
       <span class="social-name">LinkedIn</span>
     </a>
     <a class="social-link" href="https://www.instagram.com/shanmukhdonepudi" target="_blank" rel="noopener">
-      <!-- Instagram -->
       <svg class="social-icon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85 0 3.2-.01 3.58-.07 4.85-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.64.07-4.85.07-3.2 0-3.58-.01-4.85-.07-3.26-.15-4.77-1.7-4.92-4.92C2.17 15.58 2.16 15.2 2.16 12c0-3.2.01-3.58.07-4.85C2.38 3.86 3.9 2.31 7.15 2.23 8.42 2.17 8.8 2.16 12 2.16zM12 0C8.74 0 8.33.01 7.05.07 2.7.27.27 2.7.07 7.05.01 8.33 0 8.74 0 12c0 3.26.01 3.67.07 4.95.2 4.36 2.62 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24c3.26 0 3.67-.01 4.95-.07 4.35-.2 6.78-2.62 6.98-6.98.06-1.28.07-1.69.07-4.95 0-3.26-.01-3.67-.07-4.95C23.73 2.7 21.3.27 16.95.07 15.67.01 15.26 0 12 0zm0 5.84a6.16 6.16 0 1 0 0 12.32A6.16 6.16 0 0 0 12 5.84zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.4-11.85a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88z"/></svg>
       <span class="social-name">Instagram</span>
     </a>
     <a class="social-link" href="https://x.com/ShanmukhSpeaks?s=20" target="_blank" rel="noopener">
-      <!-- Twitter/X -->
       <svg class="social-icon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M18.24 2h3.1l-6.77 7.74L22.5 22h-6.24l-4.88-6.38L5.82 22H2.7l7.24-8.28L1.5 2h6.4l4.41 5.83L18.24 2zm-1.1 18h1.72L6.97 3.73H5.12L17.14 20z"/></svg>
       <span class="social-name">X / Twitter</span>
     </a>
     <a class="social-link" href="https://dribbble.com/shanmukha-donepudi" target="_blank" rel="noopener">
-      <!-- Dribbble -->
       <svg class="social-icon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm8 12c0 .34-.02.68-.05 1.01-1.17-.25-2.37-.37-3.56-.37-1.93 0-3.81.35-5.59 1.01a19.94 19.94 0 0 1-.96-2.6C12.16 10.33 14.18 9 16.38 9c1.3 0 2.56.3 3.68.83-.04.39-.06.78-.06 1.17zm-8-9.8c1.89 0 3.62.65 4.99 1.72A13.76 13.76 0 0 1 14 6.47c-1.12 1.68-2.48 3.14-4 4.33a17.97 17.97 0 0 0-1.3-3.22A9.96 9.96 0 0 1 12 2.2zM4.2 12c0-.12 0-.24.01-.36.77.11 1.56.17 2.36.17 1.65 0 3.27-.23 4.8-.65.42.95.77 1.94 1.03 2.94-2.18.76-4.17 2.03-5.77 3.67A9.96 9.96 0 0 1 4.2 12zm7.8 9.8a9.9 9.9 0 0 1-5.72-1.8c1.34-1.47 3.06-2.6 5-3.27.53 1.64.84 3.36.9 5.12-.7-.02-1.48-.05-2.18-.05zm4.2-.5c-.11-1.85-.47-3.65-1.06-5.36 1.62-.19 3.25-.1 4.82.27A9.9 9.9 0 0 1 16.2 21.3z"/></svg>
       <span class="social-name">Dribbble</span>
     </a>
     <a class="social-link" href="https://www.behance.net/dssram" target="_blank" rel="noopener">
-      <!-- Behance -->
       <svg class="social-icon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M7.8 11.1c.5-.6.8-1.4.8-2.3C8.6 6.6 7.1 5 4.7 5H0v14h4.9c2.8 0 4.7-1.5 4.7-4.3 0-1.2-.5-2.4-1.8-3.6zM3 7.5h1.5c.9 0 1.5.5 1.5 1.4 0 .9-.6 1.4-1.5 1.4H3V7.5zm2 9H3v-3.5h2c1 0 1.7.7 1.7 1.7S6 16.5 5 16.5zm10.5-9.3h-5.7V5.8h5.7v1.4zM24 13.7c0-3.3-2-5.7-5.3-5.7-3.2 0-5.4 2.4-5.4 5.7 0 3.4 2.2 5.6 5.4 5.6 2.4 0 4.1-1.1 5-3.2h-2.8c-.4.7-1.1 1.1-2.1 1.1-1.4 0-2.4-.9-2.5-2.4H24c0-.4 0-.8 0-1.1zm-7.5-1.2c.2-1.3 1-2 2.2-2s2 .7 2.1 2h-4.3z"/></svg>
       <span class="social-name">Behance</span>
     </a>
     <a class="social-link" href="https://www.youtube.com/@dssigns" target="_blank" rel="noopener">
-      <!-- YouTube -->
       <svg class="social-icon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg>
       <span class="social-name">YouTube</span>
     </a>
     <a class="social-link" href="https://letterboxd.com/ramgod/" target="_blank" rel="noopener">
-      <!-- Letterboxd — REPLACE href="#" with your Letterboxd profile URL -->
       <svg class="social-icon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
-        <!-- Letterboxd logo: three overlapping circles -->
         <circle cx="7" cy="12" r="5.5" fill="#00C030" opacity=".9"/>
         <circle cx="12" cy="12" r="5.5" fill="#FF8000" opacity=".85"/>
         <circle cx="17" cy="12" r="5.5" fill="#40BCF4" opacity=".85"/>
-        <!-- Overlap blend effect (simplified) -->
         <ellipse cx="9.5" cy="12" rx="2" ry="5.5" fill="#FFCC00" opacity=".7"/>
         <ellipse cx="14.5" cy="12" rx="2" ry="5.5" fill="#CC44FF" opacity=".7"/>
       </svg>
@@ -887,79 +1013,68 @@
     </a>
   </div>
 
+  <svg class="city-svg" viewBox="0 0 1440 400" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="950" cy="220" r="190" fill="var(--sun-color)" opacity="0.85"/>
+    <g fill="var(--layer-back)">
+      <rect x="100" y="210" width="90" height="190"/>
+      <rect x="260" y="170" width="140" height="230"/>
+      <rect x="560" y="158" width="130" height="242"/>
+      <path d="M 560 158 Q 625 130 690 158 Z"/>
+      <rect x="800" y="165" width="110" height="235"/>
+      <rect x="1030" y="105" width="170" height="295"/>
+      <rect x="1015" y="130" width="15" height="15"/>
+      <rect x="1015" y="180" width="15" height="15"/>
+      <rect x="1015" y="230" width="15" height="15"/>
+      <rect x="1220" y="138" width="140" height="262"/>
+      <rect x="1380" y="110" width="60" height="290"/>
+    </g>
+    <g fill="var(--mist-color)">
+      <circle cx="200" cy="260" r="80"/>
+      <circle cx="350" cy="250" r="90"/>
+      <circle cx="700" cy="240" r="100"/>
+      <circle cx="1150" cy="230" r="110"/>
+    </g>
+    <g fill="var(--layer-mid)">
+      <rect x="0" y="215" width="90" height="185"/>
+      <rect x="160" y="255" width="140" height="145"/>
+      <rect x="425" y="235" width="130" height="165"/>
+      <rect x="730" y="225" width="115" height="175"/>
+      <rect x="915" y="240" width="120" height="160"/>
+      <rect x="1210" y="220" width="135" height="180"/>
+    </g>
+    <g fill="var(--mist-color)" opacity="0.7">
+      <circle cx="100" cy="310" r="70"/>
+      <circle cx="500" cy="290" r="85"/>
+      <circle cx="900" cy="300" r="80"/>
+      <circle cx="1350" cy="290" r="90"/>
+    </g>
+    <g fill="var(--layer-fore)">
+      <rect x="55" y="280" width="110" height="120"/>
+      <rect x="215" y="250" width="180" height="150"/>
+      <rect x="605" y="215" width="12" height="185"/>
+      <rect x="555" y="255" width="115" height="145"/>
+      <rect x="750" y="248" width="140" height="152"/>
+      <rect x="1165" y="295" width="155" height="105"/>
+      <rect x="1295" y="335" width="12" height="65"/>
+    </g>
+    <g fill="var(--layer-frontmost)">
+      <rect x="0" y="325" width="75" height="75"/>
+      <rect x="115" y="340" width="95" height="60"/>
+      <rect x="190" y="320" width="110" height="80"/>
+      <rect x="330" y="350" width="130" height="50"/>
+      <path d="M 450 400 Q 550 340 650 400 Z" fill="var(--layer-frontmost)"/>
+      <rect x="680" y="345" width="140" height="55"/>
+      <rect x="875" y="340" width="160" height="60"/>
+      <rect x="1090" y="335" width="105" height="65"/>
+      <path d="M 1250 400 Q 1350 350 1440 400 Z" fill="var(--layer-frontmost)"/>
+    </g>
+    <rect x="0" y="380" width="1440" height="20" fill="var(--layer-frontmost)"/>
+  </svg>
 
-  <!-- CRAYON MOUNTAINS (SVG — rough, hand-drawn feel) -->
-<div> <svg class="city-svg" viewBox="0 0 1440 400" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      
-      <circle cx="950" cy="220" r="190" fill="var(--sun-color)" opacity="0.85" />
-      
-      <g fill="var(--layer-back)">
-        <rect x="100" y="210" width="90" height="190" />
-        <rect x="260" y="170" width="140" height="230" />
-        <rect x="560" y="158" width="130" height="242" />
-        <path d="M 560 158 Q 625 130 690 158 Z" /> <rect x="800" y="165" width="110" height="235" />
-        <rect x="1030" y="105" width="170" height="295" />
-        <rect x="1015" y="130" width="15" height="15" />
-        <rect x="1015" y="180" width="15" height="15" />
-        <rect x="1015" y="230" width="15" height="15" />
-        <rect x="1220" y="138" width="140" height="262" />
-        <rect x="1380" y="110" width="60" height="290" />
-      </g>
-
-      <g fill="var(--mist-color)">
-        <circle cx="200" cy="260" r="80" />
-        <circle cx="350" cy="250" r="90" />
-        <circle cx="700" cy="240" r="100" />
-        <circle cx="1150" cy="230" r="110" />
-      </g>
-
-      <g fill="var(--layer-mid)">
-        <rect x="0" y="215" width="90" height="185" />
-        <rect x="160" y="255" width="140" height="145" />
-        <rect x="425" y="235" width="130" height="165" />
-        <rect x="730" y="225" width="115" height="175" />
-        <rect x="915" y="240" width="120" height="160" />
-        <rect x="1210" y="220" width="135" height="180" />
-      </g>
-
-      <g fill="var(--mist-color)" opacity="0.7">
-        <circle cx="100" cy="310" r="70" />
-        <circle cx="500" cy="290" r="85" />
-        <circle cx="900" cy="300" r="80" />
-        <circle cx="1350" cy="290" r="90" />
-      </g>
-
-      <g fill="var(--layer-fore)">
-        <rect x="55" y="280" width="110" height="120" />
-        <rect x="215" y="250" width="180" height="150" />
-        <rect x="605" y="215" width="12" height="185" />
-        <rect x="555" y="255" width="115" height="145" />
-        <rect x="750" y="248" width="140" height="152" />
-        <rect x="1165" y="295" width="155" height="105" />
-        <rect x="1295" y="335" width="12" height="65" />
-      </g>
-
-      <g fill="var(--layer-frontmost)">
-        <rect x="0" y="325" width="75" height="75" />
-        <rect x="115" y="340" width="95" height="60" />
-        <rect x="190" y="320" width="110" height="80" />
-        <rect x="330" y="350" width="130" height="50" />
-        <path d="M 450 400 Q 550 340 650 400 Z" fill="var(--layer-frontmost)" /> <rect x="680" y="345" width="140" height="55" />
-        <rect x="875" y="340" width="160" height="60" />
-        <rect x="1090" y="335" width="105" height="65" />
-        <path d="M 1250 400 Q 1350 350 1440 400 Z" fill="var(--layer-frontmost)" />
-      </g>
-
-      <rect x="0" y="380" width="1440" height="20" fill="var(--layer-frontmost)" />
-    </svg>
-
-  <div class="footer-copy">© 2026 Shanmukha Sai Ram Donepudi — DSSRam ✦ All rights reserved.
-</div></div>
+  <div class="footer-copy">© 2026 Shanmukha Sai Ram Donepudi — DSSRam ✦ All rights reserved.</div>
 </footer>
 
-<!-- ============================================================
-  IMAGE LIGHTBOX (file explorer poster click)
-============================================================ -->
+<!-- IMAGE LIGHTBOX -->
 <div id="img-lightbox" onclick="lbBgClick(event)">
   <div class="lb-card" id="lb-card">
     <img id="lb-img" src="" alt="">
@@ -979,9 +1094,7 @@
   </div>
 </div>
 
-<!-- ============================================================
-  ADMIN MODAL (secret — click the 3D door at footer bottom-left)
-============================================================ -->
+<!-- ADMIN MODAL -->
 <div id="admin-modal">
   <div class="admin-box">
     <button class="admin-close" onclick="closeAdmin()">✕</button>
@@ -993,7 +1106,6 @@
       <div class="admin-err" id="admin-err">Access denied.</div>
     </div>
     <div id="admin-dashboard" style="display:none;">
-      <!-- Admin tabs -->
       <div style="display:flex;gap:.4rem;margin-bottom:1rem;flex-wrap:wrap;">
         <div class="stab active" onclick="adminTab('sug',this)" style="font-size:.5rem;">📖 Suggestions</div>
         <div class="stab" onclick="adminTab('pl',this)" style="font-size:.5rem;">🎧 Playlists</div>
@@ -1001,21 +1113,36 @@
         <div class="stab" onclick="adminTab('qt',this)" style="font-size:.5rem;">💬 Quotes</div>
       </div>
       <div style="font-family:'Space Mono',monospace;font-size:.55rem;color:#555;margin-bottom:.6rem;" id="admin-tab-header"></div>
-      <!-- Suggestions -->
       <div id="admin-panel-sug" class="admin-suggestions"></div>
-      <!-- Playlists -->
       <div id="admin-panel-pl" class="admin-suggestions" style="display:none;"></div>
-      <!-- Routines -->
       <div id="admin-panel-fit" class="admin-suggestions" style="display:none;"></div>
-      <!-- Quotes -->
       <div id="admin-panel-qt" class="admin-suggestions" style="display:none;"></div>
     </div>
   </div>
 </div>
-<script src="script.js"></script>
 
+<!-- GITHUB CONTRIBUTIONS MODAL -->
+<div id="gh-modal" style="position:fixed;inset:0;z-index:99996;background:rgba(0,0,0,.9);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;flex-direction:column;gap:1.5rem;" onclick="if(event.target===this)closeGhModal()">
+  <div style="background:#0a0a0a;border:2px solid #FF6B1A;border-radius:16px;padding:2rem;width:min(860px,94vw);box-shadow:0 40px 100px rgba(0,0,0,.5),6px 6px 0 rgba(255,107,26,.3);position:relative;">
+    <button onclick="closeGhModal()" style="position:absolute;top:.8rem;right:1rem;background:none;border:none;font-family:'Space Mono',monospace;font-size:.75rem;color:#555;padding:.3rem;">✕</button>
+    <div style="font-family:'Press Start 2P',monospace;font-size:.7rem;color:#FF6B1A;margin-bottom:1.5rem;line-height:1.6;">// GitHub Contributions</div>
+    <div style="background:#111;border-radius:10px;padding:1rem;overflow-x:auto;">
+      <img id="gh-contrib-img" src="https://ghchart.rshah.org/FF6B1A/dssram24" alt="GitHub Contributions" style="width:100%;border-radius:6px;display:block;min-height:120px;background:#0d1117;" onerror="this.style.display='none';document.getElementById('gh-fallback').style.display='block'">
+      <div id="gh-fallback" style="display:none;font-family:'Space Mono',monospace;font-size:.65rem;color:#555;text-align:center;padding:2rem;">
+        <span style="color:#FF6B1A;">ghchart.rshah.org/FF6B1A/<strong>dssram24</strong></span>
+      </div>
+    </div>
+    <div style="margin-top:1rem;display:flex;gap:1.5rem;flex-wrap:wrap;">
+      <div style="font-family:'Space Mono',monospace;font-size:.58rem;color:#555;line-height:1.8;">
+        <span style="color:#FF6B1A;">▸</span> Green = commits pushed<br>
+        <span style="color:#FF6B1A;">▸</span> Darker = more activity
+      </div>
+    </div>
+  </div>
+  <div style="font-family:'Caveat',cursive;font-size:1.1rem;color:rgba(255,107,26,.5);">press Escape or click outside to close</div>
+</div>
 
-<!-- FIXED 3D DOOR — always bottom-left of viewport -->
+<!-- FIXED 3D DOOR -->
 <div class="door-3d-wrap" onclick="adminTriggerClick()" title="">
   <div class="door-glow"></div>
   <svg viewBox="0 0 58 100" width="22" height="38" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;">
@@ -1036,40 +1163,145 @@
   </svg>
 </div>
 
-<!-- GITHUB CONTRIBUTIONS MODAL -->
-<div id="gh-modal" style="position:fixed;inset:0;z-index:99996;background:rgba(0,0,0,.9);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;flex-direction:column;gap:1.5rem;" onclick="if(event.target===this)closeGhModal()">
-  <div style="background:#0a0a0a;border:2px solid #FF6B1A;border-radius:16px;padding:2rem;width:min(860px,94vw);box-shadow:0 40px 100px rgba(0,0,0,.5),6px 6px 0 rgba(255,107,26,.3);position:relative;">
-    <button onclick="closeGhModal()" style="position:absolute;top:.8rem;right:1rem;background:none;border:none;font-family:'Space Mono',monospace;font-size:.75rem;color:#555;padding:.3rem;">✕</button>
-    <div style="font-family:'Press Start 2P',monospace;font-size:.7rem;color:#FF6B1A;margin-bottom:1.5rem;line-height:1.6;">// GitHub Contributions</div>
-    <!-- REPLACE YOUR_GITHUB_USERNAME below with your actual GitHub username -->
-    <div style="background:#111;border-radius:10px;padding:1rem;overflow-x:auto;">
-      <img id="gh-contrib-img" src="https://ghchart.rshah.org/FF6B1A/dssram24" alt="GitHub Contributions" style="width:100%;border-radius:6px;display:block;min-height:120px;background:#0d1117;" onerror="this.style.display='none';document.getElementById('gh-fallback').style.display='block'">
-      <div id="gh-fallback" style="display:none;font-family:'Space Mono',monospace;font-size:.65rem;color:#555;text-align:center;padding:2rem;">
-        <span style="color:#FF6B1A;">ghchart.rshah.org/FF6B1A/<strong></strong></span>
-      </div>
-    </div>
-    <div style="margin-top:1rem;display:flex;gap:1.5rem;flex-wrap:wrap;">
-      <div style="font-family:'Space Mono',monospace;font-size:.58rem;color:#555;line-height:1.8;">
-        <span style="color:#FF6B1A;">▸</span> Green = commits pushed<br>
-        <span style="color:#FF6B1A;">▸</span> Darker = more activity<br>
-        <span style="color:#FF6B1A;"></span>
-      </div>
-    </div>
-  </div>
-  <div style="font-family:'Caveat',cursive;font-size:1.1rem;color:rgba(255,107,26,.5);">press Escape or click outside to close</div>
-</div>
-<!-- Firebase -->
- <script type="module">
+<!-- MAIN SCRIPT -->
+<script src="script.js"></script>
+
+<!-- PROJECTS SLIDESHOW SCRIPT -->
+<script>
+(function() {
+  var TOTAL = 4;
+  var current = 0;
+  var AUTO_MS = 5500;
+  var autoTimer = null;
+  var progStart = Date.now();
+
+  var dotsEl = document.getElementById('ps-dots');
+  for (var i = 0; i < TOTAL; i++) {
+    var d = document.createElement('button');
+    d.className = 'ps-dot' + (i === 0 ? ' active' : '');
+    d.setAttribute('aria-label', 'Slide ' + (i + 1));
+    (function(idx) { d.onclick = function() { goTo(idx); resetAuto(); }; })(i);
+    dotsEl.appendChild(d);
+  }
+
+  function goTo(idx) {
+    document.getElementById('ps-slide-' + current).classList.remove('active');
+    dotsEl.children[current].classList.remove('active');
+    current = ((idx % TOTAL) + TOTAL) % TOTAL;
+    document.getElementById('ps-slide-' + current).classList.add('active');
+    dotsEl.children[current].classList.add('active');
+    document.getElementById('ps-counter').textContent =
+      String(current + 1).padStart(2, '0') + ' / ' + String(TOTAL).padStart(2, '0');
+    progStart = Date.now();
+  }
+
+  document.getElementById('ps-prev').onclick = function() { goTo(current - 1); resetAuto(); };
+  document.getElementById('ps-next').onclick = function() { goTo(current + 1); resetAuto(); };
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight') { goTo(current + 1); resetAuto(); }
+    if (e.key === 'ArrowLeft')  { goTo(current - 1); resetAuto(); }
+  });
+
+  function resetAuto() {
+    clearInterval(autoTimer);
+    autoTimer = setInterval(function() { goTo(current + 1); }, AUTO_MS);
+    progStart = Date.now();
+  }
+  resetAuto();
+
+  (function tickProgress() {
+    var pct = Math.min(100, ((Date.now() - progStart) / AUTO_MS) * 100);
+    var bar = document.getElementById('ps-progress');
+    if (bar) bar.style.width = pct + '%';
+    requestAnimationFrame(tickProgress);
+  })();
+
+  // Floating tag animation
+  document.querySelectorAll('.ps-tag').forEach(function(tag, i) {
+    var phase = i * 1.4;
+    var amp   = 8 + (i % 3) * 5;
+    var speed = 2.8 + (i % 4) * 0.9;
+    (function tick() {
+      var t  = Date.now() / 1000 + phase;
+      var tx = Math.sin(t / speed) * amp;
+      var ty = Math.cos(t / (speed * 0.65)) * (amp * 0.6);
+      tag.style.transform = 'translate(' + tx.toFixed(2) + 'px,' + ty.toFixed(2) + 'px)';
+      requestAnimationFrame(tick);
+    })();
+  });
+
+  // Matrix rain
+  var canvas = document.getElementById('ps-matrix-canvas');
+  if (canvas) {
+    var ctx      = canvas.getContext('2d');
+    var chars    = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789{}[]<>=+-*/JavaDSATreeGraphDP';
+    var fontSize = 13;
+    var drops    = [];
+
+    function resizeMatrix() {
+      canvas.width  = canvas.offsetWidth  || (canvas.parentElement && canvas.parentElement.offsetWidth)  || 800;
+      canvas.height = canvas.offsetHeight || (canvas.parentElement && canvas.parentElement.offsetHeight) || 600;
+      drops = Array.from({ length: Math.floor(canvas.width / fontSize) }, function() {
+        return Math.random() * -50;
+      });
+    }
+    resizeMatrix();
+    window.addEventListener('resize', resizeMatrix);
+
+    setInterval(function() {
+      ctx.fillStyle = 'rgba(8,8,8,0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.font = fontSize + 'px Courier New';
+      for (var j = 0; j < drops.length; j++) {
+        var ch = chars[Math.floor(Math.random() * chars.length)];
+        ctx.fillStyle = (j % 5 === 0) ? '#39d353' : '#1a5c1a';
+        ctx.fillText(ch, j * fontSize, drops[j] * fontSize);
+        if (drops[j] * fontSize > canvas.height && Math.random() > 0.975) drops[j] = 0;
+        drops[j]++;
+      }
+    }, 50);
+  }
+
+  // GitHub contribution mini-grid
+  var ghGrid = document.getElementById('ps-gh-grid');
+  if (ghGrid) {
+    var levels = ['', 'l1', 'l2', 'l3', 'l4'];
+    for (var g = 0; g < 42; g++) {
+      var cell = document.createElement('div');
+      var r    = Math.random();
+      var lv   = r > 0.75 ? 4 : r > 0.55 ? 3 : r > 0.4 ? 2 : r > 0.25 ? 1 : 0;
+      cell.className = 'ps-gh-cell ' + levels[lv];
+      ghGrid.appendChild(cell);
+    }
+  }
+
+  // Escape key closes GH modal
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      var m = document.getElementById('gh-modal');
+      if (m) m.style.display = 'none';
+    }
+  });
+})();
+
+// GitHub modal helpers (called from onclick)
+function openGhModal() {
+  var m = document.getElementById('gh-modal');
+  if (m) m.style.display = 'flex';
+}
+function closeGhModal() {
+  var m = document.getElementById('gh-modal');
+  if (m) m.style.display = 'none';
+}
+</script>
+
+<!-- FIREBASE -->
+<script type="module">
 import { initializeApp }  from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
 import { getAnalytics }   from "https://www.gstatic.com/firebasejs/12.13.0/firebase-analytics.js";
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  getDocs
-} from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
-// ── Firebase init ────────────────────────────────────────────
 var firebaseConfig = {
   apiKey:            "AIzaSyDf0V9VkoChFVF-MyeWFXHcYA1G6M2UBp8",
   authDomain:        "dssram-site.firebaseapp.com",
@@ -1084,37 +1316,19 @@ var app       = initializeApp(firebaseConfig);
 var analytics = getAnalytics(app);
 var db        = getFirestore(app);
 
-// ============================================================
-// INTEREST CARD FORMS → writes to Firestore "submissions"
-// music  → type: 'playlist'
-// fitness → type: 'fitness'
-// speaking → type: 'quote'
-// ============================================================
 window.submitIcForm = async function(key) {
   var valEl = document.getElementById(key + '-val');
   var whoEl = document.getElementById(key + '-who');
   if (!valEl) return;
-
   var val = valEl.value.trim();
   var who = (whoEl && whoEl.value.trim()) ? whoEl.value.trim() : 'anonymous';
   if (!val) return;
-
   var typeMap = { music: 'playlist', fitness: 'fitness', speaking: 'quote' };
-
   try {
-    await addDoc(collection(db, 'submissions'), {
-      type:  typeMap[key] || key,
-      value: val,
-      name:  who,
-      ts:    Date.now()
-    });
-  } catch (err) {
-    console.error('Firestore write error (submissions):', err);
-  }
-
+    await addDoc(collection(db, 'submissions'), { type: typeMap[key] || key, value: val, name: who, ts: Date.now() });
+  } catch (err) { console.error('Firestore write error (submissions):', err); }
   valEl.value = '';
   if (whoEl) whoEl.value = '';
-
   var confirmEl = document.getElementById(key + '-confirm');
   if (confirmEl) {
     confirmEl.style.display = 'block';
@@ -1122,36 +1336,21 @@ window.submitIcForm = async function(key) {
   }
 };
 
-// ============================================================
-// BOOK / MOVIE SUGGESTIONS → writes to Firestore "suggestions"
-// ============================================================
 window.addSuggestion = async function() {
   var titleEl = document.getElementById('sug-title');
   var whyEl   = document.getElementById('sug-why');
   var nameEl  = document.getElementById('sug-name');
   var cntEl   = document.getElementById('sug-count');
-
   var title = titleEl ? titleEl.value.trim() : '';
   var why   = whyEl   ? whyEl.value.trim()   : '';
   var name  = (nameEl && nameEl.value.trim()) ? nameEl.value.trim() : 'a fan';
   if (!title) return;
-
   try {
-    await addDoc(collection(db, 'suggestions'), {
-      title: title,
-      why:   why,
-      name:  name,
-      type:  window._sugTab || 'book',
-      ts:    Date.now()
-    });
-  } catch (err) {
-    console.error('Firestore write error (suggestions):', err);
-  }
-
+    await addDoc(collection(db, 'suggestions'), { title, why, name, type: window._sugTab || 'book', ts: Date.now() });
+  } catch (err) { console.error('Firestore write error (suggestions):', err); }
   if (titleEl) titleEl.value = '';
   if (whyEl)   whyEl.value   = '';
   if (nameEl)  nameEl.value  = '';
-
   if (cntEl) {
     cntEl.style.display = 'block';
     cntEl.textContent   = '✓ Sent! Shanmukh will check it out.';
@@ -1159,353 +1358,98 @@ window.addSuggestion = async function() {
   }
 };
 
-// ============================================================
-// FEEDBACK NOTES → writes to Firestore "notes"
-//                  + shows locally in the panel
-// ============================================================
-// ============================================================
-// LOAD NOTES FROM FIRESTORE (visible to all visitors)
-// ============================================================
 window.loadNotes = async function() {
   var list   = document.getElementById('fb-notes-list');
   var headEl = document.getElementById('fb-notes-head');
   if (!list) return;
-
-  list.innerHTML =
-    '<div style="font-family:\'Space Mono\',monospace;font-size:.55rem;' +
-    'color:#555;padding:.5rem 0;">⟳ Loading notes...</div>';
-
+  list.innerHTML = '<div style="font-family:\'Space Mono\',monospace;font-size:.55rem;color:#555;padding:.5rem 0;">⟳ Loading notes...</div>';
   try {
     var snap = await getDocs(collection(db, 'notes'));
-    var all  = snap.docs.map(function(d) { return d.data(); })
-                   .sort(function(a,b) { return (b.ts||0) - (a.ts||0) });
-
+    var all  = snap.docs.map(function(d) { return d.data(); }).sort(function(a,b) { return (b.ts||0)-(a.ts||0); });
     list.innerHTML = '';
-
     if (!all.length) {
-      list.innerHTML =
-        '<div style="font-family:\'Caveat\',cursive;font-size:1rem;' +
-        'color:#444;text-align:center;padding:1rem;">No notes yet. Be the first! 📝</div>';
+      list.innerHTML = '<div style="font-family:\'Caveat\',cursive;font-size:1rem;color:#444;text-align:center;padding:1rem;">No notes yet. Be the first! 📝</div>';
       return;
     }
-
     if (headEl) headEl.style.display = 'block';
-
     var colors = ['sn-0','sn-1','sn-2','sn-3','sn-4'];
     all.forEach(function(n, i) {
       var el = document.createElement('div');
       el.className = 'sticky-note ' + colors[i % 5];
       el.style.transform = 'rotate(' + ((Math.random()-0.5)*5).toFixed(1) + 'deg)';
-      el.innerHTML =
-        n.text +
-        '<span class="sticky-note-from">— ' + n.name + '</span>';
+      el.innerHTML = n.text + '<span class="sticky-note-from">— ' + n.name + '</span>';
       list.appendChild(el);
     });
-
   } catch(err) {
-    list.innerHTML =
-      '<div style="font-family:\'Space Mono\',monospace;font-size:.55rem;' +
-      'color:#FF4444;padding:.5rem;">Error loading notes.</div>';
+    list.innerHTML = '<div style="font-family:\'Space Mono\',monospace;font-size:.55rem;color:#FF4444;padding:.5rem;">Error loading notes.</div>';
     console.error('loadNotes error:', err);
   }
 };
 
-// ============================================================
-// ADD NOTE → saves to Firestore then reloads all notes
-// ============================================================
 window.addNote = async function() {
-  var textEl = document.getElementById('fb-text');
-  var nameEl = document.getElementById('fb-name');
+  var textEl    = document.getElementById('fb-text');
+  var nameEl    = document.getElementById('fb-name');
   var submitBtn = document.getElementById('fb-submit-btn');
-
   var text = textEl ? textEl.value.trim() : '';
   var name = (nameEl && nameEl.value.trim()) ? nameEl.value.trim() : 'anonymous weirdo';
   if (!text) return;
-
-  // Show saving state
   if (submitBtn) { submitBtn.textContent = 'Saving...'; submitBtn.disabled = true; }
-
   try {
-    await addDoc(collection(db, 'notes'), {
-      text: text,
-      name: name,
-      ts:   Date.now()
-    });
-  } catch (err) {
-    console.error('Firestore write error (notes):', err);
-  }
-
+    await addDoc(collection(db, 'notes'), { text, name, ts: Date.now() });
+  } catch (err) { console.error('Firestore write error (notes):', err); }
   if (textEl) textEl.value = '';
   if (nameEl) nameEl.value = '';
   if (submitBtn) { submitBtn.textContent = 'PIN IT'; submitBtn.disabled = false; }
-
-  // Reload all notes so visitor sees everyone's
   window.loadNotes();
 };
 
-// ============================================================
-// ADMIN PANEL → reads from Firestore (async — works correctly)
-// ============================================================
 window.adminTab = async function(key, el) {
-  // Highlight selected tab
-  document.querySelectorAll('#admin-dashboard .stab').forEach(function(s) {
-    s.classList.remove('active');
-  });
+  document.querySelectorAll('#admin-dashboard .stab').forEach(function(s) { s.classList.remove('active'); });
   if (el) el.classList.add('active');
-
-  // Hide all panels
   ['sug','pl','fit','qt'].forEach(function(k) {
     var p = document.getElementById('admin-panel-' + k);
     if (p) p.style.display = 'none';
   });
-
   var panel  = document.getElementById('admin-panel-' + key);
   var header = document.getElementById('admin-tab-header');
   if (!panel) return;
-
   panel.style.display = 'flex';
-  panel.innerHTML =
-    '<div style="font-family:\'Space Mono\',monospace;font-size:.6rem;' +
-    'color:#555;padding:1rem;">⟳ Loading...</div>';
-
+  panel.innerHTML = '<div style="font-family:\'Space Mono\',monospace;font-size:.6rem;color:#555;padding:1rem;">⟳ Loading...</div>';
   try {
-
+    var snap, all;
     if (key === 'sug') {
-      // ── Book / Movie Suggestions ──────────────────────────
-      var snap = await getDocs(collection(db, 'suggestions'));
-      var all  = snap.docs.map(function(d) { return d.data(); })
-                    .sort(function(a,b) { return (b.ts||0)-(a.ts||0); });
-
-      if (header) header.textContent =
-        all.length + ' suggestion' + (all.length !== 1 ? 's' : '');
-
+      snap = await getDocs(collection(db, 'suggestions'));
+      all  = snap.docs.map(function(d){return d.data();}).sort(function(a,b){return(b.ts||0)-(a.ts||0);});
+      if (header) header.textContent = all.length + ' suggestion' + (all.length!==1?'s':'');
       panel.innerHTML = '';
-      if (!all.length) {
-        panel.innerHTML = '<div class="admin-sug-empty">No suggestions yet. 🫙</div>';
-        return;
-      }
+      if (!all.length) { panel.innerHTML='<div class="admin-sug-empty">No suggestions yet. 🫙</div>'; return; }
       all.forEach(function(s) {
-        var d    = document.createElement('div');
-        d.className = 'admin-sug-item';
-        var date = s.ts ? new Date(s.ts).toLocaleDateString('en-IN') : '—';
-        d.innerHTML =
-          '<div class="admin-sug-type">' +
-            (s.type === 'book' ? '📖 Book' : '🎬 Movie') + ' · ' + date +
-          '</div>' +
-          '<div class="admin-sug-title">' + s.title + '</div>' +
-          (s.why ? '<div class="admin-sug-why">' + s.why + '</div>' : '') +
-          '<div class="admin-sug-from">— ' + s.name + '</div>';
+        var d=document.createElement('div'); d.className='admin-sug-item';
+        var date=s.ts?new Date(s.ts).toLocaleDateString('en-IN'):'—';
+        d.innerHTML='<div class="admin-sug-type">'+(s.type==='book'?'📖 Book':'🎬 Movie')+' · '+date+'</div><div class="admin-sug-title">'+s.title+'</div>'+(s.why?'<div class="admin-sug-why">'+s.why+'</div>':'')+'<div class="admin-sug-from">— '+s.name+'</div>';
         panel.appendChild(d);
       });
-
-    } else if (key === 'pl') {
-      // ── Playlists ─────────────────────────────────────────
-      var snap = await getDocs(collection(db, 'submissions'));
-      var all  = snap.docs.map(function(d) { return d.data(); })
-                    .filter(function(d) { return d.type === 'playlist'; })
-                    .sort(function(a,b) { return (b.ts||0)-(a.ts||0); });
-
-      if (header) header.textContent =
-        all.length + ' playlist' + (all.length !== 1 ? 's' : '') + ' shared';
-
+    } else {
+      var typeFilter = {pl:'playlist',fit:'fitness',qt:'quote'}[key];
+      var label      = {pl:'playlist',fit:'routine',qt:'quote'}[key];
+      snap = await getDocs(collection(db, 'submissions'));
+      all  = snap.docs.map(function(d){return d.data();}).filter(function(d){return d.type===typeFilter;}).sort(function(a,b){return(b.ts||0)-(a.ts||0);});
+      if (header) header.textContent = all.length + ' ' + label + (all.length!==1?'s':'') + ' submitted';
       panel.innerHTML = '';
-      if (!all.length) {
-        panel.innerHTML = '<div class="admin-sug-empty">No playlists yet. 🎵</div>';
-        return;
-      }
+      if (!all.length) { panel.innerHTML='<div class="admin-sug-empty">No '+label+'s yet.</div>'; return; }
       all.forEach(function(s) {
-        var d = document.createElement('div');
-        d.className = 'admin-sug-item';
-        var date = s.ts ? new Date(s.ts).toLocaleDateString('en-IN') : '—';
-        d.innerHTML =
-          '<div class="admin-sug-type">🎧 Playlist · ' + date + '</div>' +
-          '<div class="admin-sug-title">' + s.value + '</div>' +
-          '<div class="admin-sug-from">— ' + s.name + '</div>';
-        panel.appendChild(d);
-      });
-
-    } else if (key === 'fit') {
-      // ── Fitness Routines ──────────────────────────────────
-      var snap = await getDocs(collection(db, 'submissions'));
-      var all  = snap.docs.map(function(d) { return d.data(); })
-                    .filter(function(d) { return d.type === 'fitness'; })
-                    .sort(function(a,b) { return (b.ts||0)-(a.ts||0); });
-
-      if (header) header.textContent =
-        all.length + ' routine' + (all.length !== 1 ? 's' : '') + ' submitted';
-
-      panel.innerHTML = '';
-      if (!all.length) {
-        panel.innerHTML = '<div class="admin-sug-empty">No routines yet. 💪</div>';
-        return;
-      }
-      all.forEach(function(s) {
-        var d = document.createElement('div');
-        d.className = 'admin-sug-item';
-        var date = s.ts ? new Date(s.ts).toLocaleDateString('en-IN') : '—';
-        d.innerHTML =
-          '<div class="admin-sug-type">💪 Routine · ' + date + '</div>' +
-          '<div class="admin-sug-title" style="font-size:.85rem;">' + s.value + '</div>' +
-          '<div class="admin-sug-from">— ' + s.name + '</div>';
-        panel.appendChild(d);
-      });
-
-    } else if (key === 'qt') {
-      // ── Quotes ────────────────────────────────────────────
-      var snap = await getDocs(collection(db, 'submissions'));
-      var all  = snap.docs.map(function(d) { return d.data(); })
-                    .filter(function(d) { return d.type === 'quote'; })
-                    .sort(function(a,b) { return (b.ts||0)-(a.ts||0); });
-
-      if (header) header.textContent =
-        all.length + ' quote' + (all.length !== 1 ? 's' : '') + ' dropped';
-
-      panel.innerHTML = '';
-      if (!all.length) {
-        panel.innerHTML = '<div class="admin-sug-empty">No quotes yet. 💬</div>';
-        return;
-      }
-      all.forEach(function(s) {
-        var d = document.createElement('div');
-        d.className = 'admin-sug-item';
-        d.style.borderLeftColor = '#FFD580';
-        var date = s.ts ? new Date(s.ts).toLocaleDateString('en-IN') : '—';
-        d.innerHTML =
-          '<div class="admin-sug-type" style="color:#FFD580;">💬 Quote · ' + date + '</div>' +
-          '<div class="admin-sug-title" style="font-family:\'Playfair Display\',serif;' +
-            'font-style:italic;font-size:.95rem;">"' + s.value + '"</div>' +
-          '<div class="admin-sug-from">— ' + s.name + '</div>';
+        var d=document.createElement('div'); d.className='admin-sug-item';
+        var date=s.ts?new Date(s.ts).toLocaleDateString('en-IN'):'—';
+        d.innerHTML='<div class="admin-sug-type">'+date+'</div><div class="admin-sug-title">'+s.value+'</div><div class="admin-sug-from">— '+s.name+'</div>';
         panel.appendChild(d);
       });
     }
-
   } catch (err) {
-    panel.innerHTML =
-      '<div class="admin-sug-empty" style="color:#FF4444;">' +
-        '⚠ Database error: ' + err.message +
-      '</div>';
+    panel.innerHTML='<div class="admin-sug-empty" style="color:#FF4444;">⚠ Database error: '+err.message+'</div>';
     console.error('Firestore read error:', err);
   }
 };
 </script>
 
-          
-<script id="PROJECTS-SLIDESHOW-JS">
-(function() {
-  const TOTAL = 4;
-  let current = 0;
-  const AUTO_MS = 5500;
-  let autoTimer = null;
-  let progStart = Date.now();
-  let progRAF = null;
- 
-  // Build nav dots
-  const dotsEl = document.getElementById('ps-dots');
-  for (let i = 0; i < TOTAL; i++) {
-    const d = document.createElement('button');
-    d.className = 'ps-dot' + (i === 0 ? ' active' : '');
-    d.setAttribute('aria-label', 'Slide ' + (i + 1));
-    d.onclick = () => { goTo(i); resetAuto(); };
-    dotsEl.appendChild(d);
-  }
- 
-  function goTo(idx) {
-    document.getElementById('ps-slide-' + current).classList.remove('active');
-    dotsEl.children[current].classList.remove('active');
-    current = ((idx % TOTAL) + TOTAL) % TOTAL;
-    document.getElementById('ps-slide-' + current).classList.add('active');
-    dotsEl.children[current].classList.add('active');
-    document.getElementById('ps-counter').textContent =
-      String(current + 1).padStart(2, '0') + ' / ' + String(TOTAL).padStart(2, '0');
-    progStart = Date.now();
-  }
- 
-  document.getElementById('ps-prev').onclick = () => { goTo(current - 1); resetAuto(); };
-  document.getElementById('ps-next').onclick = () => { goTo(current + 1); resetAuto(); };
- 
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'ArrowRight') { goTo(current + 1); resetAuto(); }
-    if (e.key === 'ArrowLeft')  { goTo(current - 1); resetAuto(); }
-  });
- 
-  function resetAuto() {
-    clearInterval(autoTimer);
-    autoTimer = setInterval(() => goTo(current + 1), AUTO_MS);
-    progStart = Date.now();
-  }
-  resetAuto();
- 
-  // Progress bar tick
-  (function tickProgress() {
-    const pct = Math.min(100, ((Date.now() - progStart) / AUTO_MS) * 100);
-    const bar = document.getElementById('ps-progress');
-    if (bar) bar.style.width = pct + '%';
-    requestAnimationFrame(tickProgress);
-  })();
- 
-  // Floating tag ambient animation
-  (function animateTags() {
-    document.querySelectorAll('.ps-tag').forEach(function(tag, i) {
-      var phase = i * 1.4;
-      var amp = 8 + (i % 3) * 5;
-      var speed = 2.8 + (i % 4) * 0.9;
-      (function tick() {
-        var t = Date.now() / 1000 + phase;
-        var tx = Math.sin(t / speed) * amp;
-        var ty = Math.cos(t / (speed * 0.65)) * (amp * 0.6);
-        tag.style.transform = 'translate(' + tx.toFixed(2) + 'px,' + ty.toFixed(2) + 'px)';
-        requestAnimationFrame(tick);
-      })();
-    });
-  })();
- 
-  // Matrix rain (DSA slide)
-  var canvas = document.getElementById('ps-matrix-canvas');
-  if (canvas) {
-    var ctx = canvas.getContext('2d');
-    var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789{}[]<>=+-*/JavaDSATreeGraphDP';
-    var fontSize = 13;
-    function resizeMatrix() {
-      canvas.width = canvas.offsetWidth || canvas.parentElement.offsetWidth;
-      canvas.height = canvas.offsetHeight || canvas.parentElement.offsetHeight;
-    }
-    resizeMatrix();
-    window.addEventListener('resize', resizeMatrix);
-    var drops = [];
-    function initDrops() {
-      var cols = Math.floor(canvas.width / fontSize);
-      drops = Array.from({length: cols}, () => Math.random() * -50);
-    }
-    initDrops();
-    window.addEventListener('resize', initDrops);
-    setInterval(function() {
-      ctx.fillStyle = 'rgba(8,8,8,0.05)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.font = fontSize + 'px Courier New';
-      for (var i = 0; i < drops.length; i++) {
-        var ch = chars[Math.floor(Math.random() * chars.length)];
-        ctx.fillStyle = (i % 5 === 0) ? '#39d353' : '#1a5c1a';
-        ctx.fillText(ch, i * fontSize, drops[i] * fontSize);
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-        drops[i]++;
-      }
-    }, 50);
-  }
- 
-  // GitHub contribution mini-grid
-  var ghGrid = document.getElementById('ps-gh-grid');
-  if (ghGrid) {
-    var levels = ['', 'l1', 'l2', 'l3', 'l4'];
-    for (var g = 0; g < 42; g++) {
-      var cell = document.createElement('div');
-      var r = Math.random();
-      var lv = r > 0.75 ? 4 : r > 0.55 ? 3 : r > 0.4 ? 2 : r > 0.25 ? 1 : 0;
-      cell.className = 'ps-gh-cell ' + levels[lv];
-      ghGrid.appendChild(cell);
-    }
-  }
-})();
-</script>
- 
 </body>
 </html>
