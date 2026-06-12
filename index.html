@@ -435,103 +435,114 @@
   </div>
 </section>
 
-<!-- PROJECTS SLIDESHOW -->
-<section id="projects" style="padding:0;overflow:hidden;">
-  <div id="projects-slideshow">
-    <div class="ps-eyebrow reveal">003 — Projects &amp; Builds</div>
-    <div class="ps-counter" id="ps-counter">01 / 04</div>
-    <div class="ps-progress" id="ps-progress"></div>
+<!-- PROJECTS SLIDESHOW WRAPPER -->
+<div class="projects-outer-wrapper">
+  <!-- PROJECTS SLIDESHOW -->
+  <section id="projects" style="padding:0; overflow:hidden;">
+    <div id="projects-slideshow">
+      <div class="ps-eyebrow reveal">003 — Projects &amp; Builds</div>
+      <div class="ps-counter" id="ps-counter">01 / 04</div>
+      <div class="ps-progress" id="ps-progress"></div>
 
-    <!-- SLIDE 1: OutfitOracle -->
-    <div class="ps-slide active" id="ps-slide-0">
-      <div class="ps-bg ps-bg-outfit"><div class="ps-grid-tex"></div></div>
-      <div class="ps-content">
-        <span class="ps-icon">👔</span>
-        <p class="ps-cmd">$ python OutfitOracle.py --generate-fit</p>
-        <h2 class="ps-title">Outfit<span>Oracle</span></h2>
-        <p class="ps-desc">A smart wardrobe engine that kills decision fatigue at 7am. Parses your clothing inventory, hits a weather API, reads the occasion — and hands you a fit. No thinking required.<br><br>Built fast. Solves a real problem. Ships.</p>
-        <span class="ps-action" onclick="window.open('https://github.com/DssRam24/OutfitOracle','_blank')">🌐 VIEW ON GITHUB ↗</span>
+      <!-- SLIDE 1: OutfitOracle -->
+      <div class="ps-slide active" id="ps-slide-0">
+        <div class="ps-slide-inner">
+          <div class="ps-bg ps-bg-outfit"><div class="ps-grid-tex"></div></div>
+          <div class="ps-content">
+            <span class="ps-icon">👔</span>
+            <p class="ps-cmd">$ python OutfitOracle.py --generate-fit</p>
+            <h2 class="ps-title">Outfit<span>Oracle</span></h2>
+            <p class="ps-desc">A smart wardrobe engine that kills decision fatigue at 7am. Parses your clothing inventory, hits a weather API, reads the occasion — and hands you a fit. No thinking required.<br><br>Built fast. Solves a real problem. Ships.</p>
+            <span class="ps-action" onclick="window.open('https://github.com/DssRam24/OutfitOracle','_blank')">🌐 VIEW ON GITHUB ↗</span>
+          </div>
+          <div class="ps-tags-zone">
+            <div class="ps-tag ps-orange" style="top:22%;left:18%">Python</div>
+            <div class="ps-tag ps-blue"   style="top:38%;left:42%">API</div>
+            <div class="ps-tag ps-green"  style="top:55%;left:12%">Automation</div>
+            <div class="ps-tag ps-purple" style="top:68%;left:52%">Weather API</div>
+            <div class="ps-tag ps-cyan"   style="top:30%;left:60%">React + Vite</div>
+            <div class="ps-tag ps-orange" style="top:72%;left:28%">Firebase</div>
+            <div class="ps-tag ps-blue"   style="top:15%;left:50%">Claude Vision</div>
+          </div>
+        </div>
       </div>
-      <div class="ps-tags-zone">
-        <div class="ps-tag ps-orange" style="top:22%;left:18%">Python</div>
-        <div class="ps-tag ps-blue"   style="top:38%;left:42%">API</div>
-        <div class="ps-tag ps-green"  style="top:55%;left:12%">Automation</div>
-        <div class="ps-tag ps-purple" style="top:68%;left:52%">Weather API</div>
-        <div class="ps-tag ps-cyan"   style="top:30%;left:60%">React + Vite</div>
-        <div class="ps-tag ps-orange" style="top:72%;left:28%">Firebase</div>
-        <div class="ps-tag ps-blue"   style="top:15%;left:50%">Claude Vision</div>
+
+      <!-- SLIDE 2: Smart Water -->
+      <div class="ps-slide" id="ps-slide-1">
+        <div class="ps-slide-inner">
+          <div class="ps-bg ps-bg-water"><div class="ps-grid-tex"></div></div>
+          <div class="ps-content">
+            <span class="ps-icon">🚰</span>
+            <p class="ps-cmd">$ telemetry stream --target hostel-taps</p>
+            <h2 class="ps-title">Smart Water<br><span>Monitor</span></h2>
+            <p class="ps-desc">IoT + ML platform built under the college EPICS framework. Sensors track TDS, turbidity, pH, and ORP in real time — an LSTM forecasting model flags anomalies before they become a health problem.<br><br>My role: ML pipeline + Android app integration across hardware sub-teams.</p>
+          </div>
+          <div class="ps-tags-zone">
+            <div class="ps-tag ps-blue"   style="top:20%;left:20%">IoT</div>
+            <div class="ps-tag ps-cyan"   style="top:36%;left:50%">LSTM</div>
+            <div class="ps-tag ps-green"  style="top:52%;left:15%">Android</div>
+            <div class="ps-tag ps-orange" style="top:66%;left:45%">MQTT</div>
+            <div class="ps-tag ps-purple" style="top:28%;left:62%">EPICS</div>
+            <div class="ps-tag ps-blue"   style="top:72%;left:25%">TDS Sensor</div>
+            <div class="ps-tag ps-cyan"   style="top:44%;left:28%">pH Monitor</div>
+          </div>
+        </div>
       </div>
+
+      <!-- SLIDE 3: DSA (matrix rain background) -->
+      <div class="ps-slide" id="ps-slide-2">
+        <div class="ps-slide-inner">
+          <div class="ps-bg ps-bg-dsa">
+            <canvas id="ps-matrix-canvas"></canvas>
+            <div class="ps-blur-overlay"></div>
+          </div>
+          <div class="ps-content">
+            <span class="ps-icon">🧠</span>
+            <p class="ps-cmd">$ javac DSA.java &amp;&amp; java DataStructures</p>
+            <h2 class="ps-title">Algorithms<br>&amp; <span>Logic Lab</span></h2>
+            <p class="ps-desc">Not a project. A discipline. Daily Java DSA practice — arrays, trees, graphs, DP, search — focused on runtime efficiency and clean pattern recognition.<br><br>It's always arr[mid]. It's always arr[mid].</p>
+          </div>
+          <div class="ps-tags-zone">
+            <div class="ps-tag ps-orange" style="top:18%;left:22%">Java</div>
+            <div class="ps-tag ps-green"  style="top:34%;left:48%">DSA</div>
+            <div class="ps-tag ps-cyan"   style="top:50%;left:18%">Graphs</div>
+            <div class="ps-tag ps-purple" style="top:64%;left:44%">DP</div>
+            <div class="ps-tag ps-blue"   style="top:26%;left:58%">LeetCode</div>
+            <div class="ps-tag ps-orange" style="top:72%;left:22%">Trees</div>
+            <div class="ps-tag ps-green"  style="top:40%;left:30%">Binary Search</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 4: GitHub -->
+      <div class="ps-slide" id="ps-slide-3">
+        <div class="ps-slide-inner">
+          <div class="ps-bg ps-bg-github"><div class="ps-grid-tex"></div></div>
+          <div class="ps-content">
+            <span class="ps-icon">🐛</span>
+            <p class="ps-cmd">$ git commit -m "fix"</p>
+            <h2 class="ps-title">GitHub<br><span>Activity</span></h2>
+            <p class="ps-desc">"It was working yesterday. I swear on my GPA."<br><br>Green squares don't lie. Click to see how many times I've saved and broken the same file.</p>
+            <div class="ps-gh-grid" id="ps-gh-grid"></div>
+            <br>
+            <span class="ps-action" onclick="openGhModal()">📊 CONTRIBUTION GRAPH ↗</span>
+          </div>
+          <div class="ps-tags-zone">
+            <div class="ps-tag ps-green"  style="top:22%;left:20%">Git</div>
+            <div class="ps-tag ps-cyan"   style="top:38%;left:48%">Open Source</div>
+            <div class="ps-tag ps-orange" style="top:54%;left:16%">Contributions</div>
+            <div class="ps-tag ps-purple" style="top:68%;left:42%">Commits</div>
+            <div class="ps-tag ps-blue"   style="top:30%;left:60%">GitHub</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="ps-arrow ps-prev" id="ps-prev">&#8592;</button>
+      <button class="ps-arrow ps-next" id="ps-next">&#8594;</button>
+      <div class="ps-dots" id="ps-dots"></div>
     </div>
-
-    <!-- SLIDE 2: Smart Water -->
-    <div class="ps-slide" id="ps-slide-1">
-      <div class="ps-bg ps-bg-water"><div class="ps-grid-tex"></div></div>
-      <div class="ps-content">
-        <span class="ps-icon">🚰</span>
-        <p class="ps-cmd">$ telemetry stream --target hostel-taps</p>
-        <h2 class="ps-title">Smart Water<br><span>Monitor</span></h2>
-        <p class="ps-desc">IoT + ML platform built under the college EPICS framework. Sensors track TDS, turbidity, pH, and ORP in real time — an LSTM forecasting model flags anomalies before they become a health problem.<br><br>My role: ML pipeline + Android app integration across hardware sub-teams.</p>
-      </div>
-      <div class="ps-tags-zone">
-        <div class="ps-tag ps-blue"   style="top:20%;left:20%">IoT</div>
-        <div class="ps-tag ps-cyan"   style="top:36%;left:50%">LSTM</div>
-        <div class="ps-tag ps-green"  style="top:52%;left:15%">Android</div>
-        <div class="ps-tag ps-orange" style="top:66%;left:45%">MQTT</div>
-        <div class="ps-tag ps-purple" style="top:28%;left:62%">EPICS</div>
-        <div class="ps-tag ps-blue"   style="top:72%;left:25%">TDS Sensor</div>
-        <div class="ps-tag ps-cyan"   style="top:44%;left:28%">pH Monitor</div>
-      </div>
-    </div>
-
-    <!-- SLIDE 3: DSA (matrix rain background) -->
-    <div class="ps-slide" id="ps-slide-2">
-      <div class="ps-bg ps-bg-dsa">
-        <canvas id="ps-matrix-canvas"></canvas>
-        <div class="ps-blur-overlay"></div>
-      </div>
-      <div class="ps-content">
-        <span class="ps-icon">🧠</span>
-        <p class="ps-cmd">$ javac DSA.java &amp;&amp; java DataStructures</p>
-        <h2 class="ps-title">Algorithms<br>&amp; <span>Logic Lab</span></h2>
-        <p class="ps-desc">Not a project. A discipline. Daily Java DSA practice — arrays, trees, graphs, DP, search — focused on runtime efficiency and clean pattern recognition.<br><br>It's always arr[mid]. It's always arr[mid].</p>
-      </div>
-      <div class="ps-tags-zone">
-        <div class="ps-tag ps-orange" style="top:18%;left:22%">Java</div>
-        <div class="ps-tag ps-green"  style="top:34%;left:48%">DSA</div>
-        <div class="ps-tag ps-cyan"   style="top:50%;left:18%">Graphs</div>
-        <div class="ps-tag ps-purple" style="top:64%;left:44%">DP</div>
-        <div class="ps-tag ps-blue"   style="top:26%;left:58%">LeetCode</div>
-        <div class="ps-tag ps-orange" style="top:72%;left:22%">Trees</div>
-        <div class="ps-tag ps-green"  style="top:40%;left:30%">Binary Search</div>
-      </div>
-    </div>
-
-    <!-- SLIDE 4: GitHub -->
-    <div class="ps-slide" id="ps-slide-3">
-      <div class="ps-bg ps-bg-github"><div class="ps-grid-tex"></div></div>
-      <div class="ps-content">
-        <span class="ps-icon">🐛</span>
-        <p class="ps-cmd">$ git commit -m "fix"</p>
-        <h2 class="ps-title">GitHub<br><span>Activity</span></h2>
-        <p class="ps-desc">"It was working yesterday. I swear on my GPA."<br><br>Green squares don't lie. Click to see how many times I've saved and broken the same file.</p>
-        <div class="ps-gh-grid" id="ps-gh-grid"></div>
-        <br>
-        <span class="ps-action" onclick="openGhModal()">📊 CONTRIBUTION GRAPH ↗</span>
-      </div>
-      <div class="ps-tags-zone">
-        <div class="ps-tag ps-green"  style="top:22%;left:20%">Git</div>
-        <div class="ps-tag ps-cyan"   style="top:38%;left:48%">Open Source</div>
-        <div class="ps-tag ps-orange" style="top:54%;left:16%">Contributions</div>
-        <div class="ps-tag ps-purple" style="top:68%;left:42%">Commits</div>
-        <div class="ps-tag ps-blue"   style="top:30%;left:60%">GitHub</div>
-      </div>
-    </div>
-
-    <button class="ps-arrow ps-prev" id="ps-prev">&#8592;</button>
-    <button class="ps-arrow ps-next" id="ps-next">&#8594;</button>
-    <div class="ps-dots" id="ps-dots"></div>
-  </div>
-</section>
+  </section>
+</div>
 
 <!-- INTERESTS -->
 <section id="interests" style="padding:5rem 0 3rem;background:#FFFAF2;">
