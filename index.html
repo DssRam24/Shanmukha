@@ -30,32 +30,38 @@ html, body {
   overflow-x: hidden;
 }
 
+/* ============================================================
+   PROJECTS SLIDESHOW — LOCKED BOUNDARIES WITHIN MAIN FRAME
+   ============================================================ */
+
+/* 1. Outer Container - Adapts seamlessly to your existing layout frame dimensions */
 .projects-outer-wrapper {
-  width: 100vw;
-  height: 100vh;
-  max-width: 100%;
-  max-height: 100%;
+  width: 100%;                        /* Fills the frame horizontally without pushing past edges */
+  height: 100%;                       /* Drops hard vh sizing to remain confined inside parent container */
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   background: #060606;
-  overflow: hidden;
+  overflow: hidden;                   /* Hard clip to prevent overflow bleeding */
 }
 
-/* Master viewport box with clean orange glow framework borders */
+/* 2. Main Slideshow Box - Constrained by frame limits */
 #projects-slideshow {
   position: relative;
   width: 100%;
-  height: 80%;
-  overflow: hidden;
+  height: 80vh;                       /* Controlled structural viewport block height inside your layout */
+  min-height: 680px;                  /* Generous space for your bento text content */
+  max-height: 85vh;                   /* Prevents pushing past the bottom curve of your frame */
+  overflow: hidden;                   
   background: #060606;
-  border-top: 1px solid rgba(226, 105, 58, 0.25);
-  border-bottom: 1px solid rgba(226, 105, 58, 0.25);
-  box-shadow: inset 0 0 60px rgba(226, 105, 58, 0.04),
-              0 0 40px rgba(226, 105, 58, 0.02);
+  
+  /* Seamless inner blending edges */
+  border-top: 1px solid rgba(226, 105, 58, 0.15);
+  border-bottom: 1px solid rgba(226, 105, 58, 0.15);
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.8);
 }
 
-/* Base structural slide layers */
+/* 3. Slide Viewports - Anchored directly to parent scale */
 .ps-slide {
   position: absolute;
   inset: 0;
@@ -75,6 +81,7 @@ html, body {
   z-index: 2;
 }
 
+/* Inner Layout padding adjusted slightly to give headers/navigation breathing room */
 .ps-slide-inner {
   position: absolute;
   inset: 0;
@@ -84,7 +91,64 @@ html, body {
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  padding: 100px 40px 60px;
+  padding: 85px 40px 55px; 
+}
+
+/* 4. Canvas & Background asset bounding boxes */
+.ps-bg, #ps-matrix-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;             /* Inherits layout shapes smoothly if curves are dynamic */
+}
+
+/* ============================================================
+   BENTO CONTENT GRID ADJUSTMENTS
+   ============================================================ */
+.ps-bento-grid {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 800px;                  /* Scaled down slightly to fit smaller monitor frames perfectly */
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+.ps-bento-card {
+  background: rgba(14, 14, 14, 0.55);
+  backdrop-filter: blur(20px) saturate(110%);
+  -webkit-backdrop-filter: blur(20px) saturate(110%);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6),
+              inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  box-sizing: border-box;
+}
+
+.ps-bento-main {
+  text-align: center;
+  padding: 35px 35px 28px;
+}
+
+/* Controls Header positioning within constrained frames */
+.ps-header-meta {
+  position: absolute;
+  top: 28px;
+  left: 40px;
+  right: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 30;
+}
+
+@media (max-width: 950px) {
+  #projects-slideshow {
+    height: auto;
+    min-height: 720px;
+  }
 }
 
 /* Base Asset Gradients */
