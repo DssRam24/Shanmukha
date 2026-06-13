@@ -21,483 +21,54 @@
    ============================================================ */
 
 /* ============================================================
-   NEO-BRUTALIST HERO BACKGROUND SHAPES
+   PROJECTS SLIDESHOW — LEFT & RIGHT EDGE ALIGNMENT
    ============================================================ */
-.hero-brutalist-bg {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-/* Large offset rectangle — salmon/coral fill, hard black border */
-.hb-rect-1 {
-  position: absolute;
-  width: 340px; height: 340px;
-  right: -40px; top: 80px;
-  background: #e2693a;
-  border: 3px solid #111;
-  transform: rotate(8deg);
-  opacity: 0.13;
-}
-/* Medium black-outlined square, offset shadow style */
-.hb-rect-2 {
-  position: absolute;
-  width: 180px; height: 180px;
-  right: 260px; top: 60px;
-  background: transparent;
-  border: 3px solid rgba(226,105,58,0.35);
-  transform: rotate(-5deg);
-  box-shadow: 6px 6px 0 rgba(226,105,58,0.18);
-}
-/* Tall thin rectangle — brutalist column feel */
-.hb-rect-3 {
-  position: absolute;
-  width: 60px; height: 320px;
-  left: 48px; bottom: 40px;
-  background: transparent;
-  border: 3px solid rgba(255,255,255,0.06);
-  transform: rotate(-3deg);
-}
-/* Small filled square — accent dot top-left */
-.hb-rect-4 {
-  position: absolute;
-  width: 28px; height: 28px;
-  left: 120px; top: 100px;
-  background: #e2693a;
-  opacity: 0.55;
-  transform: rotate(12deg);
-}
-/* Circle — rough mono feel */
-.hb-circle-1 {
-  position: absolute;
-  width: 220px; height: 220px;
-  right: 120px; bottom: 20px;
-  border: 3px solid rgba(255,255,255,0.05);
-  border-radius: 50%;
-  background: transparent;
-}
-/* Large background monogram / grid stamp */
-.hb-stamp {
-  position: absolute;
-  right: 80px; top: 50%;
-  transform: translateY(-50%) rotate(-4deg);
-  font-family: 'Space Mono', monospace;
-  font-size: 180px;
-  font-weight: 700;
-  color: rgba(226,105,58,0.04);
-  letter-spacing: -0.06em;
-  line-height: 1;
-  user-select: none;
-  white-space: nowrap;
-}
-/* Cross/plus mark — raw brutalist tick */
-.hb-cross {
-  position: absolute;
-  width: 40px; height: 40px;
-}
-.hb-cross::before, .hb-cross::after {
-  content: '';
-  position: absolute;
-  background: rgba(226,105,58,0.3);
-}
-.hb-cross::before { width: 3px; height: 100%; left: 50%; transform: translateX(-50%); }
-.hb-cross::after  { height: 3px; width: 100%; top: 50%; transform: translateY(-50%); }
-.hb-cross-1 { right: 480px; top: 120px; }
-.hb-cross-2 { left: 300px; bottom: 80px; }
-/* Diagonal rule lines */
-.hb-rule {
-  position: absolute;
-  height: 2px;
-  background: rgba(226,105,58,0.12);
-  transform-origin: left center;
-}
-.hb-rule-1 { width: 200px; right: 100px; top: 200px; transform: rotate(-30deg); }
-.hb-rule-2 { width: 120px; left: 200px; bottom: 120px; transform: rotate(20deg); }
-/* Dotted grid stamp */
-.hb-dots {
-  position: absolute;
-  right: 200px; top: 80px;
-  width: 120px; height: 120px;
-  background-image: radial-gradient(circle, rgba(226,105,58,0.25) 1.5px, transparent 1.5px);
-  background-size: 16px 16px;
-  transform: rotate(10deg);
-  opacity: 0.5;
-}
 
- 
-/* ============================================================
-   PROJECTS — CONTAINED BENTO SLIDESHOW
-   ============================================================ */
- 
-/* Outer wrapper — gives the section breathing room with padding */
 .projects-outer-wrapper {
-  width: 100%;
-  padding: 4rem 0 5rem;
+  width: 100%;                        /* Occupies full available width of the main layout */
+  padding: 4rem 0 5rem;               /* REMOVED side padding (2rem -> 0) to flush left and right */
   box-sizing: border-box;
   background: #0a0a0a;
+  overflow: hidden;                   /* Ensures backgrounds or canvases don't leak out */
 }
- 
-/* The actual slideshow box — contained, rounded, shadowed */
+
+/* Make sure the main slideshow container spans full width inside the wrapper */
 #projects-slideshow {
   position: relative;
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
-  height: 520px;
-  min-height: 480px;
-  overflow: hidden;
-  background: #0e0e0e;
-  border-radius: 20px;
-  border: 1px solid rgba(226,105,58,0.15);
-  box-shadow:
-    0 40px 80px rgba(0,0,0,0.6),
-    0 0 0 1px rgba(255,255,255,0.03),
-    8px 8px 0 rgba(226,105,58,0.08);
+  width: 100%;                        /* Forces the inner canvas area to meet the edges */
+  height: 80vh;                       
+  min-height: 680px;                  
+  max-height: 85vh;                   
+  overflow: hidden;                   
+  background: #060606;
+  
+  /* Blending edges directly on the container boundaries */
+  border-top: 1px solid rgba(226, 105, 58, 0.15);
+  border-bottom: 1px solid rgba(226, 105, 58, 0.15);
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.8);
 }
- 
-/* Slide base */
-.ps-slide {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: stretch;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 1;
-}
-.ps-slide.active {
-  opacity: 1;
-  pointer-events: all;
-  z-index: 2;
-}
- 
-/* Inner slide layout — two-column: content left, tags right */
+
+/* Ensure individual slide panels occupy the full width */
 .ps-slide-inner {
-  position: relative;
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  display: grid;
-  grid-template-columns: 1fr 280px;
+  display: flex;
   align-items: center;
-  gap: 0;
-  padding: 70px 0 50px;
+  justify-content: center;
   box-sizing: border-box;
-  z-index: 10;
+  padding: 85px 24px 55px;            /* Internal breathing room for copy on small screens */
 }
- 
-/* Backgrounds */
-.ps-bg {
+   /* Handles absolute scaling limits for video presentation loops */
+.ps-bg-video {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Prevents stretching or distortion bugs */
   z-index: 0;
-  border-radius: inherit;
-}
-.ps-bg-outfit  { background: radial-gradient(ellipse at 30% 50%, #1e0d02 0%, #0a0a0a 75%); }
-.ps-bg-water   { background: radial-gradient(ellipse at 30% 50%, #02121e 0%, #0a0a0a 75%); }
-.ps-bg-dsa     { background: #070707; }
-.ps-bg-github  { background: radial-gradient(ellipse at 30% 50%, #061202 0%, #0a0a0a 75%); }
-.ps-bg-chani   { background: #020b0b; }
- 
-.ps-grid-tex {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
-  background-size: 44px 44px;
-  border-radius: inherit;
-}
- 
-/* CHANI terminal bg */
-.ansi-grid-overlay {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(rgba(0,242,242,0.018) 50%, transparent 50%),
-    linear-gradient(90deg, rgba(0,242,242,0.01) 50%, transparent 50%);
-  background-size: 4px 8px;
-  border-radius: inherit;
-}
-.ansi-flicker {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    rgba(18,16,16,0) 0%,
-    rgba(0,242,242,0.04) 10%,
-    rgba(18,16,16,0) 20%
-  );
-  animation: ansi-scan 12s linear infinite;
-  border-radius: inherit;
-}
-@keyframes ansi-scan {
-  0%   { transform: translateY(-100%); }
-  100% { transform: translateY(200%); }
-}
- 
-/* Matrix canvas */
-#ps-matrix-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.4;
-  border-radius: inherit;
-}
-.ps-blur-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to right,
-    rgba(7,7,7,0.0)  0%,
-    rgba(7,7,7,0.2)  30%,
-    rgba(7,7,7,0.7)  58%,
-    rgba(7,7,7,0.97) 100%
-  );
-  border-radius: inherit;
-}
- 
-/* Header bar inside slideshow */
-.ps-header-meta {
-  position: absolute;
-  top: 22px;
-  left: 28px;
-  right: 28px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 30;
-}
-.ps-eyebrow {
-  font-family: 'Courier New', monospace;
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  color: #e2693a;
-  text-transform: uppercase;
-  background: transparent !important;
-  border: none !important;
-}
-.ps-counter {
-  font-family: 'Courier New', monospace;
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  color: #444;
-}
- 
-/* LEFT content column */
-.ps-content-col {
-  padding: 0 32px 0 36px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 0;
-}
-.ps-cmd {
-  font-family: 'Courier New', monospace;
-  font-size: 10px;
-  letter-spacing: 0.06em;
-  color: #e2693a;
-  opacity: 0.65;
-  margin: 0 0 10px;
-}
-.ps-title {
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(26px, 3.2vw, 38px);
-  font-weight: 700;
-  font-style: italic;
-  letter-spacing: -0.02em;
-  color: #f0ede8;
-  line-height: 1.08;
-  margin: 0 0 14px;
-}
-.ps-title span {
-  color: #e2693a;
-  font-weight: 300;
-  font-style: normal;
-  margin-left: 6px;
-}
-.ps-desc {
-  font-family: 'Courier New', monospace;
-  font-size: 12px;
-  color: #666;
-  line-height: 1.75;
-  margin: 0 0 20px;
-  max-width: 360px;
-}
-.ps-action {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-family: 'Courier New', monospace;
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  color: #e2693a;
-  text-transform: uppercase;
-  border: 1px solid rgba(226,105,58,0.3);
-  padding: 8px 16px;
-  border-radius: 4px;
-  transition: all 0.22s;
-  cursor: pointer;
-  align-self: flex-start;
-}
-.ps-action:hover {
-  background: rgba(226,105,58,0.1);
-  border-color: #e2693a;
-  color: #f5a87a;
-}
- 
-/* RIGHT tags column */
-.ps-tags-col {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 0 24px 0 16px;
-  gap: 14px;
-  border-left: 1px solid rgba(255,255,255,0.04);
-  height: 100%;
-}
-.ps-tags-col-label {
-  font-family: 'Courier New', monospace;
-  font-size: 9px;
-  letter-spacing: 0.18em;
-  color: #333;
-  text-transform: uppercase;
-  margin-bottom: 2px;
-}
-.ps-tags-flex {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  width: 100%;
-}
-.ps-tag {
-  font-family: 'Courier New', monospace;
-  font-size: 10.5px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  padding: 6px 12px;
-  border-radius: 4px;
-  border: 1px solid;
-  user-select: none;
-  text-transform: uppercase;
-  transition: filter 0.15s, transform 0.15s;
-  cursor: default;
-}
-.ps-tag:hover { filter: brightness(1.3); transform: translateX(3px); }
-.ps-orange { color: #e2693a; background: rgba(226,105,58,0.07); border-color: rgba(226,105,58,0.18); }
-.ps-blue   { color: #5b9bd5; background: rgba(91,155,213,0.07); border-color: rgba(91,155,213,0.18); }
-.ps-green  { color: #6abf6a; background: rgba(106,191,106,0.07); border-color: rgba(106,191,106,0.18); }
-.ps-purple { color: #a07fd4; background: rgba(160,127,212,0.07); border-color: rgba(160,127,212,0.18); }
-.ps-cyan   { color: #5bbfbf; background: rgba(91,191,191,0.07); border-color: rgba(91,191,191,0.18); }
- 
-/* GitHub mini grid */
-.ps-gh-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 3px;
-  width: 100%;
-  max-width: 220px;
-}
-.ps-gh-cell {
-  width: 9px; height: 9px;
-  border-radius: 2px;
-  background: #1a1a1a;
-}
-.ps-gh-cell.l1 { background: #0e3b1a; }
-.ps-gh-cell.l2 { background: #1a6b32; }
-.ps-gh-cell.l3 { background: #2ea043; }
-.ps-gh-cell.l4 { background: #39d353; }
- 
-/* Navigation arrows */
-.ps-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 30;
-  background: rgba(15,15,15,0.7);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,0.05);
-  color: #444;
-  width: 38px; height: 38px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 15px;
-  transition: all 0.22s;
-  border-radius: 50%;
-}
-.ps-arrow:hover { border-color: rgba(226,105,58,0.5); color: #e2693a; }
-.ps-prev { left: 16px; }
-.ps-next { right: 16px; }
- 
-/* Dots */
-.ps-dots {
-  position: absolute;
-  bottom: 18px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 8px;
-  z-index: 30;
-}
-.ps-dot {
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  background: #252528;
-  cursor: pointer;
-  transition: all 0.25s;
-  border: none;
-  padding: 0;
-}
-.ps-dot.active { background: #e2693a; transform: scale(1.5); }
- 
-/* Progress bar */
-.ps-progress {
-  position: absolute;
-  bottom: 0; left: 0;
-  height: 2px;
-  background: #e2693a;
-  z-index: 40;
-  width: 0%;
-  border-radius: 0 0 0 20px;
-}
- 
-/* Section header above the box */
-.ps-section-header {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-.ps-section-header h2 {
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(28px, 4vw, 44px);
-  font-weight: 700;
-  font-style: italic;
-  color: #f0ede8;
-  margin: 0 0 6px;
-  letter-spacing: -0.02em;
-}
-.ps-section-header h2 span { color: #e2693a; }
-.ps-section-header p {
-  font-family: 'Courier New', monospace;
-  font-size: 11px;
-  color: #444;
-  letter-spacing: 0.1em;
-  margin: 0;
-}
- 
-@media (max-width: 700px) {
-  .ps-slide-inner { grid-template-columns: 1fr; padding: 64px 20px 48px; }
-  .ps-tags-col { border-left: none; border-top: 1px solid rgba(255,255,255,0.04); padding: 16px 0 0; flex-direction: row; flex-wrap: wrap; height: auto; }
-  .ps-tags-flex { flex-direction: row; flex-wrap: wrap; }
-  .ps-arrow { display: none; }
-  #projects-slideshow { height: auto; min-height: 600px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .ps-slide { transition: opacity 0.1s; }
-  .ps-tag   { transition: none; }
+  pointer-events: none; /* Stops the video file tracking from capturing user mouse clicks */
 }
 </style>
 </head>
@@ -683,146 +254,154 @@
 
 <!-- PROJECTS — CONTAINED BENTO SLIDESHOW -->
 
-  <div class="ps-section-header reveal">
-    <p>003 — PROJECTS &amp; BUILDS</p>
-    <h2>Things I build that <span>actually work.</span></h2>
-  </div>
- 
-  <div id="projects-slideshow">
- 
-    <!-- Header bar inside box -->
-    <div class="ps-header-meta">
-      <div class="ps-eyebrow" id="ps-slide-label">CHANI — v2.0</div>
-      <div class="ps-counter" id="ps-counter">01 / 05</div>
-    </div>
-    <div class="ps-progress" id="ps-progress"></div>
- 
-    <!-- ── SLIDE 0: CHANI ── -->
-    <div class="ps-slide active" id="ps-slide-0">
-      <div class="ps-bg ps-bg-chani">
-        <div class="ansi-grid-overlay"></div>
-        <div class="ansi-flicker"></div>
+<div class="projects-outer-wrapper">
+  <section id="projects" style="padding:0; overflow:hidden;">
+    <div id="projects-slideshow">
+      
+      <div class="ps-header-meta">
+        <div class="ps-eyebrow">003 — Projects &amp; Builds</div>
+        <div class="ps-counter" id="ps-counter">01 / 05</div>
       </div>
-      <div class="ps-slide-inner">
-        <div class="ps-content-col">
-          <p class="ps-cmd">$ chani --init --mode autonomous</p>
-          <h2 class="ps-title">CHANI<span>v2.0</span></h2>
-          <p class="ps-desc">Cognitive Heuristic Autonomous Nexus Intelligence. A terminal-driven personal AI partner running natively on Windows. Long-term semantic memory, local file system automation, and cross-application scripting — all offline.</p>
-          <span class="ps-action" onclick="window.open('https://github.com/DssRam24/CHANI','_blank')">LAUNCH TERMINAL ↗</span>
-        </div>
-        <div class="ps-tags-col">
-          <div class="ps-tags-col-label">Engine Architecture</div>
-          <div class="ps-tags-flex">
-            <div class="ps-tag ps-cyan">NLP Core</div>
-            <div class="ps-tag ps-orange">Semantic Memory</div>
-            <div class="ps-tag ps-blue">OS Automation</div>
-            <div class="ps-tag ps-purple">Python Exec</div>
-            <div class="ps-tag ps-green">Heuristics</div>
+      
+      <div class="ps-progress" id="ps-progress"></div>
+
+      <div class="ps-slide active" id="ps-slide-0">
+        <div class="ps-slide-inner ps-video-slide">
+          
+          <video autoplay loop muted playsinline class="ps-bg-video">
+            <source src="" type="video/mp4">
+          </video>
+          
+          <div class="ps-bento-grid">
+            <div class="ps-bento-card ps-bento-main">
+              <p class="ps-cmd">$ chani --init</p>
+              <h2 class="ps-title ps-title-center">CHANI<span>v2.0</span></h2>
+              <p class="ps-desc">Cognitive Heuristic Autonomous Nexus Intelligence. A terminal-driven personal AI partner running natively on Windows environment. Architected with long-term semantic memory storage, local file system automation, and cross-application scripting capabilities.</p>
+              <div class="ps-action-wrapper">
+                <span class="ps-action" onclick="window.open('https://github.com/DssRam24/CHANI','_blank')">LAUNCH TERMINAL ↗</span>
+              </div>
+            </div>
+
+            <div class="ps-bento-card ps-bento-tags">
+              <h3>Engine Architecture</h3>
+              <div class="ps-tags-flex">
+                <div class="ps-tag ps-cyan">NLP Core</div>
+                <div class="ps-tag ps-orange">Semantic Memory</div>
+                <div class="ps-tag ps-blue">OS Automation</div>
+                <div class="ps-tag ps-purple">Python Exec</div>
+                <div class="ps-tag ps-green">Heuristics</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
- 
-    <!-- ── SLIDE 1: OutfitOracle ── -->
-    <div class="ps-slide" id="ps-slide-1">
-      <div class="ps-bg ps-bg-outfit"><div class="ps-grid-tex"></div></div>
-      <div class="ps-slide-inner">
-        <div class="ps-content-col">
-          <p class="ps-cmd">$ python OutfitOracle.py --generate-fit</p>
-          <h2 class="ps-title">Outfit<span>Oracle</span></h2>
-          <p class="ps-desc">A smart wardrobe engine that kills decision fatigue at 7am. Parses your clothing inventory, hits a weather API, reads the occasion — and hands you a fit. No thinking required. Built fast. Solves a real problem. Ships.</p>
-          <span class="ps-action" onclick="window.open('https://github.com/DssRam24/OutfitOracle','_blank')">VIEW ON GITHUB ↗</span>
-        </div>
-        <div class="ps-tags-col">
-          <div class="ps-tags-col-label">System Stack</div>
-          <div class="ps-tags-flex">
-            <div class="ps-tag ps-orange">Python</div>
-            <div class="ps-tag ps-blue">API Core</div>
-            <div class="ps-tag ps-green">Automation</div>
-            <div class="ps-tag ps-cyan">React + Vite</div>
-            <div class="ps-tag ps-purple">Claude Vision</div>
-            <div class="ps-tag ps-orange">Firebase</div>
+
+      <div class="ps-slide" id="ps-slide-1">
+        <div class="ps-slide-inner">
+          <div class="ps-bg ps-bg-outfit"><div class="ps-grid-tex"></div></div>
+          <div class="ps-bento-grid">
+            <div class="ps-bento-card ps-bento-main">
+              <p class="ps-cmd">$ python OutfitOracle.py</p>
+              <h2 class="ps-title ps-title-center">Outfit<span>Oracle</span></h2>
+              <p class="ps-desc">An intelligent wardrobe engine engineered to eliminate decision fatigue. By parsing personal clothing inventory, analyzing weather metrics, and evaluating event context, it delivers an optimized outfit selection instantly.</p>
+              <div class="ps-action-wrapper">
+                <span class="ps-action" onclick="window.open('https://github.com/DssRam24/OutfitOracle','_blank')">VIEW ON GITHUB ↗</span>
+              </div>
+            </div>
+            <div class="ps-bento-card ps-bento-tags">
+              <h3>System Stack</h3>
+              <div class="ps-tags-flex">
+                <div class="ps-tag ps-orange">Python</div>
+                <div class="ps-tag ps-blue">API Core</div>
+                <div class="ps-tag ps-green">Automation</div>
+                <div class="ps-tag ps-cyan">React + Vite</div>
+                <div class="ps-tag ps-purple">Claude Vision</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
- 
-    <!-- ── SLIDE 2: Smart Water ── -->
-    <div class="ps-slide" id="ps-slide-2">
-      <div class="ps-bg ps-bg-water"><div class="ps-grid-tex"></div></div>
-      <div class="ps-slide-inner">
-        <div class="ps-content-col">
-          <p class="ps-cmd">$ telemetry stream --target hostel-taps</p>
-          <h2 class="ps-title">Smart Water<span>Monitor</span></h2>
-          <p class="ps-desc">IoT + ML platform built under the college EPICS framework. Sensors track TDS, turbidity, pH, and ORP in real time — an LSTM forecasting model flags anomalies before they become a health problem. My role: ML pipeline + Android app integration.</p>
-        </div>
-        <div class="ps-tags-col">
-          <div class="ps-tags-col-label">Hardware &amp; ML</div>
-          <div class="ps-tags-flex">
-            <div class="ps-tag ps-blue">IoT</div>
-            <div class="ps-tag ps-cyan">LSTM</div>
-            <div class="ps-tag ps-green">Android SDK</div>
-            <div class="ps-tag ps-orange">MQTT</div>
-            <div class="ps-tag ps-purple">EPICS</div>
-            <div class="ps-tag ps-blue">TDS Sensor</div>
-            <div class="ps-tag ps-cyan">pH Monitor</div>
+
+      <div class="ps-slide" id="ps-slide-2">
+        <div class="ps-slide-inner">
+          <div class="ps-bg ps-bg-water"><div class="ps-grid-tex"></div></div>
+          <div class="ps-bento-grid">
+            <div class="ps-bento-card ps-bento-main">
+              <p class="ps-cmd">$ telemetry stream --hostel-taps</p>
+              <h2 class="ps-title ps-title-center">Smart Water Monitoring<span>System</span></h2>
+              <p class="ps-desc">An end-to-end IoT and Machine Learning platform deployed under the EPICS framework. Features real-time sensor integration tracking TDS, turbidity, pH, and ORP levels with advanced predictive forecasting pipelines and instant mobile alert responses.</p>
+            </div>
+            <div class="ps-bento-card ps-bento-tags">
+              <h3>Hardware, Forecasting &amp; Alerts</h3>
+              <div class="ps-tags-flex">
+                <div class="ps-tag ps-blue">IoT Architecture</div>
+                <div class="ps-tag ps-cyan">LSTM Forecasting</div>
+                <div class="ps-tag ps-green">Mobile Alerts</div>
+                <div class="ps-tag ps-orange">MQTT Stream</div>
+                <div class="ps-tag ps-purple">EPICS Framework</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
- 
-    <!-- ── SLIDE 3: DSA — matrix rain ── -->
-    <div class="ps-slide" id="ps-slide-3">
-      <div class="ps-bg ps-bg-dsa">
-        <canvas id="ps-matrix-canvas"></canvas>
-        <div class="ps-blur-overlay"></div>
-      </div>
-      <div class="ps-slide-inner">
-        <div class="ps-content-col">
-          <p class="ps-cmd">$ javac DSA.java &amp;&amp; java DataStructures</p>
-          <h2 class="ps-title">Algorithms &amp;<span>Logic Lab</span></h2>
-          <p class="ps-desc">Not a side project — a daily architectural discipline. Consistent Java implementation focusing on tree structures, graph traversal, and dynamic programming optimised for microsecond runtime efficiency. It's always arr[mid].</p>
-        </div>
-        <div class="ps-tags-col">
-          <div class="ps-tags-col-label">Core Patterns</div>
-          <div class="ps-tags-flex">
-            <div class="ps-tag ps-orange">Java Core</div>
-            <div class="ps-tag ps-green">DSA</div>
-            <div class="ps-tag ps-cyan">Graphs</div>
-            <div class="ps-tag ps-purple">Dynamic Prog</div>
-            <div class="ps-tag ps-blue">LeetCode</div>
-            <div class="ps-tag ps-orange">Trees</div>
+
+      <div class="ps-slide" id="ps-slide-3">
+        <div class="ps-slide-inner ps-video-slide">
+          
+          <video autoplay loop muted playsinline class="ps-bg-video">
+            <source src="" type="video/mp4">
+          </video>
+          
+          <div class="ps-bento-grid">
+            <div class="ps-bento-card ps-bento-main">
+              <p class="ps-cmd">$ java DataStructures</p>
+              <h2 class="ps-title ps-title-center">Algorithms &amp;<span>Logic Lab</span></h2>
+              <p class="ps-desc">Not a side project—a daily architectural discipline. Consistent Java implementation focusing on tree structures, graph traversal, and complex dynamic programming optimized for microsecond runtime efficiency. It's always arr[mid].</p>
+            </div>
+            <div class="ps-bento-card ps-bento-tags">
+              <h3>Core Patterns</h3>
+              <div class="ps-tags-flex">
+                <div class="ps-tag ps-orange">Java Core</div>
+                <div class="ps-tag ps-green">DSA Architecture</div>
+                <div class="ps-tag ps-cyan">Graphs</div>
+                <div class="ps-tag ps-purple">Dynamic Prog</div>
+                <div class="ps-tag ps-blue">LeetCode Matrix</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
- 
-    <!-- ── SLIDE 4: GitHub ── -->
-    <div class="ps-slide" id="ps-slide-4">
-      <div class="ps-bg ps-bg-github"><div class="ps-grid-tex"></div></div>
-      <div class="ps-slide-inner">
-        <div class="ps-content-col">
-          <p class="ps-cmd">$ git commit -m "production fix"</p>
-          <h2 class="ps-title">GitHub<span>Activity</span></h2>
-          <p class="ps-desc">"It was working yesterday. I swear on my GPA." Green squares don't lie. Continuous velocity — version control mapping out cycles of architectural iterations, optimisation patches, and open-source contributions.</p>
-          <span class="ps-action" onclick="openGhModal()">CONTRIBUTION GRAPH ↗</span>
-        </div>
-        <div class="ps-tags-col">
-          <div class="ps-tags-col-label">Git Metrics</div>
-          <div class="ps-gh-grid" id="ps-gh-grid"></div>
-          <div class="ps-tags-flex" style="margin-top:8px;">
-            <div class="ps-tag ps-green">CI/CD</div>
-            <div class="ps-tag ps-cyan">Open Source</div>
-            <div class="ps-tag ps-purple">Commits</div>
+
+      <div class="ps-slide" id="ps-slide-4">
+        <div class="ps-slide-inner">
+          <div class="ps-bg ps-bg-github"><div class="ps-grid-tex"></div></div>
+          <div class="ps-bento-grid">
+            <div class="ps-bento-card ps-bento-main">
+              <p class="ps-cmd">$ git commit -m "production fix"</p>
+              <h2 class="ps-title ps-title-center">GitHub<span>Activity</span></h2>
+              <p class="ps-desc">Proof of continuous velocity. Version control mapping out cycles of architectural iterations, optimization patches, and open-source contributions.</p>
+              <div class="ps-action-wrapper">
+                <span class="ps-action" onclick="openGhModal()">CONTRIBUTION GRAPH ↗</span>
+              </div>
+            </div>
+            <div class="ps-bento-card ps-bento-tags">
+              <h3>Git Metrics</h3>
+              <div class="ps-gh-grid" id="ps-gh-grid" style="margin: 0 auto 16px;"></div>
+              <div class="ps-tags-flex">
+                <div class="ps-tag ps-green">CI/CD Pipeline</div>
+                <div class="ps-tag ps-cyan">Open Source</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
+
+      <button class="ps-arrow ps-prev" id="ps-prev">&#8592;</button>
+      <button class="ps-arrow ps-next" id="ps-next">&#8594;</button>
+      <div class="ps-dots" id="ps-dots"></div>
     </div>
- 
-    <button class="ps-arrow ps-prev" id="ps-prev">&#8592;</button>
-    <button class="ps-arrow ps-next" id="ps-next">&#8594;</button>
-    <div class="ps-dots" id="ps-dots"></div>
-  </div>
+  </section>
+</div>
 
 <!-- INTERESTS -->
 <section id="interests" style="padding:5rem 0 3rem;background:#FFFAF2;">
