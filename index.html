@@ -28,23 +28,34 @@
 <div id="px-cursor"></div>
 <div id="px-trail"></div>
 
-<!-- NAV -->
 <nav id="main-nav">
-  <a class="nav-logo" href="#" >DSSRam/</a>
+  <div class="nav-pill" id="nav-pill">
 
-  <div class="nav-links" id="nav-links">
-    <a href="#about">About</a>
-    <a href="#design">Design</a>
-    <a href="#books">Books</a>
-    <a href="#photos">Photos</a>
-    <a href="#doodle">Doodle</a>
-    <a href="#footer">Contact</a>
+    <a class="nav-logo" href="#">రామ్</a>
+
+    <div class="nav-clock" id="nav-clock">
+      <span id="nav-time">00:00</span>
+      <span class="nav-tz">IST</span>
+    </div>
+
+    <div class="nav-divider"></div>
+
+    <div class="nav-links" id="nav-links">
+      <a href="#about">About</a>
+      <a href="#design">Design</a>
+      <a href="#books">Books</a>
+      <a href="#photos">Photos</a>
+      <a href="#doodle">Doodle</a>
+    </div>
+
+    <a href="#footer" class="nav-cta">Get in Touch</a>
+
+    <button class="nav-hamburger" id="hamburger" onclick="toggleNav()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+
   </div>
-  <button class="nav-hamburger" id="hamburger" onclick="toggleNav()" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
 </nav>
-
 
 <!-- HERO -->
 <section id="hero">
@@ -77,7 +88,6 @@
       <h1 class="hero-name">
         Shanmukha<br><span>Donepudi</span>
       </h1>
-      <span class="hero-alias">(రామ్)</span>
       <span class="hero-alias-sub">alias dssr · B.Tech CSE · Vijayawada</span>
     </div>
 
