@@ -353,117 +353,272 @@ section:hover .section-title { letter-spacing: -.01em; }
 /* ============================================================
    PROJECTS SECTION
 ============================================================ */
+/* ============================================================
+   PROJECTS — NEO-BRUTALIST SECTION
+   ============================================================ */
 #projects {
   position: relative;
-  padding: 6rem 5%;
-  background: #0a0a0a;
-  text-align: center;
+  background: #f5f0e8;
+  padding: 0;
+  overflow: hidden;
+  /* Hard offset box-shadow border feel */
+  border-top: 4px solid #111;
+  border-bottom: 4px solid #111;
+}
+ 
+/* Big stamped section label — brutalist watermark */
+#projects::before {
+  content: 'BUILDS';
+  position: absolute;
+  top: -10px;
+  right: -20px;
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(80px, 14vw, 160px);
+  font-weight: 700;
+  color: rgba(0,0,0,0.04);
+  letter-spacing: -0.06em;
+  line-height: 1;
+  pointer-events: none;
+  z-index: 0;
+  user-select: none;
+}
+ 
+.proj-wrap {
+  position: relative;
+  z-index: 1;
+}
+ 
+/* Section header — raw, left-aligned, brutalist */
+.proj-head {
+  padding: 3.5rem 3rem 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.proj-head-left {}
+.proj-eyebrow {
+  font-family: 'Space Mono', monospace;
+  font-size: .6rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: #e2693a;
+  margin: 0 0 .5rem;
+}
+.proj-head h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  font-weight: 700;
+  font-style: italic;
+  color: #111;
+  margin: 0;
+  line-height: 1.05;
+  letter-spacing: -.03em;
+}
+.proj-head h2 em {
+  font-style: normal;
+  color: #e2693a;
+}
+/* Brutalist rule under header */
+.proj-rule {
+  height: 4px;
+  background: #111;
+  margin: 1.8rem 3rem 0;
+}
+ 
+/* Cards row */
+.proj-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 4px solid #111;
+  margin-top: 2rem;
+}
+ 
+/* Each card */
+.proj-card {
+  position: relative;
+  overflow: hidden;
+  border-right: 4px solid #111;
+  min-height: 520px;
+  display: flex;
+  flex-direction: column;
+  background: #f5f0e8;
+  transition: background 0.3s;
+}
+.proj-card:last-child { border-right: none; }
+.proj-card:hover { background: #ede8df; }
+ 
+/* Video background (CHANI + AquaSense) */
+.proj-video-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
   overflow: hidden;
 }
-
-/* Ambient glow */
-#projects::before {
+.proj-video-bg video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.proj-card:hover .proj-video-bg video { opacity: 0.18; }
+/* Dark overlay so text stays readable */
+.proj-video-bg::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 50% 20%, rgba(255,107,26,.07), transparent 60%);
-  pointer-events: none;
+  background: rgba(245,240,232,0.82);
   z-index: 1;
-  animation: glowPulse 6s ease-in-out infinite;
 }
-
-@keyframes glowPulse {
-  0%, 100% { opacity: .7; }
-  50%       { opacity: 1; }
+ 
+/* Grid bg (OutfitOracle) */
+.proj-grid-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(0,0,0,0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.07) 1px, transparent 1px);
+  background-size: 32px 32px;
+  opacity: 0;
+  transition: opacity 0.4s;
 }
-
-/* ── Section heading ── */
-.projects-title {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(2rem, 4vw, 3.5rem);
-  font-weight: 700;
-  color: #FFFAF2;
-  margin-bottom: .6rem;
+.proj-card:hover .proj-grid-bg { opacity: 1; }
+ 
+/* Card inner — stacks content at bottom */
+.proj-card-inner {
   position: relative;
   z-index: 2;
-  line-height: 1.15;
+  padding: 2rem 2rem 2.2rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: flex-end;
+  flex: 1;
 }
-.projects-title span { color: #FF6B1A; font-style: italic; }
-
-.projects-sub {
+ 
+/* Card top accent number — brutalist index */
+.proj-index {
+  position: absolute;
+  top: 1.6rem;
+  left: 2rem;
+  font-family: 'Space Mono', monospace;
+  font-size: .58rem;
+  letter-spacing: .2em;
+  color: #bbb;
+  text-transform: uppercase;
+}
+ 
+/* Card top tag — project type */
+.proj-type {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.6rem;
+  font-family: 'Space Mono', monospace;
+  font-size: .55rem;
+  letter-spacing: .12em;
+  color: #e2693a;
+  text-transform: uppercase;
+  border: 1.5px solid #e2693a;
+  padding: .25rem .6rem;
+}
+ 
+/* Main content area */
+.proj-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0;
+  padding-top: 4rem;
+}
+ 
+.proj-cmd {
+  font-family: 'Space Mono', monospace;
+  font-size: .58rem;
+  letter-spacing: .04em;
+  color: #aaa;
+  margin: 0 0 .7rem;
+}
+ 
+.proj-name {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+  font-weight: 700;
+  font-style: italic;
+  color: #111;
+  margin: 0 0 1rem;
+  line-height: 1.1;
+  letter-spacing: -.02em;
+}
+ 
+/* Hard black underline — brutalist */
+.proj-name-line {
+  display: block;
+  width: 36px;
+  height: 3px;
+  background: #e2693a;
+  margin-bottom: 1rem;
+}
+ 
+.proj-desc {
   font-family: 'Space Mono', monospace;
   font-size: .65rem;
   color: #555;
-  letter-spacing: .15em;
-  text-transform: uppercase;
-  margin-bottom: 3rem;
-  position: relative;
-  z-index: 2;
+  line-height: 1.85;
+  margin: 0 0 1.4rem;
 }
-
-/* Outer Container - Smooth Curvy Box with Orange Border */
-.projects-outer-wrapper {
-  border: 2px solid #ff6b00; /* Clean, vibrant orange border */
-  border-radius: 24px;       /* Smooth, curvy look */
-  padding: 20px;             /* Clean spacing around the internal slideshow */
-  background: transparent;   /* Keeps your original background styling */
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05); /* Soft depth */
-  max-width: 1200px;         /* Optional alignment limit */
-  margin: 0 auto;            /* Center alignment */
-}
-
-/* Base Slideshow Overrides to ensure it sits nicely within the wrapper */
-#projects {
-  border-radius: 16px;       /* Curves matching the outer wrapper scale */
-}
-
-/* Individual Slide Wrapper - Clean minimalistic inner box */
-.ps-slide-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  border: 1px solid rgba(255, 255, 255, 0.1); /* Minimalist clean line border */
-  border-radius: 16px;       /* Individual curved layout */
-  overflow: hidden;          /* Ensures backgrounds/matrix canvas don't leak out */
-  box-sizing: border-box;
-}
-
-/* Fixes background positions for curved constraints */
-.ps-bg, #ps-matrix-canvas {
-  border-radius: 15px;       /* Slightly tighter than inner container to avoid sharp edges */
-}
-/* Tags */
-.projects-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .35rem;
-  margin-top: 1rem;
-  padding-top: .8rem;
-  border-top: 1px solid rgba(255,107,26,.1);
-}
-.projects-tags span {
-  background: rgba(255,107,26,.1);
-  color: rgba(255,107,26,.8);
-  border: 1px solid rgba(255,107,26,.2);
-  padding: .18rem .5rem;
-  border-radius: 6px;
+ 
+/* Hard-edge CTA link */
+.proj-link {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
   font-family: 'Space Mono', monospace;
-  font-size: .55rem;
-  letter-spacing: .04em;
-}
-
-/* CTA line */
-.projects-action {
-  margin-top: .8rem;
-  font-family: 'Space Mono', monospace;
-  font-size: .55rem;
-  color: #FF6B1A;
-  letter-spacing: .1em;
+  font-size: .58rem;
+  letter-spacing: .12em;
   text-transform: uppercase;
-  opacity: .7;
-  transition: opacity .2s;
+  color: #111;
+  text-decoration: none;
+  border-bottom: 2px solid #111;
+  padding-bottom: 2px;
+  transition: color .2s, border-color .2s;
+  align-self: flex-start;
+  cursor: pointer;
 }
-.projects-card:hover .projects-action { opacity: 1; }
+.proj-link:hover { color: #e2693a; border-color: #e2693a; }
+ 
+/* Bottom border accent */
+.proj-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 4px;
+  background: #e2693a;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .35s cubic-bezier(.4,0,.2,1);
+}
+.proj-card:hover::after { transform: scaleX(1); }
+ 
+/* Hover offset shadow (brutalist) */
+.proj-card {
+  box-shadow: none;
+  transition: background .3s, box-shadow .25s, transform .25s;
+}
+.proj-card:hover {
+  box-shadow: inset -4px 0 0 #e2693a;
+}
+ 
+@media (max-width: 860px) {
+  .proj-cards { grid-template-columns: 1fr; }
+  .proj-card  { border-right: none; border-bottom: 4px solid #111; min-height: 380px; }
+  .proj-card:last-child { border-bottom: none; }
+  .proj-head  { padding: 2.5rem 1.5rem 0; }
+  .proj-rule  { margin: 1.5rem 1.5rem 0; }
+}
 
 /* ── Interests / passions mini row ── */
 .interests-divider {
