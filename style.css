@@ -84,39 +84,212 @@ body::before {
   z-index: 0;
 }
 /* ============================================================
-   NAV
-============================================================ */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-  padding: 1rem 2rem;
-  display: flex; justify-content: space-between; align-items: center;
-  background: rgba(255,250,242,0.88);
-  backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgba(255,107,26,.12);
-  box-shadow: 0 4px 30px rgba(0,0,0,.08), 0 1px 0 rgba(255,107,26,.1);
-  transition: box-shadow .3s;
+   NAV — FLOATING PILL
+   ============================================================ */
+#main-nav {
+  position: fixed;
+  top: 1.2rem;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none; /* let clicks pass through the wrapper */
 }
-nav:hover { box-shadow: 0 8px 40px rgba(0,0,0,.12), 0 1px 0 rgba(255,107,26,.2); }
+
+.nav-pill {
+  pointer-events: all;
+  display: flex;
+  align-items: center;
+  gap: 0;
+
+  /* sizing */
+  padding: 0.55rem 0.6rem 0.55rem 1.1rem;
+  border-radius: 999px;
+
+  /* glass */
+  background: rgba(255, 252, 248, 0.82);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.08),
+    0 1px 0 rgba(255, 255, 255, 0.9) inset;
+
+  /* transition for shrink on scroll */
+  transition:
+    padding 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    gap 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.35s,
+    background 0.35s;
+
+  max-width: calc(100vw - 3rem);
+  overflow: hidden;
+}
+
+/* Scrolled state — shrinks slightly */
+.nav-pill.scrolled {
+  padding: 0.38rem 0.5rem 0.38rem 0.9rem;
+  background: rgba(255, 252, 248, 0.94);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 1px 0 rgba(255, 255, 255, 0.9) inset;
+}
+
+/* Logo */
 .nav-logo {
   font-family: 'Press Start 2P', monospace;
-  font-size: .85rem; color: #FF6B1A;
-  text-shadow: 2px 2px 0 rgba(255,107,26,.25);
-  letter-spacing: .05em;
+  font-size: 0.62rem;
+  color: #FF6B1A;
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: font-size 0.35s;
 }
-.nav-links { display: flex; gap: 1.5rem; align-items: center; }
+.nav-pill.scrolled .nav-logo { font-size: 0.55rem; }
+
+/* Clock */
+.nav-clock {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-left: 0.9rem;
+  flex-shrink: 0;
+}
+#nav-time {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  color: #333;
+  letter-spacing: 0.04em;
+  font-weight: 700;
+  transition: font-size 0.35s;
+}
+.nav-tz {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.48rem;
+  color: #aaa;
+  letter-spacing: 0.08em;
+}
+.nav-pill.scrolled #nav-time { font-size: 0.5rem; }
+
+/* Divider */
+.nav-divider {
+  width: 1px;
+  height: 16px;
+  background: rgba(0, 0, 0, 0.1);
+  margin: 0 1rem;
+  flex-shrink: 0;
+  transition: height 0.35s, margin 0.35s;
+}
+.nav-pill.scrolled .nav-divider { height: 12px; margin: 0 0.7rem; }
+
+/* Links */
+.nav-links {
+  display: flex;
+  gap: 1.6rem;
+  align-items: center;
+  transition: gap 0.35s;
+}
+.nav-pill.scrolled .nav-links { gap: 1.1rem; }
+
 .nav-links a {
-  font-family: 'Space Mono', monospace; font-size: .62rem;
-  color: #0a0a0a; text-decoration: none;
-  letter-spacing: .1em; text-transform: uppercase;
-  position: relative; padding-bottom: 2px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  color: #222;
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  position: relative;
+  padding-bottom: 2px;
+  transition: color 0.2s, font-size 0.35s;
 }
+.nav-pill.scrolled .nav-links a { font-size: 0.52rem; }
+
 .nav-links a::after {
-  content: ''; position: absolute; bottom: 0; left: 0;
-  width: 0; height: 2px; background: #FF6B1A; transition: width .3s;
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 0; height: 1.5px;
+  background: #FF6B1A;
+  transition: width 0.25s;
 }
+.nav-links a:hover { color: #FF6B1A; }
 .nav-links a:hover::after { width: 100%; }
-.nav-hamburger { display: none; flex-direction: column; gap: 4px; background: none; border: none; padding: 4px; }
-.nav-hamburger span { display: block; width: 22px; height: 2px; background: #FF6B1A; border-radius: 2px; }
+
+/* Active link */
+.nav-links a.nav-active { color: #FF6B1A; }
+.nav-links a.nav-active::after { width: 100%; }
+
+/* CTA pill button */
+.nav-cta {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 1rem;
+  padding: 0.5rem 1.1rem;
+  border-radius: 999px;
+  background: #111;
+  color: #fff;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.56rem;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition:
+    background 0.2s,
+    padding 0.35s,
+    font-size 0.35s;
+}
+.nav-cta:hover { background: #FF6B1A; }
+.nav-pill.scrolled .nav-cta {
+  padding: 0.38rem 0.9rem;
+  font-size: 0.5rem;
+}
+
+/* Hamburger — mobile only */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  background: none;
+  border: none;
+  padding: 6px;
+  margin-left: 0.5rem;
+  cursor: pointer;
+}
+.nav-hamburger span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: #111;
+  border-radius: 2px;
+  transition: background 0.2s;
+}
+
+@media (max-width: 680px) {
+  .nav-links { display: none; }
+  .nav-clock  { display: none; }
+  .nav-divider{ display: none; }
+  .nav-cta    { display: none; }
+  .nav-hamburger { display: flex; }
+  .nav-links.open {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 5rem; left: 1rem; right: 1rem;
+    background: rgba(255,252,248,0.97);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(0,0,0,0.07);
+    border-radius: 16px;
+    padding: 1.4rem;
+    gap: 1.2rem;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.12);
+    z-index: 999;
+  }
+  .nav-links.open a { font-size: 0.7rem; }
+}
 
 /* ============================================================
    HERO
