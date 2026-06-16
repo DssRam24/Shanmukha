@@ -1008,8 +1008,8 @@ document.querySelectorAll('#humor, #books, #footer, #story, #projects').forEach(
   // Elements
   var pill         = document.getElementById('nav-pill');
   var hero         = document.getElementById('hero');
-  var darkSections = ['story', 'projects', 'blogs'];
-  var sections     = ['about', 'design', 'books', 'photos', 'doodle', 'footer'];
+var darkSections = ['story', 'projects', 'books','footer'];
+  var sections     = ['about', 'design','blogs', 'photos', 'doodle'];
   var navLinks     = document.querySelectorAll('.nav-links a');
 
   function onScroll() {
