@@ -990,3 +990,80 @@ document.querySelectorAll('#humor, #books, #footer, #story, #projects').forEach(
   window.addEventListener('resize', resize);
   resize();
 })();
+
+/* ── NAV: clock + scroll shrink + active section + dark mode ── */
+(function () {
+
+  // Clock
+  function updateClock() {
+    var now = new Date();
+    var h = String(now.getHours()).padStart(2, '0');
+    var m = String(now.getMinutes()).padStart(2, '0');
+    var el = document.getElementById('nav-time');
+    if (el) el.textContent = h + ':' + m;
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  // Elements
+  var pill         = document.getElementById('nav-pill');
+  var hero         = document.getElementById('hero');
+  var darkSections = ['story', 'projects', 'blogs'];
+  var sections     = ['about', 'design', 'books', 'photos', 'doodle', 'footer'];
+  var navLinks     = document.querySelectorAll('.nav-links a');
+
+  function onScroll() {
+    if (!pill) return;
+
+    // Shrink when past hero
+    var heroBottom = hero ? hero.getBoundingClientRect().bottom : 0;
+    if (heroBottom < 0) {
+      pill.classList.add('scrolled');
+    } else {
+      pill.classList.remove('scrolled');
+    }
+
+    // Dark mode when over a dark section
+    var navMid = 60;
+    var isDark = false;
+    darkSections.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      var rect = el.getBoundingClientRect();
+      if (rect.top <= navMid && rect.bottom >= navMid) {
+        isDark = true;
+      }
+    });
+    if (isDark) {
+      pill.classList.add('dark-mode');
+    } else {
+      pill.classList.remove('dark-mode');
+    }
+
+    // Active link highlight
+    var scrollY = window.scrollY + 120;
+    var current = '';
+    sections.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el && el.offsetTop <= scrollY) current = id;
+    });
+    navLinks.forEach(function (a) {
+      var href = a.getAttribute('href').replace('#', '');
+      if (href === current) {
+        a.classList.add('nav-active');
+      } else {
+        a.classList.remove('nav-active');
+      }
+    });
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll(); // run once on load
+
+  // Mobile toggle
+  window.toggleNav = function () {
+    var links = document.getElementById('nav-links');
+    if (links) links.classList.toggle('open');
+  };
+
+})();
