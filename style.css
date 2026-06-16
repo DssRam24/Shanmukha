@@ -822,7 +822,7 @@ section:hover .section-title { letter-spacing: -.01em; }
   height: 100%;
   object-fit: cover;
   object-position: center top;
-  opacity: 0.13;
+  opacity: 0.30;
   mix-blend-mode: multiply;
   pointer-events: none;
   user-select: none;
