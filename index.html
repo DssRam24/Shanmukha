@@ -218,41 +218,90 @@
   </div>
 </section>
 
-
-   <!-- PROJECTS -->
-<section id="projects" style="padding:5rem 2rem 6rem;background:#0a0a0a;">
-  <div class="section-tag reveal" style="justify-content:center;margin-bottom:1rem;">003 — Projects &amp; Builds</div>
-  <h2 class="section-title reveal" style="text-align:center;color:#f0ede8;">Things I build that <em>actually work.</em></h2>
-
-  <div style="max-width:860px;margin:3rem auto 0;display:flex;flex-direction:column;gap:3rem;">
-
-    <!-- CHANI -->
-    <div class="reveal" style="border-left:2px solid #e2693a;padding:0 0 0 2rem;">
-      <p style="font-family:'Space Mono',monospace;font-size:.6rem;color:#e2693a;letter-spacing:.15em;margin:0 0 .5rem;text-transform:uppercase;">Personal AI Assistant</p>
-      <h3 style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;font-style:italic;color:#f0ede8;margin:0 0 .8rem;letter-spacing:-.01em;">CHANI</h3>
-      <p style="font-family:'Space Mono',monospace;font-size:.72rem;color:#666;line-height:1.9;margin:0;max-width:560px;">A terminal-driven personal AI assistant I built for myself, running natively on Windows. Long-term memory via SQLite so it actually remembers context across sessions. Integrated DuckDuckGo search, a local app launcher, and full file system automation. Named after my nickname Chanti. Built with Groq's API running llama-3.3-70b.</p>
-      <a href="https://github.com/DssRam24/CHANI" target="_blank" style="display:inline-block;margin-top:1rem;font-family:'Space Mono',monospace;font-size:.6rem;color:#e2693a;text-decoration:none;letter-spacing:.1em;">github.com/DssRam24/CHANI ↗</a>
+<!-- ── PROJECTS HTML — replace your <section id="projects"> ── -->
+<section id="projects">
+  <div class="proj-wrap">
+ 
+    <div class="proj-head reveal">
+      <div class="proj-head-left">
+        <p class="proj-eyebrow">003 — Projects &amp; Builds</p>
+        <h2>Things I build that <em>actually work.</em></h2>
+      </div>
     </div>
-
-    <div style="height:1px;background:rgba(255,255,255,0.05);"></div>
-
-    <!-- OutfitOracle -->
-    <div class="reveal" style="border-left:2px solid #e2693a;padding:0 0 0 2rem;">
-      <p style="font-family:'Space Mono',monospace;font-size:.6rem;color:#e2693a;letter-spacing:.15em;margin:0 0 .5rem;text-transform:uppercase;">AI Wardrobe App</p>
-      <h3 style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;font-style:italic;color:#f0ede8;margin:0 0 .8rem;letter-spacing:-.01em;">OutfitOracle</h3>
-      <p style="font-family:'Space Mono',monospace;font-size:.72rem;color:#666;line-height:1.9;margin:0;max-width:560px;">Built because picking an outfit at 7am is a waste of cognitive load. You log your clothing, it reads the weather, asks the occasion, and gives you a fit. No scrolling through your wardrobe. No thinking. Built with React, Vite, Firebase, and Gemini Vision to actually understand what clothes look like from a photo.</p>
-      <a href="https://github.com/DssRam24/OutfitOracle" target="_blank" style="display:inline-block;margin-top:1rem;font-family:'Space Mono',monospace;font-size:.6rem;color:#e2693a;text-decoration:none;letter-spacing:.1em;">github.com/DssRam24/OutfitOracle ↗</a>
-    </div>
-
-    <div style="height:1px;background:rgba(255,255,255,0.05);"></div>
-
-    <!-- AquaSense -->
-    <div class="reveal" style="border-left:2px solid #e2693a;padding:0 0 0 2rem;">
-      <p style="font-family:'Space Mono',monospace;font-size:.6rem;color:#e2693a;letter-spacing:.15em;margin:0 0 .5rem;text-transform:uppercase;">EPICS College Project</p>
-      <h3 style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;font-style:italic;color:#f0ede8;margin:0 0 .8rem;letter-spacing:-.01em;">AquaSense</h3>
-      <p style="font-family:'Space Mono',monospace;font-size:.72rem;color:#666;line-height:1.9;margin:0;max-width:560px;">Smart water quality monitoring system built for the hostel taps at college. ESP32 sensors track TDS, turbidity, pH, and ORP in real time over MQTT. An LSTM model runs forecasting to flag anomalies before they become a health issue. My role was the ML pipeline and Android app integration across the hardware sub-teams.</p>
-    </div>
-
+    <div class="proj-rule"></div>
+ 
+    <div class="proj-cards">
+ 
+      <!-- ── CARD 1: CHANI (video bg) ── -->
+      <div class="proj-card reveal">
+        <!-- Replace chani-bg.mp4 with your actual video file -->
+        <div class="proj-video-bg">
+          <video src="chani-bg.mp4" autoplay muted loop playsinline></video>
+        </div>
+ 
+        <div class="proj-index">01 / 03</div>
+        <div class="proj-type">AI Assistant</div>
+ 
+        <div class="proj-card-inner">
+          <div class="proj-body">
+            <p class="proj-cmd">$ chani --init --mode autonomous</p>
+            <h3 class="proj-name">CHANI</h3>
+            <span class="proj-name-line"></span>
+            <p class="proj-desc">
+              A terminal-driven personal AI assistant built for myself, running natively on Windows. Long-term memory via SQLite so it actually remembers context across sessions. DuckDuckGo search, local app launcher, and full file system automation. Named after my nickname Chanti. Powered by Groq running llama-3.3-70b.
+            </p>
+            <a class="proj-link" onclick="window.open('https://github.com/DssRam24/CHANI','_blank')">
+              View on GitHub ↗
+            </a>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- ── CARD 2: OutfitOracle (grid bg) ── -->
+      <div class="proj-card reveal">
+        <div class="proj-grid-bg"></div>
+ 
+        <div class="proj-index">02 / 03</div>
+        <div class="proj-type">AI Wardrobe</div>
+ 
+        <div class="proj-card-inner">
+          <div class="proj-body">
+            <p class="proj-cmd">$ python OutfitOracle.py --generate-fit</p>
+            <h3 class="proj-name">OutfitOracle</h3>
+            <span class="proj-name-line"></span>
+            <p class="proj-desc">
+              Built because picking an outfit at 7am is a waste of cognitive load. Log your clothes, it reads the weather, asks the occasion, gives you a fit. No scrolling your wardrobe. No thinking. React, Vite, Firebase, and Gemini Vision to actually understand what clothes look like from a photo.
+            </p>
+            <a class="proj-link" onclick="window.open('https://github.com/DssRam24/OutfitOracle','_blank')">
+              View on GitHub ↗
+            </a>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- ── CARD 3: AquaSense (video bg) ── -->
+      <div class="proj-card reveal">
+        <!-- Replace aqua-bg.mp4 with your actual video file -->
+        <div class="proj-video-bg">
+          <video src="aqua-bg.mp4" autoplay muted loop playsinline></video>
+        </div>
+ 
+        <div class="proj-index">03 / 03</div>
+        <div class="proj-type">IoT + ML</div>
+ 
+        <div class="proj-card-inner">
+          <div class="proj-body">
+            <p class="proj-cmd">$ telemetry stream --target hostel-taps</p>
+            <h3 class="proj-name">AquaSense</h3>
+            <span class="proj-name-line"></span>
+            <p class="proj-desc">
+              Smart water quality monitoring built for the hostel taps at college. ESP32 sensors track TDS, turbidity, pH, and ORP over MQTT in real time. An LSTM model runs forecasting to flag anomalies before they become a health issue. My role was the ML pipeline and Android app integration across hardware sub-teams.
+            </p>
+          </div>
+        </div>
+      </div>
+ 
+    </div><!-- /proj-cards -->
   </div>
 </section>
   <!-- Interests divider -->
