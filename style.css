@@ -803,25 +803,117 @@ section:hover .section-title { letter-spacing: -.01em; }
 /* ============================================================
    STORY SECTION
 ============================================================ */
-#story { position: relative; background: linear-gradient(180deg, #050508 0%, #0a0a12 50%, #0d0a0a 100%); padding: 8rem 0 7rem; overflow: hidden; }
-#story::before { content: ''; position: absolute; top: -200px; left: -200px; width: 600px; height: 600px; background: radial-gradient(circle, rgba(255,107,26,.06) 0%, transparent 65%); border-radius: 50%; pointer-events: none; animation: storyBlob1 12s ease-in-out infinite alternate; }
-#story::after { content: ''; position: absolute; bottom: -150px; right: -150px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(107,157,255,.05) 0%, transparent 65%); border-radius: 50%; pointer-events: none; animation: storyBlob2 15s ease-in-out infinite alternate; }
-@keyframes storyBlob1 { to { transform: translate(60px, 40px); } }
-@keyframes storyBlob2 { to { transform: translate(-40px, -60px); } }
-.story-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; transform: translateX(-50%); background: linear-gradient(180deg, transparent 0%, rgba(255,107,26,.25) 15%, rgba(255,107,26,.4) 50%, rgba(255,107,26,.25) 85%, transparent 100%); pointer-events: none; z-index: 0; }
-.story-inner { max-width: 780px; margin: 0 auto; padding: 0 5%; position: relative; z-index: 2; }
-.story-tag { font-family: 'Space Mono', monospace; font-size: .62rem; color: #FF6B1A; letter-spacing: .25em; text-transform: uppercase; margin-bottom: 3rem; display: flex; align-items: center; gap: 1rem; }
-.story-tag::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, rgba(255,107,26,.4), transparent); }
-.story-para { opacity: 0; transform: translateY(32px); transition: opacity .85s var(--ease-smooth), transform .85s var(--ease-smooth); margin-bottom: 2.2rem; }
-.story-para.visible { opacity: 1; transform: none; }
-.story-para p { font-family: 'Playfair Display', serif; font-size: clamp(1rem, 1.8vw, 1.2rem); line-height: 1.9; color: rgba(232,228,218,.75); font-weight: 300; }
-.story-para:first-of-type p::first-line { color: rgba(232,228,218,.95); }
-.story-accent { font-family: 'Playfair Display', serif; font-size: clamp(1.1rem, 2vw, 1.35rem); font-style: italic; color: rgba(255,180,120,.85); }
-.story-pullquote { background: rgba(255,107,26,.06); border: 1px solid rgba(255,107,26,.15); border-radius: 16px; padding: 2rem 2.5rem; margin-top: 3rem; position: relative; overflow: hidden; }
-.story-pullquote::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,107,26,.04), transparent); pointer-events: none; }
-.story-pullquote p { font-family: 'Playfair Display', serif; font-size: clamp(1rem, 1.8vw, 1.2rem); color: rgba(255,207,170,.9); line-height: 1.9; font-weight: 300; }
-.story-pullquote .story-final-line { display: block; font-family: 'Caveat', cursive; font-size: clamp(1.3rem, 2.5vw, 1.7rem); color: #FF6B1A; margin-top: 1.2rem; letter-spacing: .03em; font-weight: 600; }
-.story-dot { position: absolute; left: 50%; width: 10px; height: 10px; background: #FF6B1A; border-radius: 50%; transform: translateX(-50%); box-shadow: 0 0 20px rgba(255,107,26,.6); z-index: 3; }
+/* ============================================================
+   STORY SECTION — FLOATING IMAGE ELEMENTS
+   ============================================================ */
+
+/* Floating element base */
+.story-float {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  user-select: none;
+  border-radius: 4px;
+}
+
+/* Individual float positions & sizes */
+.sf-1 {
+  width: 90px;
+  top: 8%;
+  left: 3%;
+  opacity: 0.18;
+  transform: rotate(-6deg);
+  animation: sf-drift-1 9s ease-in-out infinite;
+}
+.sf-2 {
+  width: 70px;
+  top: 22%;
+  right: 4%;
+  opacity: 0.14;
+  transform: rotate(4deg);
+  animation: sf-drift-2 11s ease-in-out infinite;
+}
+.sf-3 {
+  width: 55px;
+  top: 45%;
+  left: 1.5%;
+  opacity: 0.12;
+  transform: rotate(-3deg);
+  animation: sf-drift-3 13s ease-in-out infinite;
+}
+.sf-4 {
+  width: 80px;
+  top: 60%;
+  right: 2%;
+  opacity: 0.16;
+  transform: rotate(7deg);
+  animation: sf-drift-1 10s ease-in-out infinite reverse;
+}
+.sf-5 {
+  width: 60px;
+  bottom: 18%;
+  left: 5%;
+  opacity: 0.13;
+  transform: rotate(-8deg);
+  animation: sf-drift-2 12s ease-in-out infinite;
+}
+.sf-6 {
+  width: 50px;
+  bottom: 8%;
+  right: 6%;
+  opacity: 0.11;
+  transform: rotate(5deg);
+  animation: sf-drift-3 8s ease-in-out infinite reverse;
+}
+.sf-7 {
+  width: 65px;
+  top: 35%;
+  right: 7%;
+  opacity: 0.10;
+  transform: rotate(-4deg);
+  animation: sf-drift-1 14s ease-in-out infinite;
+}
+.sf-8 {
+  width: 45px;
+  top: 75%;
+  left: 7%;
+  opacity: 0.12;
+  transform: rotate(9deg);
+  animation: sf-drift-2 10s ease-in-out infinite reverse;
+}
+
+/* Drift keyframes — slow, gentle, independent */
+@keyframes sf-drift-1 {
+  0%,100% { transform: rotate(-6deg) translateY(0px);   }
+  50%      { transform: rotate(-4deg) translateY(-14px); }
+}
+@keyframes sf-drift-2 {
+  0%,100% { transform: rotate(4deg)  translateY(0px);   }
+  50%      { transform: rotate(6deg)  translateY(-10px); }
+}
+@keyframes sf-drift-3 {
+  0%,100% { transform: rotate(-3deg) translateY(0px);   }
+  33%      { transform: rotate(-5deg) translateY(-8px);  }
+  66%      { transform: rotate(-1deg) translateY(-16px); }
+}
+
+/* Keep images grayscale to not fight the sun painting palette */
+.story-float img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: grayscale(100%) sepia(20%);
+  border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+  .sf-1, .sf-3, .sf-5, .sf-8 { display: none; }
+  .sf-2, .sf-4, .sf-6, .sf-7 { width: 44px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story-float { animation: none !important; }
+}
 
 /* ============================================================
    PHOTOS SECTION
