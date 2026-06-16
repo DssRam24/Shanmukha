@@ -185,6 +185,37 @@ body::before {
 }
 .nav-pill.scrolled .nav-divider { height: 12px; margin: 0 0.7rem; }
 
+/* Nav pill — dark section variant */
+.nav-pill.dark-mode {
+  background: rgba(10, 10, 10, 0.85);
+  border-color: rgba(255, 255, 255, 0.06);
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.4),
+    0 1px 0 rgba(255, 255, 255, 0.04) inset;
+}
+
+.nav-pill.dark-mode .nav-logo { color: #FF6B1A; }
+
+.nav-pill.dark-mode #nav-time { color: #ccc; }
+.nav-pill.dark-mode .nav-tz   { color: #555; }
+
+.nav-pill.dark-mode .nav-divider { background: rgba(255, 255, 255, 0.08); }
+
+.nav-pill.dark-mode .nav-links a { color: #aaa; }
+.nav-pill.dark-mode .nav-links a:hover { color: #FF6B1A; }
+.nav-pill.dark-mode .nav-links a.nav-active { color: #FF6B1A; }
+
+.nav-pill.dark-mode .nav-cta {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.nav-pill.dark-mode .nav-cta:hover {
+  background: #FF6B1A;
+  border-color: #FF6B1A;
+}
+
+.nav-pill.dark-mode .nav-hamburger span { background: #ccc; }
 /* Links */
 .nav-links {
   display: flex;
