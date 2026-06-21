@@ -44,8 +44,8 @@ body::before {
   z-index: 99999;
   
   /* Small circle size */
-  width: 16px; 
-  height: 16px;
+  width: 20px; 
+  height: 20px;
   border-radius: 50%;
   
   /* Must be white for 'difference' blend mode to invert perfectly */
