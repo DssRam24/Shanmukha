@@ -821,20 +821,14 @@ const randomStyles = [
 
 // Added an 8th text element to prevent 'undefined' mismatch crash
 const styleTexts = [
-
   "CONTACT_NOW",   
-
   "CONTACT.EXE",   
-
   "Connect",       
-
   "Get in Touch",
-
   "Click Here",    
-
   "//initialize",   
-  "Say Hi! "
-  "LINK_START" 
+  "Say Hi! ",
+  "LINK_START" ,
   "Let's Connect"
 
 ];
