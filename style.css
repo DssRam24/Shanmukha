@@ -1453,6 +1453,30 @@ section:hover .section-title { letter-spacing: -.01em; }
 .footer-cta:hover { 
   filter: brightness(1.2); 
 }
+/* 1. FORCE THE LAYOUT TO REMAIN STABLE */
+#cta-btn, .footer-cta {
+    /* inline elements like <a> can't have width/height or reliable padding unless set to block/inline-block */
+    display: inline-block !important; 
+    
+    /* This creates the actual clickable surface area. Without this, the button shrinks to zero */
+    padding: 14px 34px !important; 
+    
+    /* Makes sure the mouse pointer actually changes to a hand icon */
+    cursor: pointer !important;
+    
+    /* Ensures the link text remains underlined-free */
+    text-decoration: none !important;
+}
+
+/* 2. PREVENT OTHER LAYOUT ELEMENTS FROM BLOCKING THE CLICK */
+#cta-btn {
+    /* If another div is sitting invisibly over the button, this forces the button to the absolute front layer */
+    position: relative !important;
+    z-index: 9999 !important;
+    
+    /* Forces the browser to recognize mouse clicks on this element */
+    pointer-events: auto !important; 
+}
 
 .footer-links-col { display: flex; flex-direction: column; gap: .6rem; margin-top: .5rem; }
 .footer-link { font-family: 'Space Mono', monospace; font-size: .7rem; color: #0a0a0a; text-decoration: none; transition: color .2s; }
