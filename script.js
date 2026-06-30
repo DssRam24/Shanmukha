@@ -717,9 +717,9 @@ document.getElementById('admin-pass').addEventListener('keydown', function(e) {
   if (e.key === 'Enter') adminLogin();
 });
 
-// Styles mapped
+// Mapped exactly 1:1 with styleTexts (8 items total)
 const randomStyles = [
-  // 1. Terminal Style (From Video)
+  // 1. Terminal Style
   {
     background: "#000000",
     borderRadius: "0px",
@@ -731,7 +731,7 @@ const randomStyles = [
     transform: "rotate(0deg) skew(0deg)",
     boxShadow: "none"
   },
-  // 2. Windows Executable Style (From Video)
+  // 2. Windows Executable Style
   {
     background: "#1c1c1c",
     borderRadius: "50px", 
@@ -743,19 +743,18 @@ const randomStyles = [
     transform: "rotate(0deg)",
     boxShadow: "none"
   },
-  // 3. Minimalist Cyberpunk Style (From Video)
+  // 3. Minimalist Cyberpunk Style
   {
     background: "#000000",
     borderRadius: "8px",
     color: "#00ff33",
     fontFamily: "'Segoe UI', Tahoma, sans-serif",
-    
     textTransform: "none",
     letterSpacing: "1px",
     transform: "rotate(0deg)",
     boxShadow: "none"
   },
-  // 4. NEW: Glitched & Tilted Amber CRT
+  // 4. Glitched & Tilted Amber CRT
   {
     background: "#1a0f00",
     borderRadius: "4px",
@@ -764,7 +763,6 @@ const randomStyles = [
     border: "1px solid #ffb000",
     textTransform: "uppercase",
     letterSpacing: "2px",
-    // Aggressive analog skew
     transform: "skewX(-7deg) rotate(-1deg)", 
     boxShadow: "0 0 10px rgba(255, 176, 0, 0.4)"
   },
@@ -783,7 +781,7 @@ const randomStyles = [
     transform: "rotate(0deg)",
     boxShadow: "none"
   },
-  // 6. NEW: Matrix Distortion
+  // 6. Matrix Distortion
   {
     background: "#000000",
     borderRadius: "0px",
@@ -792,12 +790,21 @@ const randomStyles = [
     border: "1px dashed #00ff00",
     textTransform: "lowercase",
     letterSpacing: "5px",
-    // Subtle digital tilt
     transform: "rotate(2deg)", 
     boxShadow: "inset 0 0 8px rgba(0, 255, 0, 0.5)"
   },
-  // 7. NEW: Hard Glitch Red Warning
-
+  // 7. Hard Glitch Red Warning (Filled in based on your notes)
+  {
+    background: "#ff0000",
+    borderRadius: "0px",
+    color: "#ffffff",
+    fontFamily: "'Impact', sans-serif",
+    border: "3px double #ffffff",
+    textTransform: "uppercase",
+    letterSpacing: "2px",
+    transform: "skewX(5deg) rotate(1deg)",
+    boxShadow: "0 0 15px rgba(255, 0, 0, 0.8)"
+  },
   // 8. Vaporwave Blueprint
   {
     background: "#0000ff",
@@ -812,6 +819,7 @@ const randomStyles = [
   }
 ];
 
+// Added an 8th text element to prevent 'undefined' mismatch crash
 const styleTexts = [
   "CONTACT_NOW",   
   "CONTACT.EXE",   
@@ -819,7 +827,8 @@ const styleTexts = [
   "Get in Touch",
   "Click Here",    
   "//initialize",   
-  "LINK_START"     
+  "LINK_START",
+  "SYSTEM_OVERRIDE" 
 ];
 
 const btn = document.getElementById("cta-btn");
@@ -829,17 +838,17 @@ function changeCTAStyle() {
   const selectedStyle = randomStyles[randomIndex];
   const selectedText = styleTexts[randomIndex];
 
-  // CRITICAL FIX FOR TIMING DELAY: 
-  // We completely strip previous specific properties out of the DOM before injection.
-  // This keeps the loop instant and responsive without lag styles carrying over.
-  btn.removeAttribute("style");
+  // FIX: Reset individual inline style mutations safely.
+  // Using cssText = '' clears all previous JS properties but keeps 
+  // the element completely viable for the static CSS stylesheets to target.
+  btn.style.cssText = ''; 
 
-  // Apply the styles and text smoothly
+  // Inject the new variant properties 
   Object.assign(btn.style, selectedStyle);
   btn.textContent = selectedText;
 }
 
-// Loop instantly every 800ms for a tighter, more energetic pacing
+// Loop pacing
 setInterval(changeCTAStyle, 800);
 // ============================================================
 // KEYBOARD SHORTCUTS
