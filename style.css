@@ -1430,10 +1430,29 @@ section:hover .section-title { letter-spacing: -.01em; }
 .footer-big-text { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 6.5vw, 6rem); line-height: .92; font-weight: 700; color: #0a0a0a; }
 .footer-big-text em { color: #FF6B1A; font-style: italic; }
 
-/* Dynamic Video Button Wrapper (Custom JS Controlled) */
-.cta-scene { display: inline-block; margin-top: 1.5rem; }
-.footer-cta { display: inline-block; padding: 14px 34px; text-decoration: none; font-size: 1.1rem; font-weight: 600; position: relative; overflow: hidden; transition: all 0.05s steps(2, end); }
-.footer-cta:hover { filter: brightness(1.2); }
+//* Dynamic Video Button Wrapper */
+.cta-scene { 
+  display: inline-block; 
+  margin-top: 1.5rem; 
+}
+
+.footer-cta { 
+  /* Core layout defaults must stay forced so JS overrides don't break responsiveness */
+  display: inline-block !important; 
+  padding: 14px 34px !important; 
+  text-decoration: none !important; 
+  
+  font-size: 1.1rem; 
+  font-weight: 600; 
+  position: relative; 
+  overflow: hidden; 
+  transition: all 0.05s steps(2, end); 
+  cursor: pointer; /* Ensures the mouse pointer changes to indicate it's clickable */
+}
+
+.footer-cta:hover { 
+  filter: brightness(1.2); 
+}
 
 .footer-links-col { display: flex; flex-direction: column; gap: .6rem; margin-top: .5rem; }
 .footer-link { font-family: 'Space Mono', monospace; font-size: .7rem; color: #0a0a0a; text-decoration: none; transition: color .2s; }
