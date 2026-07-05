@@ -21,6 +21,23 @@ document.querySelectorAll(
   el.addEventListener('mouseleave', () => curEl.classList.remove('hover'));
 });
 // ============================================================
+// PHOTO HOVER VIDEO (restarts clip from 0 on every hover)
+// ============================================================
+(function initPhotoHoverVideo() {
+  const stage = document.getElementById('hero-photo-wrap');
+  const video = document.getElementById('hero-photo-video');
+  if (!stage || !video) return;
+  stage.addEventListener('mouseenter', () => {
+    stage.classList.add('video-active');
+    video.currentTime = 0;
+    video.play();
+  });
+  stage.addEventListener('mouseleave', () => {
+    stage.classList.remove('video-active');
+    video.pause();
+  });
+})();
+// ============================================================
 // DRAGGABLE PHOTO
 // ============================================================
 (function initPhotoDrag() {
