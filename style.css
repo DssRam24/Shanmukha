@@ -495,23 +495,32 @@ body::before {
 }
  
 /* — Ticket, plain image, no coded layout — */
-.ticket-sticker{
-  width: 260px;
+.ticket-sticker {
+  /* Increased size using clamp for responsiveness */
+  width: clamp(200px, 25vw, 320px);
+  
   position: absolute;
   top: 3.5rem;
   right: 6%;
   z-index: 10;
+  
+  /* Added margin for breathing room */
+  margin: 20px; 
+  
   transform: rotate(6deg);
-  transition: transform .5s cubic-bezier(.22,1,.36,1);
+  transition: transform .5s cubic-bezier(.22, 1, .36, 1);
 }
-.ticket-sticker:hover{
-  transform: rotate(0deg) scale(.94);
+
+.ticket-sticker:hover {
+  transform: rotate(0deg) scale(1.05); /* Slight zoom on hover */
 }
-.ticket-img{
-  width:100%; display:block;
+
+.ticket-img {
+  width: 100%;
+  display: block;
   border-radius: 8px;
-  background: none;
-  box-shadow: none;
+  /* Optional: adds a subtle depth to separate it from the background */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); 
 }
  
 @media (max-width: 760px){
