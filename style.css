@@ -519,8 +519,7 @@ body::before {
   width: 100%;
   display: block;
   border-radius: 8px;
-  /* Optional: adds a subtle depth to separate it from the background */
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); 
+
 }
  
 @media (max-width: 760px){
