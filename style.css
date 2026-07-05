@@ -414,9 +414,7 @@ body::before {
   background: none;
   box-shadow: none;
   
-  /* Black and Red theme */
-  border: 4px solid #000000;
-  outline: 2px solid #ff0000;
+
 }
 
 .photo-stage img,
