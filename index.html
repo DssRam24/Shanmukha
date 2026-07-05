@@ -61,36 +61,17 @@
 <section id="hero">
  
   <div class="hero-bg-grid" id="hero-grid"></div>
-  <div class="float-tag ft-1">✦ creative</div>
-  <div class="float-tag ft-2">↗ lets build</div>
-  <div class="float-tag ft-3">⌘ maker</div>
-
+ 
   <div class="hero-left">
-    <!-- NAME BLOCK (no image) -->
     <div class="hero-name-block reveal-l">
-      <!-- MULTILANG GREETING -->
       <div class="greeting-wrap" id="greeting-wrap">
-        <span class="greeting-word active" id="gw-0">Hello <span class="greeting-lang">EN</span></span>
-        <span class="greeting-word" id="gw-1">नमस्ते <span class="greeting-lang">HI</span></span>
-        <span class="greeting-word" id="gw-2">నమస్కారం <span class="greeting-lang">TE</span></span>
-        <span class="greeting-word" id="gw-3">こんにちは <span class="greeting-lang">JP</span></span>
-        <span class="greeting-word" id="gw-4">Hola <span class="greeting-lang">ES</span></span>
-        <span class="greeting-word" id="gw-5">Bonjour <span class="greeting-lang">FR</span></span>
-         <span class="greeting-word" id="gw-8">नमस्कार <span class="greeting-lang">MR</span></span> <!-- Marathi -->
-
-  <span class="greeting-word" id="gw-9">ನಮಸ್ಕಾರ <span class="greeting-lang">KN</span></span> <!-- Kannada -->
-  <span class="greeting-word" id="gw-10">നമസ്കാരം <span class="greeting-lang">ML</span></span> <!-- Malayalam -->
-<span class="greeting-word" id="gw-11">Ciao <span class="greeting-lang">IT</span></span>
-         <span class="greeting-word" id="gw-12">مرحباً <span class="greeting-lang">AR</span></span>
-         
+        <span class="greeting-word active">Hello <span class="greeting-lang">EN</span></span>
       </div>
-       <h2>I am</h2>
-      <h1 class="hero-name">
-        Shanmukha<br><span>Donepudi</span>
-      </h1>
+      <h2>I am</h2>
+      <h1 class="hero-name">Shanmukha<br><span>Donepudi</span></h1>
       <span class="hero-alias-sub">alias dssr · B.Tech CSE · Vijayawada</span>
     </div>
-
+ 
     <div class="terminal-box reveal-l" style="transition-delay:.2s">
       <div class="t-bar">
         <div class="t-dot t-r"></div><div class="t-dot t-y"></div><div class="t-dot t-g"></div>
@@ -110,26 +91,41 @@
       <div class="t-line"><span class="t-prompt">$ </span><span class="t-cursor"></span></div>
     </div>
   </div>
-
- <!-- PHOTO -->
+ 
+  <!-- PHOTO + DESK ITEMS -->
   <div class="hero-right">
-    <div class="photo-universe" id="photo-drag">
-      <div class="photo-drag-hint">drag me ✦ double-click to snap back</div>
-      <div class="fshape fs-1"></div>
-      <div class="fshape fs-2"></div>
-      <div class="fshape fs-3"></div>
-      <div class="fshape fs-4"></div>
-      <div class="fshape fs-5"></div>
-      <div class="fshape fs-6"></div>
-      <div class="photo-wrap reveal">
-        <!-- USER PHOTO (color, no filter) -->
-        <img src="picppfp.png" alt="Shanmukha Donepudi" class="photo" id="hero-photo">
-           <div class="photo-corner pc-tl"></div>
-        <div class="photo-corner pc-tr"></div>
-        <div class="photo-corner pc-bl"></div>
-        <div class="photo-corner pc-br"></div>
-      </div>
+ 
+    <!-- Centered photo, no frame, no ticket behind it -->
+    <div class="photo-stage" id="hero-photo-wrap">
+      <!-- TODO: replace with your real photo -->
+      <img src="picppfp.png" alt="Shanmukha Donepudi" id="hero-photo">
+      <!-- TODO: replace with your real hover clip -->
+      <video id="hero-photo-video" src="hero-hover.mp4" autoplay muted loop playsinline></video>
     </div>
+ 
+    <div class="hero-desk">
+ 
+      <!-- Folder of tools: hover reveals logos -->
+      <div class="folder-tools">
+        <div class="folder-tools-reveal">
+          <!-- TODO: replace each src with your real tool logo. Add/remove <img> tags as needed. -->
+          <img class="tool-logo" style="--i:0;--r:-6" src="vscode.png" alt="VS Code">
+          <img class="tool-logo" style="--i:1;--r:4"  src="claude.png"   alt="Clue">
+          <img class="tool-logo" style="--i:2;--r:-3" src="terminal.png" alt="Tool 3">
+          <img class="tool-logo" style="--i:3;--r:5"  src="spotify.png" alt="Tool 4">
+        </div>
+        <!-- TODO: replace with your folder graphic -->
+        <img class="folder-base-img" src="assets/folder-base.png" alt="Tools folder">
+        <span class="folder-label">tools/</span>
+      </div>
+ 
+    </div>
+  </div>
+ 
+  <!-- Ticket: plain image element, floats above the page, not part of the desk row -->
+  <div class="ticket-sticker">
+    <!-- TODO: replace with your ticket graphic -->
+    <img class="ticket-img" src="ticket.png" alt="Design x Code ticket">
   </div>
 </section>
    
