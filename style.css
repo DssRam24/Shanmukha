@@ -526,20 +526,154 @@ body::before {
   .ticket-sticker{ width:170px; top:1.2rem; right:4%; }
 }
 /* ============================================================
-   ARCHIVES & COMMONS
+   RCHIVES — neo-brutalist lockup, 3D orbiting graph squares
 ============================================================ */
-/* --- COMMONS STYLES START HERE --- */
-.section-tag { font-family: 'Space Mono', monospace; font-size: .6rem; color: #FF6B1A; letter-spacing: .2em; text-transform: uppercase; margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem; }
-.section-tag::after { content: ''; flex: 1; height: 1px; background: #FF6B1A; opacity: .3; }
-.section-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3.8rem); line-height: 1.1; margin-bottom: 2.5rem; font-weight: 700; text-shadow: 2px 4px 12px rgba(0,0,0,.08); transition: letter-spacing .4s var(--ease-smooth); }
-.section-title em { font-style: italic; color: #FF6B1A; }
-section:hover .section-title { letter-spacing: -.01em; }
+.rchives-wrapper{
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.6rem;
+  padding: 5rem 5%;
+  perspective: 1400px;
+}
 
-/* 3D Entry Animation classes */
-.reveal { opacity: 0; transform: translateY(50px) rotateX(12deg) scale(.97); transition: opacity .9s var(--ease-smooth), transform .9s var(--ease-smooth); transform-origin: center bottom; }
-.reveal.visible { opacity: 1; transform: none; }
-.reveal-l { opacity: 0; transform: translateX(-60px); transition: opacity .8s var(--ease-smooth), transform .8s var(--ease-smooth); }
-.reveal-l.visible { opacity: 1; transform: none; }
+/* — accent lines, chunky instead of hairline — */
+.line{
+  flex: 1;
+  height: 4px;
+  max-width: 220px;
+  background: var(--ink);
+  position: relative;
+}
+.line::before{
+  content:'';
+  position:absolute;
+  top: 50%; left: 0;
+  width: 10px; height: 10px;
+  background: var(--coral);
+  border: 2px solid var(--ink);
+  transform: translate(-50%,-50%);
+}
+.line::after{
+  content:'';
+  position:absolute;
+  top: 50%; right: 0;
+  width: 10px; height: 10px;
+  background: var(--cream);
+  border: 2px solid var(--ink);
+  transform: translate(50%,-50%);
+}
+
+/* — the logo itself: brutalist button — */
+.rchives-logo{
+  position: relative;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  font-family: 'Playfair Display', serif;
+  font-weight: 800;
+  font-size: clamp(1.6rem, 3vw, 2.6rem);
+  letter-spacing: -.02em;
+  color: var(--ink);
+  text-decoration: none;
+  background: var(--coral);
+  border: 3px solid var(--ink);
+  padding: .6rem 1.4rem;
+  box-shadow: 7px 7px 0 var(--ink);
+  transform: rotate(-2deg);
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+  white-space: nowrap;
+}
+.rchives-logo span{
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: .55em;
+  margin-left: .15em;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.rchives-logo:hover{
+  transform: rotate(0deg) translate(4px, 4px);
+  box-shadow: 3px 3px 0 var(--ink);
+  background: var(--ink);
+  color: var(--cream);
+}
+.rchives-logo:active{
+  transform: translate(7px, 7px);
+  box-shadow: 0 0 0 var(--ink);
+}
+
+/* — coffee / sun accents — */
+.rchives-accent{
+  position: relative;
+  z-index: 4;
+  width: 54px; height: 54px;
+  border: 2.5px solid var(--ink);
+  background: var(--cream);
+  box-shadow: 4px 4px 0 var(--ink);
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink: 0;
+  animation: wobble-brutal 5s ease-in-out infinite;
+}
+.rchives-accent img{
+  width: 70%; height: 70%; object-fit: contain;
+}
+.accent-coffee{ transform: rotate(-6deg); animation-delay: 0s; }
+.accent-sun{ transform: rotate(7deg); animation-delay: .8s; }
+@keyframes wobble-brutal{
+  0%, 100% { transform: rotate(-6deg) translateY(0); }
+  50%      { transform: rotate(4deg) translateY(-6px); }
+}
+
+/* — 3D orbiting graph squares — */
+.rchives-orbit{
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+.orbit-sq{
+  position: absolute;
+  top: 50%; left: 50%;
+  border: 2px solid var(--ink);
+  background:
+    linear-gradient(var(--coral) 1px, transparent 1px) 0 0 / 6px 6px,
+    linear-gradient(90deg, var(--coral) 1px, transparent 1px) 0 0 / 6px 6px,
+    var(--cream);
+  transform-style: preserve-3d;
+}
+
+.os-1{ width: 22px; height: 22px; margin:-11px 0 0 -11px;
+  animation: orbitY 9s linear infinite; }
+.os-2{ width: 16px; height: 16px; margin:-8px 0 0 -8px;
+  animation: orbitY 9s linear infinite reverse; animation-delay: -3s; }
+.os-3{ width: 28px; height: 28px; margin:-14px 0 0 -14px;
+  animation: orbitX 12s linear infinite; opacity:.8; }
+.os-4{ width: 14px; height: 14px; margin:-7px 0 0 -7px;
+  animation: orbitX 12s linear infinite reverse; animation-delay: -5s; opacity:.7; }
+.os-5{ width: 18px; height: 18px; margin:-9px 0 0 -9px;
+  background: var(--ink); border-color: var(--coral);
+  animation: orbitY 7s linear infinite; animation-delay: -2s; }
+.os-6{ width: 12px; height: 12px; margin:-6px 0 0 -6px;
+  background: var(--coral); border-color: var(--ink);
+  animation: orbitX 15s linear infinite; animation-delay: -8s; opacity:.6; }
+
+@keyframes orbitY{
+  from{ transform: rotateY(0deg) translateZ(160px) rotateY(0deg); }
+  to  { transform: rotateY(360deg) translateZ(160px) rotateY(-360deg); }
+}
+@keyframes orbitX{
+  from{ transform: rotateX(0deg) translateZ(120px) rotateX(0deg); }
+  to  { transform: rotateX(360deg) translateZ(120px) rotateX(-360deg); }
+}
+
+@media (max-width: 700px){
+  .rchives-wrapper{ gap: .9rem; padding: 3.5rem 5%; }
+  .line{ max-width: 60px; }
+  .rchives-accent{ width: 42px; height: 42px; }
+  .orbit-sq{ display: none; } /* orbit reads as noise at small sizes, cut it */
+}
 /* ============================================================
    RCHIVES INDIVIDUAL BUTTON DIVIDER (From image_445a2f.png)
 ============================================================ */
