@@ -711,20 +711,28 @@
 <section id="doodle">
   <div class="section-tag reveal">005 — Doodle Space</div>
   <h2 class="section-title reveal">Leave your <em>mark.</em></h2>
-  <p class="reveal" style="font-family:'Space Mono',monospace;font-size:.68rem;color:#888;margin-top:-2rem;margin-bottom:.5rem;">// permission granted to go completely unhinged here</p>
-  <div class="doodle-wrapper reveal" style="position:relative;">
+  <p class="section-sub reveal">// permission granted to go completely unhinged here</p>
+
+  <div class="doodle-wrapper reveal">
     <div class="doodle-toolbar">
-      <button class="tool-btn active" id="btn-draw" onclick="setTool('draw')">✏️ Draw</button>
-      <button class="tool-btn" id="btn-erase" onclick="setTool('erase')">⬜ Erase</button>
-      <button class="tool-btn" onclick="clearC()">🗑️ Clear</button>
-      <button class="tool-btn" onclick="dlDoodle()">💾 Save</button>
-      <div style="width:1px;height:20px;background:#e0d8d0;flex-shrink:0;"></div>
-      <div id="swatches" style="display:flex;gap:.35rem;align-items:center;flex-wrap:wrap;"></div>
-      <div style="width:1px;height:20px;background:#e0d8d0;flex-shrink:0;"></div>
-      <label style="font-family:'Space Mono',monospace;font-size:.6rem;color:#888;display:flex;align-items:center;gap:.4rem;white-space:nowrap;">
-        Size <input type="range" class="brush-sz" id="brush-sz" min="2" max="40" value="6">
+      <div class="tb-group">
+        <button class="tool-btn active" id="btn-draw" onclick="setTool('draw')">Draw</button>
+        <button class="tool-btn" id="btn-erase" onclick="setTool('erase')">Erase</button>
+      </div>
+      <div class="tb-divider"></div>
+      <div class="tb-group" id="swatches"></div>
+      <div class="tb-divider"></div>
+      <label class="tb-size">
+        Size
+        <input type="range" id="brush-sz" min="2" max="40" value="6">
       </label>
+      <div class="tb-divider"></div>
+      <div class="tb-group">
+        <button class="tool-btn" onclick="clearC()">Clear</button>
+        <button class="tool-btn tool-btn-accent" onclick="dlDoodle()">Save</button>
+      </div>
     </div>
+
     <canvas id="doodle-canvas"></canvas>
     <div class="doodle-hint">draw something cursed ✦</div>
   </div>
