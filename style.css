@@ -503,12 +503,12 @@ body::before {
 
   margin: 20px;
 
-  transform: rotate(-6deg);
+  transform: rotate(-6deg) scale(1);
   transition: transform .5s cubic-bezier(.22, 1, .36, 1);
 }
 
 .ticket-sticker:hover {
-  transform: rotate(0deg) scale(1.05);
+  transform: rotate(0deg) scale(0.92);
 }
 
 .ticket-img {
