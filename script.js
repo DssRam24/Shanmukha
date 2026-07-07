@@ -517,116 +517,102 @@ document.addEventListener('DOMContentLoaded', loadBloggerPosts);
 // ============================================================
 // DOODLE CANVAS
 // ============================================================
-var dcanvas  = document.getElementById('doodle-canvas');
-var dctx     = dcanvas.getContext('2d');
-var painting = false;
-var dtool    = 'draw';
-var dcolor   = '#0a0a0a';
-var dbsize   = 6;
+(function initDoodle() {
+  const canvas = document.getElementById('doodle-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const sizeInput = document.getElementById('brush-sz');
+  const swatchWrap = document.getElementById('swatches');
 
-function resizeDCanvas() {
-  var data = dcanvas.toDataURL();
-  dcanvas.width  = dcanvas.offsetWidth;
-  dcanvas.height = dcanvas.offsetHeight || 400;
-  var img   = new Image();
-  img.onload = function() { dctx.drawImage(img, 0, 0); };
-  img.src    = data;
-}
-resizeDCanvas();
-window.addEventListener('resize', resizeDCanvas);
+  const colors = ['#0a0a0a', '#FF6B1A', '#FFB380', '#6B9DFF', '#FF6B9D'];
+  let currentColor = colors[0];
+  let tool = 'draw'; // 'draw' | 'erase'
+  let drawing = false;
+  let lastX = 0, lastY = 0;
 
-var dcolors = ['#0a0a0a','#FF6B1A','#FFD580','#FF6B9D',
-               '#6B9DFF','#6BFFB8','#ffffff','#FF4444'];
-var swatchContainer = document.getElementById('swatches');
+  // build swatches
+  colors.forEach((c, i) => {
+    const b = document.createElement('button');
+    b.className = 'swatch' + (i === 0 ? ' active' : '');
+    b.style.background = c;
+    b.setAttribute('aria-label', c);
+    b.onclick = () => {
+      currentColor = c;
+      document.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+      b.classList.add('active');
+      setTool('draw'); // picking a color implies you want to draw
+    };
+    swatchWrap.appendChild(b);
+  });
 
-dcolors.forEach(function(c, i) {
-  var s = document.createElement('div');
-  s.className = 'color-swatch' + (i === 0 ? ' active' : '');
-  s.style.background = c;
-  if (c === '#ffffff') s.style.border = '2px solid #ccc';
-  s.onclick = function() {
-    dcolor = c;
-    dtool  = 'draw';
-    document.querySelectorAll('.color-swatch').forEach(function(x) {
-      x.classList.remove('active');
-    });
-    s.classList.add('active');
-    setTool('draw');
+  function resizeCanvas() {
+    const rect = canvas.getBoundingClientRect();
+    const prev = document.createElement('canvas');
+    prev.width = canvas.width; prev.height = canvas.height;
+    prev.getContext('2d').drawImage(canvas, 0, 0);
+
+    canvas.width = rect.width * devicePixelRatio;
+    canvas.height = rect.height * devicePixelRatio;
+    ctx.scale(devicePixelRatio, devicePixelRatio);
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+
+    if (prev.width) ctx.drawImage(prev, 0, 0, rect.width, rect.height);
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  function pos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const p = e.touches ? e.touches[0] : e;
+    return { x: p.clientX - rect.left, y: p.clientY - rect.top };
+  }
+
+  function start(e) {
+    drawing = true;
+    const { x, y } = pos(e);
+    lastX = x; lastY = y;
+  }
+  function move(e) {
+    if (!drawing) return;
+    e.preventDefault();
+    const { x, y } = pos(e);
+    ctx.globalCompositeOperation = tool === 'erase' ? 'destination-out' : 'source-over';
+    ctx.strokeStyle = currentColor;
+    ctx.lineWidth = parseInt(sizeInput.value, 10);
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(x, y);
+    ctx.stroke();
+    lastX = x; lastY = y;
+  }
+  function end() { drawing = false; }
+
+  canvas.addEventListener('mousedown', start);
+  canvas.addEventListener('mousemove', move);
+  window.addEventListener('mouseup', end);
+
+  canvas.addEventListener('touchstart', start, { passive: true });
+  canvas.addEventListener('touchmove', move, { passive: false });
+  canvas.addEventListener('touchend', end);
+
+  window.setTool = function (t) {
+    tool = t;
+    document.getElementById('btn-draw').classList.toggle('active', t === 'draw');
+    document.getElementById('btn-erase').classList.toggle('active', t === 'erase');
   };
-  swatchContainer.appendChild(s);
-});
 
-document.getElementById('brush-sz').addEventListener('input', function(e) {
-  dbsize = e.target.value;
-});
+  window.clearC = function () {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  };
 
-function getDP(e) {
-  var r = dcanvas.getBoundingClientRect();
-  if (e.touches) {
-    return { x: e.touches[0].clientX - r.left, y: e.touches[0].clientY - r.top };
-  }
-  return { x: e.clientX - r.left, y: e.clientY - r.top };
-}
-
-dcanvas.addEventListener('mousedown', function(e) {
-  painting = true;
-  var p = getDP(e);
-  dctx.beginPath();
-  dctx.moveTo(p.x, p.y);
-});
-
-dcanvas.addEventListener('touchstart', function(e) {
-  e.preventDefault();
-  painting = true;
-  var p = getDP(e);
-  dctx.beginPath();
-  dctx.moveTo(p.x, p.y);
-}, { passive: false });
-
-function doDraw(e) {
-  if (!painting) return;
-  var p = getDP(e);
-  dctx.lineWidth  = dbsize;
-  dctx.lineCap    = 'round';
-  dctx.lineJoin   = 'round';
-  if (dtool === 'erase') {
-    dctx.globalCompositeOperation = 'destination-out';
-    dctx.strokeStyle = 'rgba(0,0,0,1)';
-  } else {
-    dctx.globalCompositeOperation = 'source-over';
-    dctx.strokeStyle = dcolor;
-  }
-  dctx.lineTo(p.x, p.y);
-  dctx.stroke();
-  dctx.beginPath();
-  dctx.moveTo(p.x, p.y);
-}
-
-dcanvas.addEventListener('mousemove', doDraw);
-dcanvas.addEventListener('touchmove', function(e) {
-  e.preventDefault();
-  doDraw(e);
-}, { passive: false });
-
-dcanvas.addEventListener('mouseup',    function() { painting = false; });
-dcanvas.addEventListener('touchend',   function() { painting = false; });
-dcanvas.addEventListener('mouseleave', function() { painting = false; });
-
-function setTool(t) {
-  dtool = t;
-  document.getElementById('btn-draw').classList.toggle('active',  t === 'draw');
-  document.getElementById('btn-erase').classList.toggle('active', t === 'erase');
-}
-function clearC() {
-  dctx.globalCompositeOperation = 'source-over';
-  dctx.clearRect(0, 0, dcanvas.width, dcanvas.height);
-}
-function dlDoodle() {
-  var a      = document.createElement('a');
-  a.download = 'doodle-dssram.png';
-  a.href     = dcanvas.toDataURL();
-  a.click();
-}
+  window.dlDoodle = function () {
+    const link = document.createElement('a');
+    link.download = 'doodle.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  };
+})();
 
 // ============================================================
 // FEEDBACK PANEL — UI toggle only (save is in Firebase module)
