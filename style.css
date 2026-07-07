@@ -461,11 +461,9 @@ body::before {
 .tool-logo{
   width: clamp(42px, 6vw, 58px);
   height: clamp(42px, 6vw, 58px);
-  border-radius: 10px;
-  background: #fff;
-  box-shadow: 0 8px 18px rgba(0,0,0,.16), 0 0 0 1px rgba(10,10,10,.06);
+
   object-fit: contain;
-  padding: 6px;
+
   opacity: 0;
   transform: translateY(12px) scale(.85) rotate(calc(var(--r, 0) * 1deg));
   transition: opacity .35s ease, transform .35s ease;
