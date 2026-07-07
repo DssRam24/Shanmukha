@@ -526,104 +526,97 @@ body::before {
   .ticket-sticker{ width:170px; top:1.2rem; right:4%; }
 }
 /* ============================================================
-   RCHIVES — neo-brutalist lockup, 3D orbiting graph squares
+   RCHIVES — light glass banner over a background video
 ============================================================ */
+.rchives-section{
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.rchives-bg-video{
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
 .rchives-wrapper{
   position: relative;
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 1.6rem;
-  padding: 5rem 5%;
+  padding: 3.2rem 5%;
   perspective: 1400px;
+
+  /* glass, no border */
+  background: rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: none;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.6),
+    inset 0 -1px 0 rgba(255,255,255,.6);
 }
 
-/* — accent lines, chunky instead of hairline — */
+/* — hairlines either side, light — */
 .line{
   flex: 1;
-  height: 4px;
+  height: 1px;
   max-width: 220px;
-  background: var(--ink);
-  position: relative;
-}
-.line::before{
-  content:'';
-  position:absolute;
-  top: 50%; left: 0;
-  width: 10px; height: 10px;
-  background: var(--coral);
-  border: 2px solid var(--ink);
-  transform: translate(-50%,-50%);
-}
-.line::after{
-  content:'';
-  position:absolute;
-  top: 50%; right: 0;
-  width: 10px; height: 10px;
-  background: var(--cream);
-  border: 2px solid var(--ink);
-  transform: translate(50%,-50%);
+  background: rgba(10,10,10,.2);
 }
 
-/* — the logo itself: brutalist button — */
+/* — logo, plain mark, no button box — */
 .rchives-logo{
   position: relative;
   z-index: 5;
   display: inline-flex;
-  align-items: center;
+  align-items: baseline;
   font-family: 'Playfair Display', serif;
+  font-style: italic;
   font-weight: 800;
   font-size: clamp(1.6rem, 3vw, 2.6rem);
   letter-spacing: -.02em;
-  color: var(--ink);
+  color: var(--coral);
   text-decoration: none;
-  background: var(--coral);
-  border: 3px solid var(--ink);
-  padding: .6rem 1.4rem;
-  box-shadow: 7px 7px 0 var(--ink);
-  transform: rotate(-2deg);
-  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+  transition: opacity .2s ease, transform .2s ease;
   white-space: nowrap;
 }
 .rchives-logo span{
   font-family: 'Space Mono', monospace;
+  font-style: normal;
   font-weight: 700;
-  font-size: .55em;
-  margin-left: .15em;
-  text-transform: uppercase;
-  letter-spacing: .04em;
+  font-size: .6em;
+  letter-spacing: .05em;
+  margin-left: .1em;
+  color: var(--ink);
 }
-.rchives-logo:hover{
-  transform: rotate(0deg) translate(4px, 4px);
-  box-shadow: 3px 3px 0 var(--ink);
-  background: var(--ink);
-  color: var(--cream);
-}
-.rchives-logo:active{
-  transform: translate(7px, 7px);
-  box-shadow: 0 0 0 var(--ink);
-}
+.rchives-logo:hover{ opacity: .7; transform: translateY(-2px); }
 
-/* — coffee / sun accents — */
+/* — coffee / sun accents, glass squares — */
 .rchives-accent{
   position: relative;
   z-index: 4;
-  width: 54px; height: 54px;
-  border: 2.5px solid var(--ink);
-  background: var(--cream);
-  box-shadow: 4px 4px 0 var(--ink);
-  display:flex; align-items:center; justify-content:center;
+  width: 50px; height: 50px;
+  border-radius: 10px;
+  background: rgba(255,255,255,.35);
+  border: 1px solid rgba(255,255,255,.5);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 8px 20px rgba(0,0,0,.08);
+  display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
-  animation: wobble-brutal 5s ease-in-out infinite;
+  animation: wobble-glass 5s ease-in-out infinite;
 }
-.rchives-accent img{
-  width: 70%; height: 70%; object-fit: contain;
-}
-.accent-coffee{ transform: rotate(-6deg); animation-delay: 0s; }
-.accent-sun{ transform: rotate(7deg); animation-delay: .8s; }
-@keyframes wobble-brutal{
-  0%, 100% { transform: rotate(-6deg) translateY(0); }
-  50%      { transform: rotate(4deg) translateY(-6px); }
+.rchives-accent img{ width: 65%; height: 65%; object-fit: contain; }
+.accent-coffee{ animation-delay: 0s; }
+.accent-sun{ animation-delay: .8s; }
+@keyframes wobble-glass{
+  0%, 100% { transform: rotate(-4deg) translateY(0); }
+  50%      { transform: rotate(3deg) translateY(-5px); }
 }
 
 /* — 3D orbiting graph squares — */
@@ -636,28 +629,21 @@ body::before {
 .orbit-sq{
   position: absolute;
   top: 50%; left: 50%;
-  border: 2px solid var(--ink);
+  border-radius: 3px;
+  border: 1px solid rgba(255,255,255,.5);
   background:
-    linear-gradient(var(--coral) 1px, transparent 1px) 0 0 / 6px 6px,
-    linear-gradient(90deg, var(--coral) 1px, transparent 1px) 0 0 / 6px 6px,
-    var(--cream);
+    linear-gradient(rgba(255,107,26,.35) 1px, transparent 1px) 0 0 / 6px 6px,
+    linear-gradient(90deg, rgba(255,107,26,.35) 1px, transparent 1px) 0 0 / 6px 6px,
+    rgba(255,255,255,.18);
+  backdrop-filter: blur(2px);
   transform-style: preserve-3d;
 }
-
-.os-1{ width: 22px; height: 22px; margin:-11px 0 0 -11px;
-  animation: orbitY 9s linear infinite; }
-.os-2{ width: 16px; height: 16px; margin:-8px 0 0 -8px;
-  animation: orbitY 9s linear infinite reverse; animation-delay: -3s; }
-.os-3{ width: 28px; height: 28px; margin:-14px 0 0 -14px;
-  animation: orbitX 12s linear infinite; opacity:.8; }
-.os-4{ width: 14px; height: 14px; margin:-7px 0 0 -7px;
-  animation: orbitX 12s linear infinite reverse; animation-delay: -5s; opacity:.7; }
-.os-5{ width: 18px; height: 18px; margin:-9px 0 0 -9px;
-  background: var(--ink); border-color: var(--coral);
-  animation: orbitY 7s linear infinite; animation-delay: -2s; }
-.os-6{ width: 12px; height: 12px; margin:-6px 0 0 -6px;
-  background: var(--coral); border-color: var(--ink);
-  animation: orbitX 15s linear infinite; animation-delay: -8s; opacity:.6; }
+.os-1{ width: 22px; height: 22px; margin:-11px 0 0 -11px; animation: orbitY 9s linear infinite; }
+.os-2{ width: 16px; height: 16px; margin:-8px 0 0 -8px; animation: orbitY 9s linear infinite reverse; animation-delay: -3s; }
+.os-3{ width: 28px; height: 28px; margin:-14px 0 0 -14px; animation: orbitX 12s linear infinite; opacity:.8; }
+.os-4{ width: 14px; height: 14px; margin:-7px 0 0 -7px; animation: orbitX 12s linear infinite reverse; animation-delay: -5s; opacity:.7; }
+.os-5{ width: 18px; height: 18px; margin:-9px 0 0 -9px; animation: orbitY 7s linear infinite; animation-delay: -2s; }
+.os-6{ width: 12px; height: 12px; margin:-6px 0 0 -6px; animation: orbitX 15s linear infinite; animation-delay: -8s; opacity:.6; }
 
 @keyframes orbitY{
   from{ transform: rotateY(0deg) translateZ(160px) rotateY(0deg); }
@@ -669,80 +655,11 @@ body::before {
 }
 
 @media (max-width: 700px){
-  .rchives-wrapper{ gap: .9rem; padding: 3.5rem 5%; }
+  .rchives-wrapper{ gap: .9rem; padding: 2.6rem 5%; }
   .line{ max-width: 60px; }
-  .rchives-accent{ width: 42px; height: 42px; }
-  .orbit-sq{ display: none; } /* orbit reads as noise at small sizes, cut it */
+  .rchives-accent{ width: 40px; height: 40px; }
+  .orbit-sq{ display: none; }
 }
-/* ============================================================
-   RCHIVES INDIVIDUAL BUTTON DIVIDER (From image_445a2f.png)
-============================================================ */
-.rchives-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  width: 100%;
-  margin: 50px 0;
-  padding: 1.5rem 2rem;
-  background: #0a0a0a; /* Deep matte black background from image */
-  border-top: 2px solid #FF6B1A; /* Sharp orange top border line */
-  border-bottom: 2px solid #FF6B1A; /* Sharp orange bottom border line */
-  position: relative;
-  
-  /* Delicate background grid pattern matching image_445a2f.png */
-  background-image: 
-    linear-gradient(rgba(255, 107, 26, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 107, 26, 0.03) 1px, transparent 1px);
-  background-size: 16px 16px;
-}
-
-/* Redesigning the accent lines to fade into the dark grid background */
-.line {
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 107, 26, 0.4));
-  max-width: 220px;
-}
-
-/* Mirroring the line for the right side to keep it perfectly centered */
-.rchives-wrapper::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(90deg, rgba(255, 107, 26, 0.4), transparent);
-  max-width: 220px;
-}
-
-/* Stylizing the standalone link button element */
-.rchives-logo {
-  font-family: 'Caveat', 'Playfair Display', cursive, serif; /* Cursive handwriting styling */
-  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
-  font-weight: 600;
-  color: #FF6B1A; /* Fiery theme orange */
-  text-decoration: none;
-  letter-spacing: 1px;
-  transition: transform 0.3s var(--ease-bounce), text-shadow 0.3s, color 0.3s;
-  padding: 0 10px;
-}
-
-/* Keeping the orange uniform or giving it a neon pop on hover */
-.rchives-logo span {
-  color: #FF6B1A; 
-  transition: color 0.3s;
-}
-
-/* Clean, interactive hover pop */
-.rchives-logo:hover {
-  color: #FFFAF2; /* Turns crisp white/cream on focus */
-  transform: scale(1.1) rotate(-1deg);
-  text-shadow: 0 0 15px rgba(255, 107, 26, 0.8);
-}
-
-.rchives-logo:hover span {
-  color: #FFFAF2;
-}
-
 /* ============================================================
    MARQUEE
 ============================================================ */
