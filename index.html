@@ -437,7 +437,170 @@
     </div>
   </div>
 </section>
+<!-- CERTIFICATIONS & BADGES — BRUTALIST GLASS -->
+<section id="certifications" class="cert-section">
 
+  <div class="section-tag reveal">003 — Proof</div>
+  <h2 class="section-title reveal">Certs <em>&amp;</em> badges.</h2>
+
+  <div class="cert-wall reveal" id="certWall"></div>
+
+  <div class="badge-row reveal" id="badgeRow"></div>
+
+</section>
+
+<!-- ================= CERT LIGHTBOX ================= -->
+<div class="cert-lightbox" id="certLightbox">
+  <button class="cl-close" id="clClose">✕</button>
+  <button class="cl-nav cl-prev" id="clPrev">‹</button>
+  <button class="cl-nav cl-next" id="clNext">›</button>
+  <div class="cl-inner">
+    <div class="cl-frame" id="clFrame"></div>
+    <div class="cl-meta">
+      <span id="clTitle">—</span>
+      <span id="clIdx">01/01</span>
+    </div>
+  </div>
+</div>
+
+
+
+<script>
+(function(){
+
+  /* =========================================================
+     CERTIFICATES — full lightbox view on click. Leave src:""
+     for anything not exported yet (renders as placeholder tile).
+     ========================================================= */
+  const CERTS = [
+    { src:"", title:"AWS Cloud Practitioner" },
+    { src:"", title:"Java Full Stack — EduSkills" },
+    { src:"", title:"Google Cybersecurity" },
+    { src:"", title:"Salesforce Trailhead" },
+    { src:"", title:"DSA Specialization" },
+    { src:"", title:"Figma UI/UX" },
+  ];
+
+  /* =========================================================
+     BADGES — small round glass tiles, click opens Credly (or
+     any) URL directly in a new tab. No lightbox for these.
+     ========================================================= */
+  const BADGES = [
+    { src:"", title:"Badge 1", url:"https://www.credly.com/" },
+    { src:"", title:"Badge 2", url:"https://www.credly.com/" },
+    { src:"", title:"Badge 3", url:"https://www.credly.com/" },
+    { src:"", title:"Badge 4", url:"https://www.credly.com/" },
+    { src:"", title:"Badge 5", url:"https://www.credly.com/" },
+    { src:"", title:"Badge 6", url:"https://www.credly.com/" },
+    { src:"", title:"Badge 7", url:"https://www.credly.com/" },
+    { src:"", title:"Badge 8", url:"https://www.credly.com/" },
+  ];
+
+  const ROTS = [-3,2,-1.5,3,-2.5,1.5,2.5,-1,1.5,-3.5,2,-2];
+
+  /* ---- certificate wall ---- */
+  const certWall = document.getElementById('certWall');
+  CERTS.forEach((c,i) => {
+    const card = document.createElement('div');
+    card.className = 'cert-card';
+    card.style.setProperty('--r', `${ROTS[i % ROTS.length]}deg`);
+
+    const thumb = document.createElement('div');
+    if (c.src){
+      thumb.className = 'cert-thumb';
+      const img = document.createElement('img');
+      img.src = c.src; img.alt = c.title; img.loading = 'lazy';
+      img.onerror = () => { thumb.className='cert-thumb empty'; thumb.setAttribute('data-label', `No.${String(i+1).padStart(2,'0')}`); };
+      thumb.appendChild(img);
+    } else {
+      thumb.className = 'cert-thumb empty';
+      thumb.setAttribute('data-label', `No.${String(i+1).padStart(2,'0')}`);
+    }
+
+    const tag = document.createElement('div');
+    tag.className = 'cert-tag';
+    tag.textContent = 'CERT';
+
+    const cap = document.createElement('div');
+    cap.className = 'cert-cap';
+    cap.textContent = c.title || 'Untitled';
+
+    card.appendChild(thumb);
+    card.appendChild(tag);
+    card.appendChild(cap);
+    card.addEventListener('click', () => openCertLightbox(i));
+    certWall.appendChild(card);
+  });
+
+  /* ---- badge row ---- */
+  const badgeRow = document.getElementById('badgeRow');
+  BADGES.forEach((b,i) => {
+    const a = document.createElement('a');
+    a.href = b.url || '#';
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.className = 'badge-link' + (b.src ? '' : ' empty');
+    a.style.setProperty('--r', `${ROTS[(i+3) % ROTS.length]}deg`);
+
+    if (b.src){
+      const img = document.createElement('img');
+      img.src = b.src; img.alt = b.title; img.loading = 'lazy';
+      a.appendChild(img);
+    } else {
+      const span = document.createElement('span');
+      span.textContent = `No.${String(i+1).padStart(2,'0')}`;
+      a.appendChild(span);
+    }
+
+    const ext = document.createElement('span');
+    ext.className = 'badge-ext';
+    ext.textContent = '↗';
+    a.appendChild(ext);
+
+    badgeRow.appendChild(a);
+  });
+
+  /* ---- lightbox logic (certs only) ---- */
+  const certLightbox = document.getElementById('certLightbox');
+  const clFrame = document.getElementById('clFrame');
+  const clTitle = document.getElementById('clTitle');
+  const clIdx = document.getElementById('clIdx');
+  let clCurrent = 0;
+
+  function renderCertLightbox(){
+    const item = CERTS[clCurrent];
+    clFrame.innerHTML = item.src
+      ? `<img src="${item.src}" alt="${item.title || ''}">`
+      : `<div class="cl-empty">No.${String(clCurrent+1).padStart(2,'0')} — add certificate image</div>`;
+    clTitle.textContent = item.title || 'Untitled';
+    clIdx.textContent = `${String(clCurrent+1).padStart(2,'0')}/${String(CERTS.length).padStart(2,'0')}`;
+  }
+
+  function openCertLightbox(i){
+    clCurrent = i;
+    renderCertLightbox();
+    certLightbox.classList.add('open');
+  }
+  function closeCertLightbox(){ certLightbox.classList.remove('open'); }
+  function stepCert(dir){
+    clCurrent = (clCurrent + dir + CERTS.length) % CERTS.length;
+    renderCertLightbox();
+  }
+
+  document.getElementById('clClose').addEventListener('click', closeCertLightbox);
+  document.getElementById('clPrev').addEventListener('click', () => stepCert(-1));
+  document.getElementById('clNext').addEventListener('click', () => stepCert(1));
+  certLightbox.addEventListener('click', e => { if (e.target === certLightbox) closeCertLightbox(); });
+
+  document.addEventListener('keydown', e => {
+    if (!certLightbox.classList.contains('open')) return;
+    if (e.key === 'Escape') closeCertLightbox();
+    if (e.key === 'ArrowLeft') stepCert(-1);
+    if (e.key === 'ArrowRight') stepCert(1);
+  });
+
+})();
+</script>
    
 <!-- DESIGN — WINDOWS EXPLORER FLOATING -->
 <section id="design">
